@@ -1,3 +1,20 @@
+[Description]
+METABOLIC.pl
+
+METABOLIC  =>  METabolic And BiogeOchemistry anaLyses In miCrobes
+
+This software gives a metabolic and biogeochemical function trait profile to given genome datasets 
+(either metagenome-assembled genomes, single-cell amplified genomes or pure culture sequenced genomes). 
+It also integrates the genome abundance and gene expression information, by giving the (meta)genome and 
+(meta)transcriptome read datasets.
+
+Copyright:
+Zhichao Zhou, zczhou2017@gmail.com
+Karthik Anantharaman, karthik@bact.wisc.edu
+Anantharaman Microbiome Laboratory
+Department of Bacteriology, University of Wisconsin, Madison
+
+
 [Install instruction]
 1 METABOLIC requires the following programs to be added to your system path:
 
