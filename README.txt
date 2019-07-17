@@ -2,6 +2,7 @@ METABOLIC requires the following programs to be added to your system path:
 
 HMMER (>=v3.1b2) 
 	Link: http://hmmer.org/
+
 prodigal (>=v2.6.3) 
 	Link: https://github.com/hyattpd/Prodigal 
 	Remarks: executable must be named prodigal and not prodigal.linux
