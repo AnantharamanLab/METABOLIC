@@ -1,12 +1,13 @@
 [Install instruction]
 1 METABOLIC requires the following programs to be added to your system path:
 
-  1.1 HMMER (>=v3.1b2) 
+  1.1 Perl (>= v5.010)
+  1.2 HMMER (>= v3.1b2) 
     Link: http://hmmer.org/
-  1.2 prodigal (>=v2.6.3) 
+  1.3 prodigal (>= v2.6.3) 
     Link: https://github.com/hyattpd/Prodigal 
     Remarks: executable must be named prodigal and not prodigal.linux
-  1.3 MetaBAT2 (>=v2.12.1)
+  1.4 MetaBAT2 (>= v2.12.1)
     Link: https://bitbucket.org/berkeleylab/metabat
 
 You could follow the install instruction of each program; or you could also
