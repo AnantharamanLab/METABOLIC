@@ -5,8 +5,6 @@ METABOLIC  =>  METabolic And BiogeOchemistry anaLyses In miCrobes
 
 This software gives a metabolic and biogeochemical function trait profile to given genome datasets 
 (either metagenome-assembled genomes, single-cell amplified genomes or pure culture sequenced genomes). 
-It also integrates the genome abundance and gene expression information, by giving the (meta)genome and 
-(meta)transcriptome read datasets.
 
 Copyright:
 Zhichao Zhou, zczhou2017@gmail.com
@@ -24,8 +22,6 @@ Department of Bacteriology, University of Wisconsin, Madison
   1.3 prodigal (>= v2.6.3) 
     Link: https://github.com/hyattpd/Prodigal 
     Remarks: executable must be named prodigal and not prodigal.linux
-  1.4 MetaBAT2 (>= v2.12.1)
-    Link: https://bitbucket.org/berkeleylab/metabat
 
 You could follow the install instruction of each program; or you could also
 install them via Conda and add them to your system path:
@@ -43,7 +39,7 @@ install them via Conda and add them to your system path:
     gzip -d ko_list.gz
     tar xzf profiles.tar.gz; rm profiles.tar.gz
     cd profiles
-    cp ../../batch_hmmpress.pl ./
+    cp ../../Accessory_scripts/batch_hmmpress.pl ./
     perl batch_hmmpress.pl
     
    2.2 The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files.
@@ -53,4 +49,3 @@ install them via Conda and add them to your system path:
 3 METABOLIC uses the "METABOLIC_temp_and_db" which contains the hmm result table and KEGG database information
   Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" and keep it in the same directory of 
   KofamKOALA hmm database and scripts.
-        
