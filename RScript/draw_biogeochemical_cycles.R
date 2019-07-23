@@ -184,7 +184,7 @@ drawScycle.single <- function(R_input, OutputFolder){
   library(diagram)
   openplotmat()
   par(mar = c(2, 2, 2, 2))
-  openplotmat(main = paste("Sulfur Cycle:", name.of.MAG)) # Add a tiitle
+  openplotmat(main = paste("Sulfur Cycle:", name.of.MAG)) # Add a title
   
   elpos <- coordinates (c(1, 3, 3, 3, 1), mx = 0.1, my = -0.1) # Put the coordinate
   elpos
