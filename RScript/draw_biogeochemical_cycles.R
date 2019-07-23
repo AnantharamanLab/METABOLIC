@@ -3,7 +3,7 @@
 
 # METABOLIC DIAGRAM GENERATOR:
 # usage from Command line
-# Rscript draw_biogeochemical_cycles.R R_input/ Output
+# Rscript draw_biogeochemical_cycles.R R_input Output
 
 
 # In a folder you have a sample of 99 files: 99 are MAG names, and 1 is a summary file named Total.R_input.txt
