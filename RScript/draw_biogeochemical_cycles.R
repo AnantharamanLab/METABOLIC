@@ -40,8 +40,8 @@ drawNcycle.single <- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   ## Open file connection:
-  plot.name <- paste(plot.folder,"/", as.character(name.of.MAG),"_draw_nitrogen_cycle_single.png", sep="")
-  png(filename = plot.name, width = 10, height = 10, units = "in", res = 100)
+  plot.name <- paste(plot.folder,"/", as.character(name.of.MAG),"_draw_nitrogen_cycle_single.pdf", sep="")
+  pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   par(mar = c(2, 2, 2, 2))
@@ -98,12 +98,12 @@ drawNcycle.total <- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   # Open file connection
-  plot.name <- paste(plot.folder,"/draw_nitrogen_cycle_total.png", sep="")
-  png(filename = plot.name, width = 10, height = 10, units = "in", res = 100)
+  plot.name <- paste(plot.folder,"/draw_nitrogen_cycle_total.pdf", sep="")
+  pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   openplotmat()
-  par(mar = c(2, 2, 2, 2))
+  #par(mar = c(2, 2, 2, 2))
   openplotmat(main = "Nitrogen Cycle: Summary Figure") # Add a tiitl
   elpos <- coordinates (c(1, 2, 2, 2, 1), mx = 0.1, my = -0.1) # Put the coordinat
   
@@ -178,8 +178,8 @@ drawScycle.single <- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   #Open file connection:
-  plot.name <- paste(plot.folder, "/", as.character(name.of.MAG),"draw_sulfur_cycle_single.png", sep="")
-  png(filename = plot.name, width = 10, height = 10, units = "in", res = 100)
+  plot.name <- paste(plot.folder, "/", as.character(name.of.MAG),"draw_sulfur_cycle_single.pdf", sep="")
+  pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   openplotmat()
@@ -236,8 +236,8 @@ drawScycle.total <- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   #Open file connection
-  plot.name <- paste(plot.folder, "/draw_sulfur_cycle_total.png", sep="")
-  png(filename = plot.name, width = 10, height = 10, units = "in", res = 100)
+  plot.name <- paste(plot.folder, "/draw_sulfur_cycle_total.pdf", sep="")
+  pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   openplotmat()
@@ -321,8 +321,8 @@ drawCcycle.single <- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   #Open file connection:
-  plot.name <- paste(plot.folder, "/", as.character(name.of.MAG),"draw_carbon_cycle_single.png", sep="")
-  png(filename = plot.name, width = 10, height = 10, units = "in", res = 100)
+  plot.name <- paste(plot.folder, "/", as.character(name.of.MAG),"draw_carbon_cycle_single.pdf", sep="")
+  pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   openplotmat()
@@ -362,8 +362,8 @@ drawCcycle.total <- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   #Open file connection:
-  plot.name <- paste(plot.folder, "/draw_carbon_cycle_total.png", sep="")
-  png(filename = plot.name, width = 10, height = 10, units = "in", res = 100)
+  plot.name <- paste(plot.folder, "/draw_carbon_cycle_total.pdf", sep="")
+  pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   openplotmat()
@@ -403,8 +403,8 @@ drawOthercycles.single<- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   #Open file connection:
-  plot.name <- paste(plot.folder, "/", as.character(name.of.MAG),"draw_other_cycle_single.png", sep="")
-  png(filename = plot.name, width = 10, height = 10, units = "in", res = 100)
+  plot.name <- paste(plot.folder, "/", as.character(name.of.MAG),"draw_other_cycle_single.pdf", sep="")
+  pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   openplotmat()
