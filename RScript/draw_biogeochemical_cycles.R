@@ -184,7 +184,7 @@ drawScycle.single <- function(R_input, OutputFolder){
   library(diagram)
   openplotmat()
   par(mar = c(2, 2, 2, 2))
-  openplotmat(main = paste("Sulfur Cycle", name.of.MAG)) # Add a tiitle
+  openplotmat(main = paste("Sulfur Cycle:", name.of.MAG)) # Add a tiitle
   
   elpos <- coordinates (c(1, 3, 3, 3, 1), mx = 0.1, my = -0.1) # Put the coordinate
   elpos
@@ -330,18 +330,18 @@ drawCcycle.single <- function(R_input, OutputFolder){
   openplotmat(main = paste("Carbon Cycle:", name.of.MAG)) # Add a title
   elpos <- coordinates (c(1, 2, 1, 2, 1, 1), mx = 0.1, my = -0.1) # Put the coordinate
   elpos
-  curvedarrow(from = elpos[1, ], to = elpos[8, ], curve = -0.5, lty = 1, lcol = 1) #C-S-01:Organic carbon oxidation
-  curvedarrow(from = elpos[8, ], to = elpos[1, ], curve = -0.5, lty = 1, lcol = 1) #C-S-02:Carbon fixation
-  curvedarrow(from = elpos[3, ], to = elpos[8, ], curve = -0.2, lty = 1, lcol = 1) #C-S-03:Ethanol oxidation
-  curvedarrow(from = elpos[2, ], to = elpos[8, ], curve = 0.2, lty = 1, lcol = 1) #C-S-04:Acetate oxidation
-  straightarrow(from = elpos[1, ], to = elpos[4, ], lty = 1, lcol = 1) #C-S-05:Hydrogen generation
-  straightarrow(from = elpos[2, ], to = elpos[3, ], lty = 1, lcol = 1) #C-S-06:Fermentation
-  straightarrow(from = elpos[3, ], to = elpos[2, ], lty = 1, lcol = 1) #C-S-06:Fermentation
-  straightarrow(from = elpos[4, ], to = elpos[7, ], lty = 1, lcol = 1) #C-S-07:Methanogenesis
-  curvedarrow(from = elpos[2, ], to = elpos[7, ], curve = 0.2, lty = 1, lcol = 1) #C-S-07:Methanogenesis
-  curvedarrow(from = elpos[7, ], to = elpos[8, ], curve = 0.1, lty = 1, lcol = 1) #C-S-08:Methanotrophy
-  curvedarrow(from = elpos[8, ], to = elpos[7, ], curve = 0.1, lty = 1, lcol = 1) #C-S-07:Methanogenesis
-  straightarrow(from = elpos[4, ], to = elpos[6, ], lty = 1, lcol = 1) #C-S-09:Hydrogen oxidation
+  curvedarrow(from = elpos[1, ], to = elpos[8, ], curve = -0.5, lty = 1, lcol = input[1,2]) #C-S-01:Organic carbon oxidation
+  curvedarrow(from = elpos[8, ], to = elpos[1, ], curve = -0.5, lty = 1, lcol = input[2,2]) #C-S-02:Carbon fixation
+  curvedarrow(from = elpos[3, ], to = elpos[8, ], curve = -0.2, lty = 1, lcol = input[3,2]) #C-S-03:Ethanol oxidation
+  curvedarrow(from = elpos[2, ], to = elpos[8, ], curve = 0.2, lty = 1, lcol = input[4,2]) #C-S-04:Acetate oxidation
+  straightarrow(from = elpos[1, ], to = elpos[4, ], lty = 1, lcol = input[5,2]) #C-S-05:Hydrogen generation
+  straightarrow(from = elpos[2, ], to = elpos[3, ], lty = 1, lcol = input[6,2]) #C-S-06:Fermentation
+  straightarrow(from = elpos[3, ], to = elpos[2, ], lty = 1, lcol = input[6,2]) #C-S-06:Fermentation
+  straightarrow(from = elpos[4, ], to = elpos[7, ], lty = 1, lcol = input[7,2]) #C-S-07:Methanogenesis
+  curvedarrow(from = elpos[2, ], to = elpos[7, ], curve = 0.2, lty = 1, lcol = input[7,2]) #C-S-07:Methanogenesis
+  curvedarrow(from = elpos[7, ], to = elpos[8, ], curve = 0.1, lty = 1, lcol = input[8,2]) #C-S-08:Methanotrophy
+  curvedarrow(from = elpos[8, ], to = elpos[7, ], curve = 0.1, lty = 1, lcol = input[7,2]) #C-S-07:Methanogenesis
+  straightarrow(from = elpos[4, ], to = elpos[6, ], lty = 1, lcol = input[9,2]) #C-S-09:Hydrogen oxidation
   
   textrect (elpos[1, ], 0.12, 0.05, lab = expression("Organic carbon"), cex = 1.5)
   textrect (elpos[2, ], 0.07, 0.05, lab = expression("Acetate"), cex = 1.5)
