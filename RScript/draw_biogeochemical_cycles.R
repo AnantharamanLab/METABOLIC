@@ -459,7 +459,8 @@ for (i in 1:length(files)){
   name.of.MAG <- as.character(files[i])
   
   name.of.MAG <- unlist(strsplit(name.of.MAG, "/"))[-1]
-  
+  name.of.MAG <- unlist(strsplit(name.of.MAG, ".R_input.txt"))
+
   print(name.of.MAG)
   
   colnames(input) <- c("Reaction","PresenceAbsence")
