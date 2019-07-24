@@ -10,6 +10,7 @@ It also integrates the genome coverage to make element cycling pathways.
 
 Copyright:  
 Zhichao Zhou, zczhou2017@gmail.com  
+Patricia Tran, ptran5@wisc.edu  
 Karthik Anantharaman, karthik@bact.wisc.edu  
 Anantharaman Microbiome Laboratory  
 Department of Bacteriology, University of Wisconsin, Madison  
@@ -50,10 +51,8 @@ install them via Conda and add them to your system path:
       
    2.2 The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files. It needs to be decompressed to the folder "METABOLIC_hmm_db" and stays in the same directory of KofamKOALA hmm database and scripts.  
   
-3 METABOLIC uses the "METABOLIC_temp_and_db" which contains the hmm result table and KEGG database information  
-  Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" and keep it in the same directory of   
-  KofamKOALA hmm database and scripts.  
-    
+3 METABOLIC uses the "METABOLIC_temp_and_db" which contains the hmm result table and KEGG database information.  
+Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" and keep it in the same directory of KofamKOALA hmm database and scripts.     
 4 This software also contains "Accessory_scripts.gz", which needs to be decompressed before use.  
   
 [Result files]  
