@@ -1,4 +1,4 @@
-#[Description]
+[Description]
 -------
 METABOLIC.pl  
 
@@ -15,7 +15,7 @@ Anantharaman Microbiome Laboratory
 Department of Bacteriology, University of Wisconsin, Madison  
 
 
-#[Install instruction]
+[Install instruction]
 -------
 1 METABOLIC requires the following programs to be added to your system path:
 
@@ -61,7 +61,7 @@ install them via Conda and add them to your system path:
   
 4 This software also contains "Accessory_scripts.gz", which needs to be decompressed before use.
 
-#[Result files]
+[Result files]
 -------
 METABOLIC result table
 Each hmm hit protein collection
