@@ -6,8 +6,8 @@
 # Rscript draw_biogeochemical_cycles.R R_input Output
 
 
-# In a folder you have a sample of 99 files: 99 are MAG names, and 1 is a summary file named Total.R_input.txt
-# Loop through the file names in the folder and use as input for "R_input" in the drawNcycle, drawScycle and drawCcycle below.
+# In a folder you have a sample of 99 files: 99 are genome names, and 1 is a summary file named Total.R_input.txt
+# Loop through the file names in the folder and use as input in the drawNcycle, drawScycle and drawCcycle below.
 
 # Receive arguments from command line:
 userprefs <- commandArgs(trailingOnly = TRUE)
@@ -40,12 +40,12 @@ drawNcycle.single <- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   ## Open file connection:
-  plot.name <- paste(plot.folder,"/", as.character(name.of.MAG),"_draw_nitrogen_cycle_single.pdf", sep="")
+  plot.name <- paste(plot.folder,"/", as.character(name.of.genome),"_draw_nitrogen_cycle_single.pdf", sep="")
   pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   par(mar = c(2, 2, 2, 2))
-  openplotmat(main = paste("Nitrogen Cycle:",name.of.MAG)) # Add a title
+  openplotmat(main = paste("Nitrogen Cycle:",name.of.genome)) # Add a title
   elpos <- coordinates (c(1, 2, 2, 2, 1), mx = 0.1, my = -0.1) # Put the coordinates
   
   straightarrow(from = elpos[1, ], to = elpos[3, ], lty = 1, lcol = input[11,2]) #N-S-01:Nitrogen fixation
@@ -178,13 +178,13 @@ drawScycle.single <- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   #Open file connection:
-  plot.name <- paste(plot.folder, "/", as.character(name.of.MAG),"draw_sulfur_cycle_single.pdf", sep="")
+  plot.name <- paste(plot.folder, "/", as.character(name.of.genome),"draw_sulfur_cycle_single.pdf", sep="")
   pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   openplotmat()
   par(mar = c(2, 2, 2, 2))
-  openplotmat(main = paste("Sulfur Cycle:", name.of.MAG)) # Add a title
+  openplotmat(main = paste("Sulfur Cycle:", name.of.genome)) # Add a title
   
   elpos <- coordinates (c(1, 3, 3, 3, 1), mx = 0.1, my = -0.1) # Put the coordinate
   elpos
@@ -321,13 +321,13 @@ drawCcycle.single <- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   #Open file connection:
-  plot.name <- paste(plot.folder, "/", as.character(name.of.MAG),"draw_carbon_cycle_single.pdf", sep="")
+  plot.name <- paste(plot.folder, "/", as.character(name.of.genome),"draw_carbon_cycle_single.pdf", sep="")
   pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   openplotmat()
   par(mar = c(1, 1, 1, 1))
-  openplotmat(main = paste("Carbon Cycle:", name.of.MAG)) # Add a title
+  openplotmat(main = paste("Carbon Cycle:", name.of.genome)) # Add a title
   elpos <- coordinates (c(1, 2, 1, 2, 1, 1), mx = 0.1, my = -0.1) # Put the coordinate
   elpos
   curvedarrow(from = elpos[1, ], to = elpos[8, ], curve = -0.5, lty = 1, lcol = input[1,2]) #C-S-01:Organic carbon oxidation
@@ -403,13 +403,13 @@ drawOthercycles.single<- function(R_input, OutputFolder){
   plot.folder <- OutputFolder
   
   #Open file connection:
-  plot.name <- paste(plot.folder, "/", as.character(name.of.MAG),"draw_other_cycle_single.pdf", sep="")
+  plot.name <- paste(plot.folder, "/", as.character(name.of.genome),"draw_other_cycle_single.pdf", sep="")
   pdf(file = plot.name, width = 11, height = 8.5)
   
   library(diagram)
   openplotmat()
   par(mar = c(1, 1, 1, 1))
-  openplotmat(main = paste("Other cycles",name.of.MAG)) # Add a title
+  openplotmat(main = paste("Other cycles",name.of.genome)) # Add a title
   elpos <- coordinates (c(5, 5, 2, 2), mx = 0.1, my = -0.1) # Put the coordinate
   elpos
   curvedarrow(from = elpos[2, ], to = elpos[7, ], curve = 0.1, lty = 1, lcol = 1) #O-S-01:Metal reduction
@@ -435,14 +435,14 @@ dir.create(biogeochemcycles.plots.folder)
 
 files <- list.files(path=R_input, pattern="*.txt", full.names=TRUE, recursive=FALSE)
 file.total <- list.files(path=R_input, pattern="Total.R_input.txt", full.names=TRUE)
-# Remove the total file from the "files" list of individual MAG:
+# Remove the total file from the "files" list of individual genome:
 files <- setdiff(files, file.total)
 
 print(files[1])
 
 # files are path to files not the actual files!
 
-print(paste("There are:",length(files), "MAGs to process", sep=" "))
+print(paste("There are:",length(files), "genomes to process", sep=" "))
 print(paste("There is:",length(file.total), "total summary file", sep=" "))
 
 # Total
@@ -456,12 +456,12 @@ input.total$Genome.Coverage.Percentages.Round <- round(input.total$Genome.Covera
 
 for (i in 1:length(files)){
   input <- read.table(files[i], sep="\t")
-  name.of.MAG <- as.character(files[i])
+  name.of.genome <- as.character(files[i])
   
-  name.of.MAG <- unlist(strsplit(name.of.MAG, "/"))[-1]
-  name.of.MAG <- unlist(strsplit(name.of.MAG, ".R_input.txt"))
+  name.of.genome <- unlist(strsplit(name.of.genome, "/"))[-1]
+  name.of.genome <- unlist(strsplit(name.of.genome, ".R_input.txt"))
 
-  print(name.of.MAG)
+  print(name.of.genome)
   
   colnames(input) <- c("Reaction","PresenceAbsence")
   input$PresenceAbsence <- input$PresenceAbsence + 1
@@ -470,7 +470,7 @@ for (i in 1:length(files)){
   drawScycle.single(R_input = input, OutputFolder = biogeochemcycles.plots.folder)
   drawCcycle.single(R_input = input, OutputFolder = biogeochemcycles.plots.folder)
   drawOthercycles.single(R_input = input, OutputFolder = biogeochemcycles.plots.folder)
-  print("Next MAG")
+  print("Next genome")
 }
 
 # Generating summary figures:
