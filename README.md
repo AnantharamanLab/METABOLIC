@@ -1,17 +1,17 @@
 #[Description]
-METABOLIC.pl
+METABOLIC.pl  
 
-METABOLIC  =>  METabolic And BiogeOchemistry anaLyses In miCrobes
+METABOLIC  =>  METabolic And BiogeOchemistry anaLyses In miCrobes  
 
-This software gives a metabolic and biogeochemical function trait profile to given genome datasets 
-[either metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes]. 
-It also integrates the genome coverage to make element cycling pathways.
+This software gives a metabolic and biogeochemical function trait profile to given genome datasets  
+[either metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes].  
+It also integrates the genome coverage to make element cycling pathways.  
 
-Copyright:
-Zhichao Zhou, zczhou2017@gmail.com
-Karthik Anantharaman, karthik@bact.wisc.edu
-Anantharaman Microbiome Laboratory
-Department of Bacteriology, University of Wisconsin, Madison
+Copyright:  
+Zhichao Zhou, zczhou2017@gmail.com  
+Karthik Anantharaman, karthik@bact.wisc.edu  
+Anantharaman Microbiome Laboratory  
+Department of Bacteriology, University of Wisconsin, Madison  
 
 
 #[Install instruction]
