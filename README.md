@@ -33,7 +33,8 @@ install them via Conda and add them to your system path:
   	  
   
 2 METABOLIC requires the KofamKOALA hmm and METABOLIC hmm database   
-  Link: <https://www.genome.jp/tools/kofamkoala/>  
+  Link: <https://www.genome.jp/tools/kofamkoala/>   
+  
   2.1 Download KofamKOALA hmm database files: 
 ```
     mkdir kofam_database  
