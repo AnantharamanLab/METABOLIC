@@ -21,25 +21,19 @@ Department of Bacteriology, University of Wisconsin, Madison
 
   1.1 Perl (>= v5.010)  
   1.2 [HMMER](http://hmmer.org/) (>= v3.1b2)   
-    Link: http://hmmer.org/  
-  1.3 prodigal (>= v2.6.3)   
-    Link: https://github.com/hyattpd/Prodigal  
-    Remarks: executable must be named prodigal and not prodigal.linux  
-  1.4 SAMtools (>= v0.1.19)  
-    Link: http://www.htslib.org/  
-  1.5 BAMtools (>= v2.4.0)  
-    Link: https://github.com/pezmaster31/bamtools/wiki  
-  1.6 CoverM  
-    Link: https://github.com/wwood/CoverM  
+  1.3 [Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)   
+      Remarks: executable must be named prodigal and not prodigal.linux  
+  1.4 [SAMtools](http://www.htslib.org/) (>= v0.1.19)  
+  1.5 [BAMtools](https://github.com/pezmaster31/bamtools/wiki) (>= v2.4.0)   
+  1.6 [CoverM](https://github.com/wwood/CoverM)
   
 You could follow the install instruction of each program; or you could also  
 install them via Conda and add them to your system path:  
-  Link: https://anaconda.org  
+ Link: <https://anaconda.org>
   	  
   
 2 METABOLIC requires the KofamKOALA hmm and METABOLIC hmm database   
-  Link: https://www.genome.jp/tools/kofamkoala/  
-  
+  Link: <https://www.genome.jp/tools/kofamkoala/>  
   2.1 Download KofamKOALA hmm database files: 
 ```
     mkdir kofam_database  
