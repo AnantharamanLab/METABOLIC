@@ -1,10 +1,11 @@
-[Description]
+#[Description]
 METABOLIC.pl
 
 METABOLIC  =>  METabolic And BiogeOchemistry anaLyses In miCrobes
 
 This software gives a metabolic and biogeochemical function trait profile to given genome datasets 
-(either metagenome-assembled genomes, single-cell amplified genomes or pure culture sequenced genomes). 
+[either metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes]. 
+It also integrates the genome coverage to make element cycling pathways.
 
 Copyright:
 Zhichao Zhou, zczhou2017@gmail.com
@@ -13,7 +14,7 @@ Anantharaman Microbiome Laboratory
 Department of Bacteriology, University of Wisconsin, Madison
 
 
-[Install instruction]
+#[Install instruction]
 1 METABOLIC requires the following programs to be added to your system path:
 
   1.1 Perl (>= v5.010)
@@ -22,6 +23,12 @@ Department of Bacteriology, University of Wisconsin, Madison
   1.3 prodigal (>= v2.6.3) 
     Link: https://github.com/hyattpd/Prodigal 
     Remarks: executable must be named prodigal and not prodigal.linux
+  1.4 SAMtools (>= v0.1.19)
+    Link: http://www.htslib.org/
+  1.5 BAMtools (>= v2.4.0)
+    Link: https://github.com/pezmaster31/bamtools/wiki
+  1.6 CoverM
+    Link: https://github.com/wwood/CoverM
 
 You could follow the install instruction of each program; or you could also
 install them via Conda and add them to your system path:
@@ -49,3 +56,10 @@ install them via Conda and add them to your system path:
 3 METABOLIC uses the "METABOLIC_temp_and_db" which contains the hmm result table and KEGG database information
   Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" and keep it in the same directory of 
   KofamKOALA hmm database and scripts.
+  
+4 This software also contains "Accessory_scripts.gz", which needs to be decompressed before use.
+
+#[Result files]
+METABOLIC result table
+Each hmm hit protein collection
+Element cycling pathways for each genome and a summary scheme (Both files and figures).
