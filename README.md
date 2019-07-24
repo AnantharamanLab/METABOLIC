@@ -1,8 +1,8 @@
 [Description]
 -------
-METABOLIC.pl  
+**METABOLIC.pl**
 
-METABOLIC  =>  METabolic And BiogeOchemistry anaLyses In miCrobes  
+**METABOLIC**  =>  **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
 
 This software gives a metabolic and biogeochemical function trait profile to given genome datasets  
 [either metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes].  
@@ -20,7 +20,7 @@ Department of Bacteriology, University of Wisconsin, Madison
 1 METABOLIC requires the following programs to be added to your system path:  
 
   1.1 Perl (>= v5.010)  
-  1.2 HMMER (>= v3.1b2)   
+  1.2 [HMMER](http://hmmer.org/) (>= v3.1b2)   
     Link: http://hmmer.org/  
   1.3 prodigal (>= v2.6.3)   
     Link: https://github.com/hyattpd/Prodigal  
@@ -41,7 +41,7 @@ install them via Conda and add them to your system path:
   Link: https://www.genome.jp/tools/kofamkoala/  
   
   2.1 Download KofamKOALA hmm database files: 
-  ···
+```
     mkdir kofam_database  
     cd kofam_database  
     wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz  
@@ -51,7 +51,7 @@ install them via Conda and add them to your system path:
     cd profiles  
     cp ../../Accessory_scripts/batch_hmmpress.pl ./  
     perl batch_hmmpress.pl  
-   ···
+ ```
       
    2.2 The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files. It needs to be decompressed to the folder "METABOLIC_hmm_db" and stays in the same directory of KofamKOALA hmm database and scripts.  
   
