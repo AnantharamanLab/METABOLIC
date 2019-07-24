@@ -1,4 +1,4 @@
-<img src="https://github.com/ChaoLab/METABOLIC/blob/master/metabolic.png" width="100%">
+<img src="https://github.com/ChaoLab/METABOLIC/blob/master/METABOLIC.jpg" width="85%">
 
 [Description]
 -------
