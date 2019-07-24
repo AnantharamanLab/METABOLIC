@@ -12,7 +12,7 @@ Zhichao Zhou, zczhou2017@gmail.com
 Karthik Anantharaman, karthik@bact.wisc.edu  
 Anantharaman Microbiome Laboratory  
 Department of Bacteriology, University of Wisconsin, Madison  
-
+---------
 
 #[Install instruction]
 1 METABOLIC requires the following programs to be added to your system path:
