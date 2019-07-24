@@ -64,9 +64,11 @@ Element cycling pathways for each genome and a summary scheme (Both files and fi
 
 [Sample inputs]  
 -------
-1 The genome files should be ended with ".fasta"; The genome protein files should be ended with ".faa";
-2 The "-o" option requires inputting a txt file to show the address of metagenomic reads [which is/are the metagenomic dataset(s) that you used to reconstructed the MAGs]. A sample for this txt is like:
-```#Reads pair name with absolute pathway: 
+1 The genome files should be ended with ".fasta"; The genome protein files should be ended with ".faa";  
+2 The "-o" option requires inputting a txt file to show the address of metagenomic reads [which is/are the metagenomic dataset(s) that you used to reconstructed the MAGs]. A sample for this txt is like:   
+```
+#Reads pair name with absolute pathway: 
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_2.fastq
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_2.fastq
 ```
+The paired reads are in the same line.   
