@@ -447,7 +447,7 @@ print(paste("There is:",length(file.total), "total summary file", sep=" "))
 
 # Total
 # in the "Total R input file, the 2nd column is the number of genomes and the 3rd column is the Percentage of them.
-input.total <- read.table("~/Documents/METABOLIC_R_input/R_input_files/Total.R_input.txt", sep="\t")
+input.total <- read.table(file.total, sep="\t")
 colnames(input.total) <- c("Reaction","Nb.Genome","Genome.Coverage.Percentages")
 # change the genome coverage percentages to actual percentages:
 input.total$Genome.Coverage.Percentages <- input.total$Genome.Coverage.Percentages*100
@@ -475,9 +475,9 @@ for (i in 1:length(files)){
 # Generating summary figures:
 
 print("Making the summary figures:")
-drawNcycle.total(R_input = file.total, OutputFolder = biogeochemcycles.plots.folder)
-drawScycle.total(R_input = file.total, OutputFolder = biogeochemcycles.plots.folder)
-drawCcycle.total(R_input = file.total, OutputFolder = biogeochemcycles.plots.folder)
+drawNcycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
+drawScycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
+drawCcycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
 
 
 
