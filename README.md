@@ -1,3 +1,5 @@
+<img src="https://github.com/ChaoLab/METABOLIC/blob/master/metabolic.png" width="100%">
+
 [Description]
 -------
 **METABOLIC.pl**
@@ -70,4 +72,8 @@ Element cycling pathways for each genome and a summary scheme (Both files and fi
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_2.fastq
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_2.fastq
 ```
-The paired reads are in the same line.   
+The paired reads are in the same line. 
+
+[Software work flow]  
+-------
+<img src="https://github.com/ChaoLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
