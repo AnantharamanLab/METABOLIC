@@ -1,4 +1,5 @@
 #[Description]
+-------
 METABOLIC.pl  
 
 METABOLIC  =>  METabolic And BiogeOchemistry anaLyses In miCrobes  
@@ -12,9 +13,10 @@ Zhichao Zhou, zczhou2017@gmail.com
 Karthik Anantharaman, karthik@bact.wisc.edu  
 Anantharaman Microbiome Laboratory  
 Department of Bacteriology, University of Wisconsin, Madison  
----------
+
 
 #[Install instruction]
+-------
 1 METABOLIC requires the following programs to be added to your system path:
 
   1.1 Perl (>= v5.010)
@@ -60,6 +62,7 @@ install them via Conda and add them to your system path:
 4 This software also contains "Accessory_scripts.gz", which needs to be decompressed before use.
 
 #[Result files]
+-------
 METABOLIC result table
 Each hmm hit protein collection
 Element cycling pathways for each genome and a summary scheme (Both files and figures).
