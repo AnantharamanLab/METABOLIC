@@ -40,7 +40,8 @@ install them via Conda and add them to your system path:
 2 METABOLIC requires the KofamKOALA hmm and METABOLIC hmm database   
   Link: https://www.genome.jp/tools/kofamkoala/  
   
-  2.1 Download KofamKOALA hmm database files:  
+  2.1 Download KofamKOALA hmm database files: 
+  ···
     mkdir kofam_database  
     cd kofam_database  
     wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz  
@@ -50,6 +51,7 @@ install them via Conda and add them to your system path:
     cd profiles  
     cp ../../Accessory_scripts/batch_hmmpress.pl ./  
     perl batch_hmmpress.pl  
+   ···
       
    2.2 The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files. It needs to be decompressed to the folder "METABOLIC_hmm_db" and stays in the same directory of KofamKOALA hmm database and scripts.  
   
