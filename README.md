@@ -66,7 +66,7 @@ Element cycling pathways for each genome and a summary scheme (Both files and fi
 
 [Sample inputs]  
 -------
-1 The genome files should be ended with ".fasta"; The genome protein files should be ended with ".faa";  
+1 The genome files should be ended with ".fasta"; The genome protein files should be ended with ".faa" 
 
 2 The "-o" option requires inputting a txt file to show the address of metagenomic reads [which is/are the metagenomic dataset(s) that you used to reconstructed the MAGs]. A sample for this txt is like:   
 ```
