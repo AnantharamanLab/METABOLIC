@@ -48,15 +48,15 @@ drawNcycle.single <- function(R_input, OutputFolder){
   openplotmat(main = paste("Nitrogen Cycle:",name.of.genome)) # Add a title
   elpos <- coordinates (c(1, 2, 2, 2, 1), mx = 0.1, my = -0.1) # Put the coordinates
   
-  straightarrow(from = elpos[1, ], to = elpos[3, ], lty = 1, lcol = input[11,2]) #N-S-01:Nitrogen fixation
-  straightarrow(from = elpos[3, ], to = elpos[7, ], lty = 1, lcol = input[12,2]) #N-S-02:Ammonia oxidation
-  straightarrow(from = elpos[7, ], to = elpos[8, ], lty = 1, lcol = input[13,2]) #N-S-03:Nitrite oxidation
-  straightarrow(from = elpos[8, ], to = elpos[6, ], lty = 1, lcol = input[14,2]) #N-S-04:Nitrate reduction
-  straightarrow(from = elpos[6, ], to = elpos[4, ], lty = 1, lcol = input[15,2]) #N-S-05:Nitrite reduction
-  straightarrow(from = elpos[4, ], to = elpos[2, ], lty = 1, lcol = input[16,2]) #N-S-06:Nitric oxide reduction
-  straightarrow(from = elpos[2, ], to = elpos[1, ], lty = 1, lcol = input[17,2]) #N-S-07:Nitrous oxide reduction
-  splitarrow(from = elpos[c(3,6), ], to = elpos[1, ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[18,2]) #N-S-08:Nitrite ammonification
-  straightarrow(from = elpos[8, ], to = elpos[3, ], lty = 1, lcol = input[19,2]) #N-S-09:Anammox
+  straightarrow(from = elpos[1, ], to = elpos[3, ], lty = 1, lcol = input[10,2]) #N-S-01:Nitrogen fixation
+  straightarrow(from = elpos[3, ], to = elpos[7, ], lty = 1, lcol = input[11,2]) #N-S-02:Ammonia oxidation
+  straightarrow(from = elpos[7, ], to = elpos[8, ], lty = 1, lcol = input[12,2]) #N-S-03:Nitrite oxidation
+  straightarrow(from = elpos[8, ], to = elpos[6, ], lty = 1, lcol = input[13,2]) #N-S-04:Nitrate reduction
+  straightarrow(from = elpos[6, ], to = elpos[4, ], lty = 1, lcol = input[14,2]) #N-S-05:Nitrite reduction
+  straightarrow(from = elpos[4, ], to = elpos[2, ], lty = 1, lcol = input[15,2]) #N-S-06:Nitric oxide reduction
+  straightarrow(from = elpos[2, ], to = elpos[1, ], lty = 1, lcol = input[16,2]) #N-S-07:Nitrous oxide reduction
+  splitarrow(from = elpos[c(3,6), ], to = elpos[1, ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[17,2]) #N-S-08:Nitrite ammonification
+  straightarrow(from = elpos[8, ], to = elpos[3, ], lty = 1, lcol = input[18,2]) #N-S-09:Anammox
   
   textrect (elpos[1, ], 0.05, 0.05, lab = expression(N['2'](0)), cex = 1.5)
   textrect (elpos[2, ], 0.07, 0.05, lab = expression(paste(N['2'],O,(+1))), cex = 1.5)
@@ -131,39 +131,39 @@ drawNcycle.total <- function(R_input, OutputFolder){
   
   textplain(mid = c(0.8, 0.8), 
             lab = c("N-S-01:Nitrogen fixation",
-                    paste("Genomes:",input.total$Nb.Genome[11]),
+                    paste("Genomes:",input.total$Nb.Genome[10]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[11],"%"))) 
   textplain(mid = c(0.9, 0.4), 
             lab = c("N-S-02:Ammonia oxidation",
-                    paste("Genomes:",input.total$Nb.Genome[12]),
+                    paste("Genomes:",input.total$Nb.Genome[11]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[12],"%"))) 
   textplain(mid = c(0.75, 0.10), 
             lab = c("N-S-03:Nitrite oxidation",
-                    paste("Genomes:",input.total$Nb.Genome[13]),
+                    paste("Genomes:",input.total$Nb.Genome[12]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[13],"%"))) 
   textplain(mid = c(0.45, 0.10), 
             lab = c("N-S-04:Nitrate reduction",
-                    paste("Genomes:",input.total$Nb.Genome[14]),
+                    paste("Genomes:",input.total$Nb.Genome[13]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[15],"%"))) 
   textplain(mid = c(0.2, 0.3), 
             lab = c("N-S-05:Nitrite reduction",
-                    paste("Genomes:",input.total$Nb.Genome[15]),
+                    paste("Genomes:",input.total$Nb.Genome[14]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[5],"%"))) 
   textplain(mid = c(0.2, 0.5), 
             lab = c("N-S-06:Nitric oxide reduction",
-                    paste("Genomes:",input.total$Nb.Genome[16]),
+                    paste("Genomes:",input.total$Nb.Genome[15]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[16],"%"))) 
   textplain(mid = c(0.45, 0.75), 
             lab = c("N-S-07:Nitrous oxide reduction",
-                    paste("Genomes:",input.total$Nb.Genome[17]),
+                    paste("Genomes:",input.total$Nb.Genome[16]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[17],"%"))) 
   textplain(mid = c(0.6, 0.6), 
             lab = c("N-S-09:Anammox",
-                    paste("Genomes:",input.total$Nb.Genome[18]),
+                    paste("Genomes:",input.total$Nb.Genome[17]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[18],"%"))) 
   textplain(mid = c(0.6, 0.2), 
             lab = c("N-S-08:Nitrite ammonification",
-                    paste("Genomes:",input.total$Nb.Genome[19]),
+                    paste("Genomes:",input.total$Nb.Genome[18]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[19],"%")))
   
   #Once the plot is done, export it:
@@ -413,13 +413,13 @@ drawOthercycles.single<- function(R_input, OutputFolder){
   openplotmat(main = paste("Other cycles",name.of.genome)) # Add a title
   elpos <- coordinates (c(5, 5, 2, 2), mx = 0.1, my = -0.1) # Put the coordinate
   elpos
-  curvedarrow(from = elpos[2, ], to = elpos[7, ], curve = 0.1, lty = 1, lcol = input[20,2]) #O-S-01:Metal reduction
-  curvedarrow(from = elpos[7, ], to = elpos[2, ], curve = 0.1, lty = 1, lcol = input[20,2]) #
-  straightarrow(from = elpos[3, ], to = elpos[9, ], lty = 1, lcol = input[22,2]) #O-S-02:chlorate reduction
-  straightarrow(from = elpos[5, ], to = elpos[9, ], lty = 1, lcol = input[22,2]) #O-S-02:Perchlorate reduction
-  curvedarrow(from = elpos[11, ], to = elpos[13, ], curve = 0.1, lty = 1, lcol = input[23,2]) #O-S-03:Arsenate reduction
-  curvedarrow(from = elpos[13, ], to = elpos[11, ], curve = 0.1, lty = 1, lcol = input[24,2]) #O-S-04:Arsenite oxidation
-  straightarrow(from = elpos[12, ], to = elpos[14, ], lty = 1, lcol = 1) #C-S-05:Selenate reduction
+  curvedarrow(from = elpos[2, ], to = elpos[7, ], curve = 0.1, lty = 1, lcol = input[19,2]) #O-S-01:Metal reduction
+  curvedarrow(from = elpos[7, ], to = elpos[2, ], curve = 0.1, lty = 1, lcol = input[19,2]) #
+  straightarrow(from = elpos[3, ], to = elpos[9, ], lty = 1, lcol = input[20,2]) #O-S-02:chlorate reduction
+  straightarrow(from = elpos[5, ], to = elpos[9, ], lty = 1, lcol = input[20,2]) #O-S-02:Perchlorate reduction
+  curvedarrow(from = elpos[11, ], to = elpos[13, ], curve = 0.1, lty = 1, lcol = input[21,2]) #O-S-03:Arsenate reduction
+  curvedarrow(from = elpos[13, ], to = elpos[11, ], curve = 0.1, lty = 1, lcol = input[21,2]) #O-S-04:Arsenite oxidation
+  straightarrow(from = elpos[12, ], to = elpos[14, ], lty = 1, lcol = input[23,2]) #C-S-05:Selenate reduction
 
   textrect (elpos[2, ], 0.07, 0.05, lab = expression(Fe^'3+'), cex = 1.5)
   textrect (elpos[3, ], 0.07, 0.05, lab = expression(paste(ClO['2'])^'-'), cex=1.5)
@@ -480,31 +480,31 @@ drawOthercycles.total<- function(R_input, OutputFolder){
   
   textplain(mid = c(0.1, 0.7), 
             lab = c("O-S-01:Metal reduction",
-                    paste("Genomes:",input.total$Nb.Genome[11]),
+                    paste("Genomes:",input.total$Nb.Genome[19]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[11],"%")),
             cex=0.8) 
   
   textplain(mid = c(0.9, 0.7), 
             lab = c("O-S-02:chlorate reduction",
-                    paste("Genomes:",input.total$Nb.Genome[11]),
+                    paste("Genomes:",input.total$Nb.Genome[20]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[11],"%")),
             cex=0.8) 
   
   textplain(mid = c(0.1, 0.3), 
             lab = c("O-S-03:Arsenate reduction",
-                    paste("Genomes:",input.total$Nb.Genome[11]),
+                    paste("Genomes:",input.total$Nb.Genome[21]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[11],"%")),
             cex=0.8) 
   
   textplain(mid = c(0.5, 0.3), 
             lab = c("O-S-04:Arsenite oxidation",
-                    paste("Genomes:",input.total$Nb.Genome[11]),
+                    paste("Genomes:",input.total$Nb.Genome[22]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[11],"%")),
             cex=0.8) 
   
   textplain(mid = c(0.9, 0.3), 
             lab = c("O-S-05:Selenate reduction",
-                    paste("Genomes:",input.total$Nb.Genome[11]),
+                    paste("Genomes:",input.total$Nb.Genome[13]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[11],"%")),
             cex=0.8) 
   dev.off()
