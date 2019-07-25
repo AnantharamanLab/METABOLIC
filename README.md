@@ -28,7 +28,8 @@ Department of Bacteriology, University of Wisconsin, Madison
       Remarks: executable must be named prodigal and not prodigal.linux  
   1.4 [SAMtools](http://www.htslib.org/) (>= v0.1.19)  
   1.5 [BAMtools](https://github.com/pezmaster31/bamtools/wiki) (>= v2.4.0)   
-  1.6 [CoverM](https://github.com/wwood/CoverM)
+  1.6 [CoverM](https://github.com/wwood/CoverM)  
+  1.7 [Parallel](https://www.gnu.org/software/parallel/)
   
 You could follow the install instruction of each program; or you could also  
 install them via Conda and add them to your system path:  
