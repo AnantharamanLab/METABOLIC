@@ -92,7 +92,7 @@ drawNcycle.single <- function(R_input, OutputFolder){
 }
 
 
-# Nitrogen Cycle Summary Figure: no coloured arrows, but have the Nb. of Genome annd the Completeness next to the arrows:
+# Nitrogen Cycle Summary Figure: no coloured arrows, but have the Nb. of Genome annd the coverage next to the arrows:
 drawNcycle.total <- function(R_input, OutputFolder){
   input <- R_input
   plot.folder <- OutputFolder
