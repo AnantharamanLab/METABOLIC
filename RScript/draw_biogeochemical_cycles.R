@@ -41,7 +41,7 @@ drawNcycle.single <- function(R_input, OutputFolder){
   
   ## Open file connection:
   plot.name <- paste(plot.folder,"/", as.character(name.of.genome),".draw_nitrogen_cycle_single.pdf", sep="")
-  pdf(file = plot.name, width = 11, height = 8.5)
+  pdf(file = plot.name, width = 11, height = 8.5,onefile=FALSE)
   
   library(diagram)
   par(mar = c(2, 2, 2, 2))
@@ -99,7 +99,7 @@ drawNcycle.total <- function(R_input, OutputFolder){
   
   # Open file connection
   plot.name <- paste(plot.folder,"/draw_nitrogen_cycle_total.pdf", sep="")
-  pdf(file = plot.name, width = 11, height = 8.5)
+  pdf(file = plot.name, width = 11, height = 8.5,onefile=FALSE)
   
   library(diagram)
   openplotmat()
@@ -179,7 +179,7 @@ drawScycle.single <- function(R_input, OutputFolder){
   
   #Open file connection:
   plot.name <- paste(plot.folder, "/", as.character(name.of.genome),".draw_sulfur_cycle_single.pdf", sep="")
-  pdf(file = plot.name, width = 11, height = 8.5)
+  pdf(file = plot.name, width = 11, height = 8.5, onefile=FALSE)
   
   library(diagram)
   openplotmat()
@@ -237,7 +237,7 @@ drawScycle.total <- function(R_input, OutputFolder){
   
   #Open file connection
   plot.name <- paste(plot.folder, "/draw_sulfur_cycle_total.pdf", sep="")
-  pdf(file = plot.name, width = 11, height = 8.5)
+  pdf(file = plot.name, width = 11, height = 8.5, onefile=FALSE)
   
   library(diagram)
   openplotmat()
@@ -322,7 +322,7 @@ drawCcycle.single <- function(R_input, OutputFolder){
   
   #Open file connection:
   plot.name <- paste(plot.folder, "/", as.character(name.of.genome),".draw_carbon_cycle_single.pdf", sep="")
-  pdf(file = plot.name, width = 11, height = 8.5)
+  pdf(file = plot.name, width = 11, height = 8.5, onefile=FALSE)
   
   library(diagram)
   openplotmat()
@@ -363,7 +363,7 @@ drawCcycle.total <- function(R_input, OutputFolder){
   
   #Open file connection:
   plot.name <- paste(plot.folder, "/draw_carbon_cycle_total.pdf", sep="")
-  pdf(file = plot.name, width = 11, height = 8.5)
+  pdf(file = plot.name, width = 11, height = 8.5, onefile=FALSE)
   
   library(diagram)
   openplotmat()
@@ -404,7 +404,7 @@ drawOthercycles.single<- function(R_input, OutputFolder){
   
   #Open file connection:
   plot.name <- paste(plot.folder, "/", as.character(name.of.genome),".draw_other_cycle_single.pdf", sep="")
-  pdf(file = plot.name, width = 11, height = 8.5)
+  pdf(file = plot.name, width = 11, height = 8.5, onefile=FALSE)
   
   library(diagram)
   openplotmat()
@@ -449,7 +449,7 @@ drawOthercycles.total<- function(R_input, OutputFolder){
   
   #Open file connection:
   plot.name <- paste(plot.folder, "/draw_other_cycle_total.pdf", sep="")
-  pdf(file = plot.name, width = 11, height = 8.5)
+  pdf(file = plot.name, width = 11, height = 8.5, onefile=FALSE)
   
   library(diagram)
   openplotmat()
