@@ -1,9 +1,10 @@
 # Patricia Tran
-# July 23. 2019
+# August 6, 2019
 
 # METABOLIC DIAGRAM GENERATOR:
 # usage from Command line
 # Rscript draw_biogeochemical_cycles.R R_input Output
+# Note that no slash is used at end of input and output folders arguments
 
 
 # In a folder you have a sample of 99 files: 99 are genome names, and 1 is a summary file named Total.R_input.txt
@@ -485,7 +486,7 @@ drawOthercycles.total<- function(R_input, OutputFolder){
   
   library(diagram)
   openplotmat()
-  par(mar = c(1, 1, 1, 1))
+  par(mar = c(1, 1, 1, 1), lheight=0.5)
   
   openplotmat(main = paste("Other cycles: Summary Figure")) # Add a title
   elpos <- coordinates (c(5, 5, 2, 2)) # Put the coordinate
@@ -508,9 +509,8 @@ drawOthercycles.total<- function(R_input, OutputFolder){
   textrect (elpos[12, ], 0.10, 0.05, lab = expression(paste(SeO['4'])^'2-'), cex=1.5)
   textrect (elpos[14, ], 0.07, 0.05, lab = expression(Se^'0'), cex=1.5)
   
-  par(lheight=0.01)
-  
-  textplain(mid = c(0.15, 0.75), 
+  textplain(mid = c(0.15, 0.75),
+            lheight=0.5,
             lab = c("O-S-01:Metal reduction",
                     paste("Genomes:",input.total$Nb.Genome[19]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[19],"%")))
@@ -599,13 +599,13 @@ drawScycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.fo
 drawCcycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
 drawOthercycles.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
 
+print("Done! :-)")
+
 # Combine four summary figures into 1:
-install.packages("pdftools")
-library(pdftools)
+#install.packages("pdftools")
+#library(pdftools)
 
-setwd(biogeochemcycles.plots.folder)
-pdf_combine(c("draw_other_cycle_total.pdf", "draw_carbon_cycle_total.pdf","draw_sulfur_cycle_total.pdf","draw_nitrogen_cycle_total.pdf"), output = "joined.pdf")
+#setwd(biogeochemcycles.plots.folder)
+#pdf_combine(c("draw_other_cycle_total.pdf", "draw_carbon_cycle_total.pdf","draw_sulfur_cycle_total.pdf","draw_nitrogen_cycle_total.pdf"), output = "joined.pdf")
 
-print("Combined all summary figures into 1 PDF :",biogeochemcycles.plots.folder,"/joined.pdf",sep="")
-
-
+#print("Combined all summary figures into 1 PDF :",biogeochemcycles.plots.folder,"/joined.pdf",sep="")
