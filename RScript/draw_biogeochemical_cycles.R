@@ -71,19 +71,19 @@ drawNcycle.single <- function(R_input, OutputFolder){
             lab = c("N-S-01:Nitrogen fixation")) 
   textplain(mid =  c(0.88, 0.5), 
             lab = c("N-S-02:Ammonia oxidation")) 
-  textplain(mid = c(0.75, 0.10), 
+  textplain(mid = c(0.73, 0.15), 
             lab = c("N-S-03:Nitrite oxidation")) 
-  textplain(mid = c(0.30, 0.10), 
+  textplain(mid = c(0.30, 0.15), 
             lab = c("N-S-04:Nitrate reduction")) 
-  textplain(mid = c(0.09, 0.4), 
+  textplain(mid = c(0.12, 0.4), 
             lab = c("N-S-05:Nitrite reduction")) 
-  textplain(mid = c(0.08, 0.3), 
+  textplain(mid = c(0.12, 0.59), 
             lab = c("N-S-06:Nitric oxide reduction")) 
   textplain(mid = c(0.25, 0.85), 
             lab = c("N-S-07:Nitrous oxide reduction")) 
-  textplain(mid = c(0.55, 0.6), 
+  textplain(mid = c(0.55, 0.65), 
             lab = c("N-S-09:Anammox")) 
-  textplain(mid = c(0.47, 0.3), 
+  textplain(mid = c(0.47, 0.35), 
             lab = c("N-S-08:Nitrite ammonification"))
   
   #Once the plot is done, export it:
@@ -137,31 +137,31 @@ drawNcycle.total <- function(R_input, OutputFolder){
             lab = c("N-S-02:Ammonia oxidation",
                     paste("Genomes:",input.total$Nb.Genome[11]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[11],"%"))) 
-  textplain(mid = c(0.75, 0.10), 
+  textplain(mid = c(0.73, 0.15), 
             lab = c("N-S-03:Nitrite oxidation",
                     paste("Genomes:",input.total$Nb.Genome[12]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[12],"%"))) 
-  textplain(mid = c(0.30, 0.10), 
+  textplain(mid = c(0.30, 0.15), 
             lab = c("N-S-04:Nitrate reduction",
                     paste("Genomes:",input.total$Nb.Genome[13]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[13],"%"))) 
-  textplain(mid = c(0.09, 0.40), 
+  textplain(mid = c(0.12, 0.40), 
             lab = c("N-S-05:Nitrite reduction",
                     paste("Genomes:",input.total$Nb.Genome[14]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[14],"%"))) 
-  textplain(mid = c(0.08, 0.6), 
+  textplain(mid = c(0.12, 0.59), 
             lab = c("N-S-06:Nitric oxide reduction",
                     paste("Genomes:",input.total$Nb.Genome[15]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[15],"%"))) 
-  textplain(mid = c(0.25, 0.85), 
+  textplain(mid = c(0.28, 0.85), 
             lab = c("N-S-07:Nitrous oxide reduction",
                     paste("Genomes:",input.total$Nb.Genome[16]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[16],"%"))) 
-  textplain(mid = c(0.55, 0.6), 
+  textplain(mid = c(0.55, 0.65), 
             lab = c("N-S-09:Anammox",
                     paste("Genomes:",input.total$Nb.Genome[17]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[17],"%"))) 
-  textplain(mid = c(0.47, 0.3), 
+  textplain(mid = c(0.47, 0.35), 
             lab = c("N-S-08:Nitrite ammonification",
                     paste("Genomes:",input.total$Nb.Genome[18]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[18],"%")))
@@ -188,14 +188,14 @@ drawScycle.single <- function(R_input, OutputFolder){
   
   elpos <- coordinates (c(1, 3, 3, 3, 1)) # Put the coordinate
   elpos
-  straightarrow(from = elpos[1, ], to = elpos[4, ], lty = 1, lcol = R_input[24,2]) #S-S-01:Sulfide oxidation
-  straightarrow(from = elpos[4, ], to = elpos[1, ], lty = 1, lcol = R_input[25,2]) #S-S-02:Sulfur reduction
-  straightarrow(from = elpos[4, ], to = elpos[10, ], lty = 1, lcol = R_input[26,2]) #S-S-03:Sulfur oxidation
-  straightarrow(from = elpos[10, ], to = elpos[11, ], lty = 1, lcol = R_input[27,2]) #S-S-04:Sulfite oxidation
-  straightarrow(from = elpos[11, ], to = elpos[5, ], lty = 1, lcol = R_input[28,2]) #S-S-05:Sulfate reduction
-  straightarrow(from = elpos[5, ], to = elpos[1, ], lty = 1, lcol = R_input[29,2]) #S-S-06:Sulfite reduction
-  straightarrow(from = elpos[6, ], to = elpos[11, ], lty = 1, lcol = R_input[30,2]) #S-S-07:Thiosulfate oxidation
-  splitarrow(from = elpos[6, ], to = elpos[c(1,10), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = R_input[31,2]) #S-S-08:Thiosulfate disproportionation
+  straightarrow(from = elpos[1, ], to = elpos[4, ], lty = 1, lcol = input[24,2]) #S-S-01:Sulfide oxidation
+  straightarrow(from = elpos[4, ], to = elpos[1, ], lty = 1, lcol = input[25,2]) #S-S-02:Sulfur reduction
+  straightarrow(from = elpos[4, ], to = elpos[10, ], lty = 1, lcol = input[26,2]) #S-S-03:Sulfur oxidation
+  straightarrow(from = elpos[10, ], to = elpos[11, ], lty = 1, lcol = input[27,2]) #S-S-04:Sulfite oxidation
+  straightarrow(from = elpos[11, ], to = elpos[5, ], lty = 1, lcol = input[28,2]) #S-S-05:Sulfate reduction
+  straightarrow(from = elpos[5, ], to = elpos[1, ], lty = 1, lcol = input[29,2]) #S-S-06:Sulfite reduction
+  straightarrow(from = elpos[6, ], to = elpos[11, ], lty = 1, lcol = input[30,2]) #S-S-07:Thiosulfate oxidation
+  splitarrow(from = elpos[6, ], to = elpos[c(1,10), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[31,2]) #S-S-08:Thiosulfate disproportionation
   
   #https://stackoverflow.com/questions/17083362/colorize-parts-of-the-title-in-a-plot
   
@@ -210,19 +210,19 @@ drawScycle.single <- function(R_input, OutputFolder){
   
   textplain(mid = c(0.8, 0.85), 
             lab = c("S-S-01:Sulfide oxidation"))
-  textplain(mid = c(0.68, 0.65), 
+  textplain(mid = c(0.68, 0.69), 
             lab = c("S-S-02:Sulfur reduction"))
-  textplain(mid = c(0.95, 0.5), 
+  textplain(mid = c(0.93, 0.5), 
             lab = c("S-S-03:Sulfur oxidation"))
-  textplain(mid = c(0.8, 0.15), 
+  textplain(mid = c(0.75, 0.15), 
             lab = c("S-S-04:Sulfite oxidation"))
-  textplain(mid = c(0.25, 0.20), 
+  textplain(mid = c(0.25, 0.23), 
             lab = c("S-S-05:Sulfate reduction"))
-  textplain(mid = c(0.2, 0.75), 
+  textplain(mid = c(0.23, 0.75), 
             lab = c("S-S-06:Sulfite reduction"))
-  textplain(mid = c(0.63, 0.32), 
+  textplain(mid = c(0.605, 0.32), 
             lab = c("S-S-07:Thiosulfate oxidation"))
-  textplain(mid = c(0.45, 0.62), 
+  textplain(mid = c(0.45, 0.61), 
             lab = c("S-08:Thiosulfate disproportionation"))
   
   #Once the plot is done, export it:
@@ -271,27 +271,28 @@ drawScycle.total <- function(R_input, OutputFolder){
             lab = c("S-S-01:Sulfide oxidation",
                     paste("Genomes:",input.total$Nb.Genome[24]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[24],"%"))) 
-  textplain(mid = c(0.68, 0.65), 
+  textplain(mid = c(0.68, 0.68), 
             lab = c("S-S-02:Sulfur reduction",
                     paste("Genomes:",input.total$Nb.Genome[25]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[25],"%"))) 
-  textplain(mid = c(0.95, 0.5), 
-            lab = c("S-S-03:Sulfur oxidation",
+  textplain(mid = c(0.93, 0.5), 
+            lab = c("S-S-03:Sulfur",
+                    "oxidation",
                     paste("Genomes:",input.total$Nb.Genome[26]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[26],"%")))
-  textplain(mid = c(0.8, 0.15), 
+  textplain(mid = c(0.75, 0.12), 
             lab = c("S-S-04:Sulfite oxidation",
                     paste("Genomes:",input.total$Nb.Genome[27]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[27],"%")))
-  textplain(mid = c(0.25, 0.2), 
+  textplain(mid = c(0.25, 0.20), 
             lab = c("S-S-05:Sulfate reduction",
                     paste("Genomes:",input.total$Nb.Genome[28]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[28],"%"))) 
-  textplain(mid = c(0.2, 0.75), 
+  textplain(mid = c(0.23, 0.75), 
             lab = c("S-S-06:Sulfite reduction",
                     paste("Genomes:",input.total$Nb.Genome[29]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[29],"%")))
-  textplain(mid = c(0.63, 0.32), 
+  textplain(mid = c(0.61, 0.32), 
             lab = c("S-S-07:Thiosulfate oxidation",
                     paste("Genomes:",input.total$Nb.Genome[30]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[30],"%")))
@@ -343,15 +344,15 @@ drawCcycle.single <- function(R_input, OutputFolder){
   textrect (elpos[7, ], 0.05, 0.05, lab = expression(paste(CH['4'])), cex = 1.5)
   textrect (elpos[8, ], 0.05, 0.05, lab = expression(paste(CO['2'])), cex = 1.5)
   
-  textplain(mid = c(0.05, 0.7), lab = "C-S-02:Carbon fixation")
-  textplain(mid = c(1, 0.7), lab = "C-S-01:Organic carbon oxidation")
-  textplain(mid = c(0.9, 0.5), lab ="C-S-03:Ethanol oxidation")
+  textplain(mid = c(0.1, 0.7), lab = "C-S-02:Carbon fixation")
+  textplain(mid = c(0.85, 0.9), lab = "C-S-01:Organic carbon oxidation")
+  textplain(mid = c(0.9, 0.55), lab ="C-S-03:Ethanol oxidation")
   textplain(mid = c(0.2, 0.4), lab = "C-S-04:Acetate oxidation")
-  textplain(mid = c(0.62, 0.68), lab = "C-S-05:Hydrogen generation")
-  textplain(mid = c(0.4, 0.8), lab = "C-S-06:Fermentation")
-  textplain(mid = c(0.6, 0.4), lab = "C-S-07:Methanogenesis")
-  textplain(mid = c(0.66, 0.15), lab = "C-S-08:Methanotrophy")
-  textplain(mid = c(0.73, 0.55), lab = "C-S-09:Hydrogen oxidation")
+  textplain(mid = c(0.61, 0.68), lab = "C-S-05:Hydrogen generation")
+  textplain(mid = c(0.42, 0.78), lab = "C-S-06:Fermentation")
+  textplain(mid = c(0.4, 0.4), lab = "C-S-07:Methanogenesis")
+  textplain(mid = c(0.39, 0.17), lab = "C-S-08:Methanotrophy")
+  textplain(mid = c(0.68, 0.55), lab = "C-S-09:Hydrogen oxidation")
   
   #Once the plot is done, export it:
   dev.off()
@@ -394,32 +395,32 @@ drawCcycle.total <- function(R_input, OutputFolder){
   textrect (elpos[7, ], 0.05, 0.05, lab = expression(paste(CH['4'])), cex = 1.5)
   textrect (elpos[8, ], 0.05, 0.05, lab = expression(paste(CO['2'])), cex = 1.5)
   
-  textplain(mid = c(0.05, 0.7), lab = c("C-S-02:Carbon fixation",
+  textplain(mid = c(0.1, 0.80), lab = c("C-S-02:Carbon fixation",
             paste("Genomes:",input.total$Nb.Genome[2]),
             paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[2],"%")))
   
-  textplain(mid = c(1, 0.7), lab = c("C-S-01:Organic carbon oxidation",
+  textplain(mid = c(0.85, 0.9), lab = c("C-S-01:Organic carbon oxidation",
             paste("Genomes:",input.total$Nb.Genome[1]),
             paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[1],"%")))
-  textplain(mid = c(0.9, 0.5), lab =c("C-S-03:Ethanol oxidation",
+  textplain(mid = c(0.9, 0.55), lab =c("C-S-03:Ethanol oxidation",
             paste("Genomes:",input.total$Nb.Genome[3]),
             paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[3],"%")))
   textplain(mid = c(0.2, 0.4), lab = c("C-S-04:Acetate oxidation",
             paste("Genomes:",input.total$Nb.Genome[4]),
             paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[4],"%")))
-  textplain(mid = c(0.62, 0.68), lab = c("C-S-05:Hydrogen generation",
+  textplain(mid = c(0.61, 0.68), lab = c("C-S-05:Hydrogen generation",
             paste("Genomes:",input.total$Nb.Genome[5]),
             paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[5],"%")))
-  textplain(mid = c(0.4, 0.8), lab = c("C-S-06:Fermentation",
+  textplain(mid = c(0.42, 0.78), lab = c("C-S-06:Fermentation",
             paste("Genomes:",input.total$Nb.Genome[6]),
             paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[6],"%")))
-  textplain(mid = c(0.6, 0.4), lab = c("C-S-07:Methanogenesis",
+  textplain(mid = c(0.4, 0.4), lab = c("C-S-07:Methanogenesis",
             paste("Genomes:",input.total$Nb.Genome[7]),
             paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[7],"%")))
-  textplain(mid = c(0.66, 0.15), lab = c("C-S-08:Methanotrophy",
+  textplain(mid = c(0.39, 0.17), lab = c("C-S-08:Methanotrophy",
             paste("Genomes:",input.total$Nb.Genome[8]),
             paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[8],"%")))
-  textplain(mid = c(0.73, 0.55), lab = c("C-S-09:Hydrogen oxidation",
+  textplain(mid = c(0.68, 0.55), lab = c("C-S-09:Hydrogen oxidation",
             paste("Genomes:",input.total$Nb.Genome[9]),
             paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[9],"%")))
   
@@ -465,10 +466,10 @@ drawOthercycles.single<- function(R_input, OutputFolder){
   par(lheight=0.01)
   
   textplain(mid = c(0.15, 0.75), lab = "O-S-01:Metal reduction")
-  textplain(mid = c(0.95, 0.7), lab = "O-S-02:chlorate reduction")
-  textplain(mid = c(0.1, 0.25), lab ="O-S-03:Arsenate reduction")
+  textplain(mid = c(0.87, 0.7), lab = "O-S-02:chlorate reduction")
+  textplain(mid = c(0.12, 0.25), lab ="O-S-03:Arsenate reduction")
   textplain(mid = c(0.4, 0.25), lab = "O-S-04:Arsenite oxidation")
-  textplain(mid = c(0.9, 0.25), lab = "O-S-05:Selenate reduction")
+  textplain(mid = c(0.88, 0.25), lab = "O-S-05:Selenate reduction")
   dev.off()
   cat("made plot: ", plot.name, "\n")
 
@@ -514,7 +515,7 @@ drawOthercycles.total<- function(R_input, OutputFolder){
                     paste("Genomes:",input.total$Nb.Genome[19]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[19],"%")))
   
-  textplain(mid = c(0.95, 0.7), 
+  textplain(mid = c(0.9, 0.68), 
             lab = c("O-S-02:chlorate reduction",
                     paste("Genomes:",input.total$Nb.Genome[20]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[20],"%")))
@@ -599,15 +600,12 @@ drawCcycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.fo
 drawOthercycles.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
 
 # Combine four summary figures into 1:
-install.packages("staplr")
-library(staplr)
+install.packages("pdftools")
+library(pdftools)
 
-## If you run into the error:
-#"Error: package or namespace load failed for ‘staplr’:
-# .onLoad failed in loadNamespace() for 'tcltk', details:
-#call: fun(libname, pkgname)
-#error: X11 library is missing: install XQuartz from xquartz.macosforge.org"
-# Go to the xquartz website and update X11.
+setwd(biogeochemcycles.plots.folder)
+pdf_combine(c("draw_other_cycle_total.pdf", "draw_carbon_cycle_total.pdf","draw_sulfur_cycle_total.pdf","draw_nitrogen_cycle_total.pdf"), output = "joined.pdf")
 
-staple_pdf(input_directory = biogeochemcycles.plots.folder , input_files = c("draw_carbon_cycle_total.pdf","draw_nitrogen_cycle_total.pdf","draw_sulfur_cycle_total.pdf","draw_other_cycle_total.pdf"),
-           output_filepath = biogeochemcycles.plots.folder, overwrite = TRUE)
+print("Combined all summary figures into 1 PDF :",biogeochemcycles.plots.folder,"/joined.pdf",sep="")
+
+
