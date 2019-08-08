@@ -3,7 +3,10 @@
 
 # METABOLIC DIAGRAM GENERATOR:
 # usage from Command line
-# Rscript draw_biogeochemical_cycles.R R_input Output
+# Rscript draw_biogeochemical_cycles.R R_input Output TRUE
+# or 
+# Rscript draw_biogeochemical_cycles.R R_input Output FALSE
+# If no summary file was created in earlier step
 # Note that no slash is used at end of input and output folders arguments
 
 
