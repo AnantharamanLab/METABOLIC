@@ -14,9 +14,10 @@
 userprefs <- commandArgs(trailingOnly = TRUE)
 R_input <- userprefs[1] # Path to folder with all the summary files R_input.txt
 plots.folder.path <- userprefs[2] # Name of new directory to make to store things
+summary <- userprefs[3]
 
-if (length(userprefs) > 2){
-  mirror.location <- userprefs[3]
+if (length(userprefs) > 3){
+  mirror.location <- userprefs[4]
 }else{
   mirror.location <- "https://cran.mtu.edu"
 }
@@ -561,16 +562,6 @@ print(files[1])
 # files are path to files not the actual files!
 
 print(paste("There are:",length(files), "genomes to process", sep=" "))
-print(paste("There is:",length(file.total), "total summary file", sep=" "))
-
-# Total
-# in the "Total R input file, the 2nd column is the number of genomes and the 3rd column is the Percentage of them.
-input.total <- read.table(file.total, sep="\t")
-colnames(input.total) <- c("Reaction","Nb.Genome","Genome.Coverage.Percentages")
-# change the genome coverage percentages to actual percentages:
-input.total$Genome.Coverage.Percentages <- input.total$Genome.Coverage.Percentages*100
-# Round to 1 digit:
-input.total$Genome.Coverage.Percentages.Round <- round(input.total$Genome.Coverage.Percentages, digits = 1)
 
 for (i in 1:length(files)){
   input <- read.table(files[i], sep="\t")
@@ -593,11 +584,28 @@ for (i in 1:length(files)){
 
 # Generating summary figures:
 
-print("Making the summary figures:")
-drawNcycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
-drawScycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
-drawCcycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
-drawOthercycles.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
+if (summary==TRUE){
+  print(paste("There is:",length(file.total), "total summary file", sep=" "))
+  
+  # Total
+  # in the "Total R input file, the 2nd column is the number of genomes and the 3rd column is the Percentage of them.
+  input.total <- read.table(file.total, sep="\t")
+  colnames(input.total) <- c("Reaction","Nb.Genome","Genome.Coverage.Percentages")
+  # change the genome coverage percentages to actual percentages:
+  input.total$Genome.Coverage.Percentages <- input.total$Genome.Coverage.Percentages*100
+  # Round to 1 digit:
+  input.total$Genome.Coverage.Percentages.Round <- round(input.total$Genome.Coverage.Percentages, digits = 1)
+  
+  print("Making the summary figures:")
+  drawNcycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
+  drawScycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
+  drawCcycle.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
+  drawOthercycles.total(R_input = input.total, OutputFolder = biogeochemcycles.plots.folder)
+}else{
+  print("Summary=FALSE, no files to process, not generating summary figures")
+}
+
+
 
 print("Done! :-)")
 
