@@ -17,23 +17,24 @@ Department of Bacteriology, University of Wisconsin, Madison
 
 ## Installation instruction
 _scroll down the page for "Quick Start Instructions"_
-Go to where you want the program to be and clone the github repository or click the green buttom "download ZIP" folder, and unzip.
+
+1. Go to where you want the program to be and clone the github repository or click the green buttom "download ZIP" folder, and unzip.
 
 ```
     git-clone https://github.com/ChaoLab/METABOLIC.git
 ```
 
-1. METABOLIC requires the following programs to be added to your system path:  
+2. METABOLIC requires the following programs to be added to your system path:  
 
-    1.1. Perl (>= v5.010)  
-    1.2. [HMMER](http://hmmer.org/) (>= v3.1b2)   
-    1.3. [Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)   
+    2.1. Perl (>= v5.010)  
+    2.2. [HMMER](http://hmmer.org/) (>= v3.1b2)   
+    2.3. [Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)   
       Remarks: executable must be named prodigal and not prodigal.linux  
-    1.4. [SAMtools](http://www.htslib.org/) (>= v0.1.19)  
-    1.5. [BAMtools](https://github.com/pezmaster31/bamtools/wiki) (>= v2.4.0)   
-    1.6. [CoverM](https://github.com/wwood/CoverM)  
-    1.7. [Parallel](https://www.gnu.org/software/parallel/)  
-    1.8. [R](https://www.r-project.org/) (>= 3.6.0)  
+    2.4. [SAMtools](http://www.htslib.org/) (>= v0.1.19)  
+    2.5. [BAMtools](https://github.com/pezmaster31/bamtools/wiki) (>= v2.4.0)   
+    2.6. [CoverM](https://github.com/wwood/CoverM)  
+    2.7. [Parallel](https://www.gnu.org/software/parallel/)  
+    2.8. [R](https://www.r-project.org/) (>= 3.6.0)  
         Installing required R packages using Rscript:  
         Copy and paste the following command into your terminal window (may require super user permissions to run):  
   
@@ -46,10 +47,10 @@ install them via Conda and add them to your system path:
 Link: <https://anaconda.org>
   	  
   
-2. METABOLIC requires the KofamKOALA hmm and METABOLIC hmm database   
+3. METABOLIC requires the KofamKOALA hmm and METABOLIC hmm database   
   [KofamKOALA website](https://www.genome.jp/tools/kofamkoala/)
   
-   2.1. Download KofamKOALA hmm database files: 
+   3.1. Download KofamKOALA hmm database files: 
 
 ```
     mkdir kofam_database  
@@ -63,18 +64,18 @@ Link: <https://anaconda.org>
     perl batch_hmmpress.pl  
  ```
       
-   2.2. The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files. It needs to be decompressed to the folder "METABOLIC_hmm_db" and stays in the same directory of KofamKOALA hmm database and scripts.  
+   3.2. The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files. It needs to be decompressed to the folder "METABOLIC_hmm_db" and stays in the same directory of KofamKOALA hmm database and scripts.  
 ```
   tar zxvf METABOLIC_hmm_db.tgz
 ```
   
-3. METABOLIC uses the "METABOLIC_temp_and_db" which contains the hmm result table and KEGG database information.  
+4. METABOLIC uses the "METABOLIC_temp_and_db" which contains the hmm result table and KEGG database information.  
 Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" and keep it in the same directory of KofamKOALA hmm database and scripts.  
 ```
   tar zxvf METABOLIC_temp_and_db.tgz
 ```
 
-4. This software also contains "Accessory_scripts.gz", which needs to be decompressed before use. 
+5. This software also contains "Accessory_scripts.gz", which needs to be decompressed before use. 
 ```
   tar zxvf Accessory_scripts.tgz
 ```
