@@ -1,6 +1,6 @@
 <img src="https://github.com/ChaoLab/METABOLIC/blob/master/METABOLIC.jpg" width="85%">
 
-# METABOLIC.pl
+# METABOLIC_v1.0.pl
 
 # METABOLIC**  =>  **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
 
@@ -131,7 +131,7 @@ If you have a "Total.R_input.txt" file in your "R_input_files" folder that you u
 If you are at the Quick-Start, you have already installed the program and its dependencies. 
 To run the analysis process as follow
 ```
- instruction here
+ perl METABOLIC_v1.0.pl
 ```
 
 Once you have the "R_input_files" folders, use it as input to visualize your results in the R script
