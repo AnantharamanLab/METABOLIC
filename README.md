@@ -1,8 +1,9 @@
 <img src="https://github.com/ChaoLab/METABOLIC/blob/master/METABOLIC.jpg" width="85%">
 
-# METABOLIC_v1.0.pl
 
-# METABOLIC**  =>  **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
+# METABOLIC
+**MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
+Version 1.0
 
 This software finds a metabolic and biogeochemical function trait profile to given genome datasets. These genome datasets can either be metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes. It also calculates the genome coverage. The information is parsed and diagrams for element cycling pathways (currently Nitrogen, Carbon, Sulfur and "other") are produced.  
 
