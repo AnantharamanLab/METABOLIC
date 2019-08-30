@@ -2,9 +2,9 @@
 
 [Description]
 -------
-**METABOLIC.pl**
+#METABOLIC.pl
 
-**METABOLIC**  =>  **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
+#METABOLIC**  =>  **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
 
 This software gives a metabolic and biogeochemical function trait profile to given genome datasets  
 [either metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes].  
@@ -18,8 +18,8 @@ Anantharaman Microbiome Laboratory
 Department of Bacteriology, University of Wisconsin, Madison  
 
 
-[Install instruction]
--------
+##Install instruction
+
 1. METABOLIC requires the following programs to be added to your system path:  
 
     1.1. Perl (>= v5.010)  
@@ -71,29 +71,36 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
   gunzip Accessory_scripts.gz
 ```
   
-[Result files]  
--------
+## Result files 
+
 After running the whole program you will obtain the following files:
 
-- METABOLIC result table  
+- **METABOLIC result table**
+
 The file will be named ...
 
-- Each hmm hit protein collection  
+- **Each hmm hit protein collection** 
+
 The file will be named ....
 
-- Element cycling pathways for each genome and a summary scheme (Both files and figures)
-In the designated R output folder named "R_ouput/draw_biogeochem_cycles", you will have the following files for EACH MAG:
-"GenomeName.draw_sulfur_cycle_single.PDF"
-"GenomeName.draw_nitrogen_cycle_single.PDF"
-"GenomeName.draw_other_cycle_single.PDF"
-"GenomeName.draw_carbon_cycle_single.PDF"
-If you have a "Total.R_input.txt" file in your "R_input_files" folder that you used as an input for the R script (draw_biogeochem_cycles.R) and used the option "TRUE" as the 3 argument (whether or not you have the "Total.R_input.txt", you will have have the following output:
-"draw_sulfur_cycle_total.pdf"
-"draw_other_cycle_total.pdf"
-"draw_nitrogen_cycle_total.pdf"
-"draw_carbon_cycle_total.pdf"
+- **Element cycling pathways for each genome and a summary scheme (Both files and figures)**
 
-[Sample inputs]  
+In the designated R output folder named "R_ouput/draw_biogeochem_cycles", you will have the following files for EACH MAG:
+```
+  GenomeName.draw_sulfur_cycle_single.PDF
+  GenomeName.draw_nitrogen_cycle_single.PDF
+  GenomeName.draw_other_cycle_single.PDF
+  GenomeName.draw_carbon_cycle_single.PDF
+```
+If you have a "Total.R_input.txt" file in your "R_input_files" folder that you used as an input for the R script (draw_biogeochem_cycles.R) and used the option "TRUE" as the 3 argument (whether or not you have the "Total.R_input.txt", you will have have the following output:
+```
+  draw_sulfur_cycle_total.pdf
+  draw_other_cycle_total.pdf
+  draw_nitrogen_cycle_total.pdf
+  draw_carbon_cycle_total.pdf
+```
+
+## Sample inputs
 -------
 1. The genome files should be ended with ".fasta"; The genome protein files should be ended with ".faa" 
 
