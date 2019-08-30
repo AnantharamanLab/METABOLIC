@@ -1,7 +1,5 @@
 <img src="https://github.com/ChaoLab/METABOLIC/blob/master/METABOLIC.jpg" width="85%">
 
-[Description]
--------
 # METABOLIC.pl
 
 # METABOLIC**  =>  **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
