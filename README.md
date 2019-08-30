@@ -60,13 +60,19 @@ Link: <https://anaconda.org>
  ```
       
    2.2. The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files. It needs to be decompressed to the folder "METABOLIC_hmm_db" and stays in the same directory of KofamKOALA hmm database and scripts.  
+```
+  tar zxvf METABOLIC_hmm_db.tgz
+```
   
 3. METABOLIC uses the "METABOLIC_temp_and_db" which contains the hmm result table and KEGG database information.  
 Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" and keep it in the same directory of KofamKOALA hmm database and scripts.  
+```
+  tar zxvf METABOLIC_temp_and_db.tgz
+```
 
 4. This software also contains "Accessory_scripts.gz", which needs to be decompressed before use. 
 ```
-  gunzip Accessory_scripts.gz
+  tar zxvf Accessory_scripts.tgz
 ```
 
 ## Input Files
@@ -98,7 +104,7 @@ This file is...
 
 - **Element cycling pathways for each genome and a summary scheme (Both files and figures)**
 
-In the designated R output folder named "R_ouput/draw_biogeochem_cycles", you will have the following files for EACH MAG:
+In the designated R output folder named "R_ouput/draw_biogeochem_cycles/", you will have the following files for EACH MAG:
 ```
   GenomeName.draw_sulfur_cycle_single.PDF
   GenomeName.draw_nitrogen_cycle_single.PDF
@@ -106,7 +112,7 @@ In the designated R output folder named "R_ouput/draw_biogeochem_cycles", you wi
   GenomeName.draw_carbon_cycle_single.PDF
 ```
 
-If you have a "Total.R_input.txt" file in your "R_input_files" folder that you used as an input for the R script (draw_biogeochem_cycles.R) and used the option "TRUE" as the 3 argument (whether or not you have the "Total.R_input.txt", you will have have the following output:
+If you have a "Total.R_input.txt" file in your "R_input_files" folder that you used as an input for the R script (draw_biogeochemical_cycles.R) and used the option "TRUE" as the 3 argument (whether or not you have the "Total.R_input.txt", you will have have the following output:
 ```
   draw_sulfur_cycle_total.pdf
   draw_other_cycle_total.pdf
@@ -127,7 +133,7 @@ To run the analysis process as follow
 
 Once you have the "R_input_files" folders, use it as input to visualize your results in the R script
 ```
-RScript draw_biogeochem_cycles.R R_input R_Output TRUE
+RScript draw_biogeochemical_cycles.R R_input R_Output TRUE
 
 ```
 The first argument is the name of the folder with your inputs (in this case "R_input_files"). This is where your files that end wiith "...R_input.txt" and your "Total.R_inpuut.txt" files is. **Note!: There is no forward slash after the folder name**
