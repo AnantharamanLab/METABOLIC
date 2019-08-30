@@ -18,6 +18,11 @@ Department of Bacteriology, University of Wisconsin, Madison
 
 ## Installation instruction
 _scroll down the page for "Quick Start Instructions"_
+Go to where you want the program to be and clone the github repository or click the green buttom "download ZIP" folder, and unzip.
+
+```
+    git-clone https://github.com/ChaoLab/METABOLIC.git
+```
 
 1. METABOLIC requires the following programs to be added to your system path:  
 
