@@ -62,9 +62,10 @@ Link: <https://anaconda.org>
     cd profiles  
     cp ../../Accessory_scripts/batch_hmmpress.pl ./  
     perl batch_hmmpress.pl  
- ```
-      
+```
+
    3.2. The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files. It needs to be decompressed to the folder "METABOLIC_hmm_db" and stays in the same directory of KofamKOALA hmm database and scripts.  
+
 ```
   tar zxvf METABOLIC_hmm_db.tgz
 ```
@@ -117,12 +118,12 @@ In the designated R output folder named "R_ouput/draw_biogeochem_cycles/", you w
   GenomeName.draw_carbon_cycle_single.PDF
 ```
 
-If you have a "Total.R_input.txt" file in your "R_input_files" folder that you used as an input for the R script (draw_biogeochemical_cycles.R) and used the option "TRUE" as the 3 argument (whether or not you have the "Total.R_input.txt", you will have have the following output:
+If you have a "Total.R_input.txt" file in your "R_input_files" folder that you used as an input for the R script (draw_biogeochemical_cycles.R) and used the option "TRUE" as the 3rd argument (whether or not you have the "Total.R_input.txt", you will have have the following output:
 ```
-  draw_sulfur_cycle_total.pdf
-  draw_other_cycle_total.pdf
-  draw_nitrogen_cycle_total.pdf
-  draw_carbon_cycle_total.pdf
+  draw_sulfur_cycle_total.PDF
+  draw_other_cycle_total.PDF
+  draw_nitrogen_cycle_total.PDF
+  draw_carbon_cycle_total.PDF
 ```
 
 ## Software work flow 
