@@ -100,25 +100,22 @@ After running the whole program you will obtain the following files:
 
 - **METABOLIC result table**
 
-The file will be named ...
-This file is ...
+
 
 - **Each hmm hit protein collection** 
 
-The file will be named ....
-This file is...
+
 
 - **Element cycling pathways for each genome and a summary scheme (Both files and figures)**
 
-In the designated R output folder named "R_ouput/draw_biogeochem_cycles/", you will have the following files for EACH MAG:
+In the designated R output folder named "R_ouput", you will have the following files for EACH MAG:
 ```
   GenomeName.draw_sulfur_cycle_single.PDF
   GenomeName.draw_nitrogen_cycle_single.PDF
   GenomeName.draw_other_cycle_single.PDF
   GenomeName.draw_carbon_cycle_single.PDF
 ```
-
-If you have a "Total.R_input.txt" file in your "R_input_files" folder that you used as an input for the R script (draw_biogeochemical_cycles.R) and used the option "TRUE" as the 3rd argument (whether or not you have the "Total.R_input.txt", you will have have the following output:
+If you input a "metagenomic reads" txt file, the software will help to calculate the gene abundance, then you will have have the following output as the summary diagram of pathways at a community scale:
 ```
   draw_sulfur_cycle_total.PDF
   draw_other_cycle_total.PDF
