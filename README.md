@@ -27,6 +27,12 @@ _scroll down the page for "Quick Start Instructions"_
 2. METABOLIC requires the following programs to be added to your system path:  
 
     2.1. Perl (>= v5.010)  
+        ##modules
+use Data::Dumper;
+use POSIX qw(strftime);
+use Excel::Writer::XLSX;
+use Getopt::Long;
+use Statistics::Descriptive;
     2.2. [HMMER](http://hmmer.org/) (>= v3.1b2)   
     2.3. [Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)   
       Remarks: executable must be named prodigal and not prodigal.linux  
