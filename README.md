@@ -124,6 +124,7 @@ In the designated R output folder named "R_ouput", you will have the following f
   GenomeName.draw_other_cycle_single.PDF
   GenomeName.draw_carbon_cycle_single.PDF
 ```
+
 If you input a "metagenomic reads" txt file, the software will help to calculate the gene abundance, then you will have have the following output as the summary diagram of pathways at a community scale:
 ```
   draw_sulfur_cycle_total.PDF
@@ -132,27 +133,17 @@ If you input a "metagenomic reads" txt file, the software will help to calculate
   draw_carbon_cycle_total.PDF
 ```
 
-## Software work flow 
-
-<img src="https://github.com/ChaoLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
-
-## Quick-Start
-If you are at the Quick-Start, you have already installed the program and its dependencies. 
-To run the analysis process as follow
-```
- perl METABOLIC_v1.0.pl
-```
-
-Once you have the "R_input_files" folders, use it as input to visualize your results in the R script
+You could run the Rscript separately. Once you have the "R_input" folders, use it as input to visualize your results in the R script
 ```
 RScript draw_biogeochemical_cycles.R R_input R_Output TRUE
 
 ```
-The first argument is the name of the folder with your inputs (in this case "R_input_files"). This is where your files that end wiith "...R_input.txt" and your "Total.R_inpuut.txt" files is. **Note!: There is no forward slash after the folder name**
+The first argument is the name of the folder with your inputs (in this case "R_input_files"). This is where your files that end wiith "...R_input.txt" and your "Total.R_input.txt" files is. **Note!: There is no forward slash after the folder name**
 
 The second argument is the the name of the output folder where your images will be saved. The folder does not have to exist already (e.i. no need to mkdir first). **Note!: Once again there is no forward slash after the folder name**
 
 The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that links to mapped reads where used in the beginning, and you have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).
 
+## Software work flow 
 
-
+<img src="https://github.com/ChaoLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
