@@ -117,9 +117,9 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
 &emsp;One should notice that the paired reads are in the same line.
 
 
-## Result files 
+## Result files  
 
-After running the whole program you will obtain the following files:
+After running the whole program (perl script) you will obtain the following files:
 
 - **METABOLIC result table**
 
@@ -165,7 +165,7 @@ The running command is given as "perl METABOLIC_v1.0.pl -in-gn Genome_files -t 6
 
 One could use this to test whether you have successfully installed all the prerequisites in a proper way.
 
-## Instructions on running test files
+## Instructions on running on real data
 Follow similar instructions for your real files.
 ```
 perl METABOLIC_v1.0.pl -in-gn [folder with all your genomes] -t [number of threads]
