@@ -133,7 +133,7 @@ If you input a "metagenomic reads" txt file, the software will help to calculate
   draw_carbon_cycle_total.PDF
 ```
 
-You could run the Rscript separately. Once you have the "R_input" folders, use it as input to visualize your results in the R script
+You could also run the Rscript separately. Once you have the "R_input" folders, use it as input to visualize your results in the R script
 ```
 RScript draw_biogeochemical_cycles.R R_input R_Output TRUE
 
