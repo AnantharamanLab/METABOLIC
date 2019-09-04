@@ -18,7 +18,7 @@ Department of Bacteriology, University of Wisconsin, Madison
 ## Installation instruction
 _scroll down the page for "Quick Start Instructions"_
 
-1. Go to where you want the program to be and clone the github repository or click the green buttom "download ZIP" folder, and unzip. The script and dependent databases should be kept in the same directory.
+1. Go to where you want the program to be and clone the github repository or click the green buttom "download ZIP" folder, and unzip. The perl and R scripts and dependent databases should be kept in the same directory.
 
 ```
     git-clone https://github.com/ChaoLab/METABOLIC.git
