@@ -89,10 +89,24 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
 ```
   tar zxvf Accessory_scripts.tgz
 ```
+6. This software also contains "Motif.tgz", which needs to be decompressed before use. 
+```
+  tar zxvf Motif.tgz.tgz
+```
+7. Finally, this software also contains "5_genomes_test.tgz", which needs to be decompressed before use. This is a set of 5 genomes that you can use to test run the program to see if it works correctly before running your real samples. (see end of page)
+```
+  tar zxvf 5_genomes_test.tgz
+```
+
+## Software work flow 
+
+<img src="https://github.com/ChaoLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
+
+## Preparing your files:
 
 ## Input Files
 
-1. The genome files should be ended with ".fasta"; The genome amino acid or protein files should be ended with ".faa" 
+1. The genome files should be ended with ".fasta"; The genome amino acid or protein files should be ended with ".faa". These files should be in one single folder, which you will use as argument for the option "-in-gn" in the Perl script "perl METABOLIC_v1.0.pl" (See example at end of page)
 
 2. The "-o" option requires inputting a text file to show the path of where the metagenomic reads are located. The metagenomics reads refer to which are/is the metagenomic datasets that you used to generate the MAGs. A sample for this txt is like:   
 ```
@@ -147,10 +161,15 @@ The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means th
 ## Instructions on running test files
 
 The test files are given in the folder "5_genomes_test.tgz", which includes the input five genome files and the running results.  
-The running command is given as "perl METABOLIC_v1.0.pl -in-gn Genome_files -t 60", which means that you run METABOLIC for genomes contained in the folder "Genome_files" with 60 threads. The others are kept as default settings.    
+The running command is given as "perl METABOLIC_v1.0.pl -in-gn Genome_files -t 60", which means that you run METABOLIC for genomes contained in the folder "Genome_files" with 60 threads. The others settings are kept as default settings.    
 
 One could use this to test whether you have successfully installed all the prerequisites in a proper way.
 
-## Software work flow 
+## Instructions on running test files
+Follow similar instructions for your real files.
+```
+perl METABOLIC_v1.0.pl -in-gn [folder with all your genomes] -t [number of threads]
 
-<img src="https://github.com/ChaoLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
+```
+
+
