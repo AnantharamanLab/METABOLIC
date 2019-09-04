@@ -144,6 +144,13 @@ The second argument is the the name of the output folder where your images will 
 
 The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that links to mapped reads where used in the beginning, and you have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).
 
+## Instructions on running test files
+
+The test files are given in the folder "5_genomes_test.tgz", which includes the input five genome files and the running results.  
+The running command is given as "perl METABOLIC_v1.0.pl -in-gn Genome_files -t 60", which means that you run METABOLIC for genomes contained in the folder "Genome_files" with 60 threads. The others are kept as default settings.    
+
+One could use this to test whether you have successfully installed all the prerequisites in a proper way.
+
 ## Software work flow 
 
 <img src="https://github.com/ChaoLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
