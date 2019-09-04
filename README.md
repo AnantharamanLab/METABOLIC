@@ -73,7 +73,7 @@ Department of Bacteriology, University of Wisconsin, Madison
     perl batch_hmmpress.pl  
 ```
 
-   3.2. The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files. It needs to be decompressed to the folder "METABOLIC_hmm_db" and stays in the same directory of KofamKOALA hmm database and scripts.  
+   &emsp;3.2. The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files. It needs to be decompressed to the folder "METABOLIC_hmm_db" and stays in the same directory of KofamKOALA hmm database and scripts.  
 
 ```
   tar zxvf METABOLIC_hmm_db.tgz
@@ -91,7 +91,7 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
 ```
 6. This software also contains "Motif.tgz", which needs to be decompressed before use. 
 ```
-  tar zxvf Motif.tgz.tgz
+  tar zxvf Motif.tgz
 ```
 7. Finally, this software also contains "5_genomes_test.tgz", which needs to be decompressed before use. This is a set of 5 genomes that you can use to test run the program to see if it works correctly before running your real samples. (see end of page)
 ```
@@ -110,7 +110,7 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
 
 2. The "-o" option requires inputting a text file to show the path of where the metagenomic reads are located. The metagenomics reads refer to which are/is the metagenomic datasets that you used to generate the MAGs. A sample for this txt is like:   
 ```
-#Reads pair name with absolute pathway: 
+#Reads pair name with complete pathway: 
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_2.fastq
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_2.fastq
 ```
