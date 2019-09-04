@@ -16,7 +16,6 @@ Department of Bacteriology, University of Wisconsin, Madison
 
 
 ## Installation instruction
-_scroll down the page for "Quick Start Instructions"_
 
 1. Go to where you want the program to be and clone the github repository or click the green buttom "download ZIP" folder, and unzip. The perl and R scripts and dependent databases should be kept in the same directory.
 
@@ -37,24 +36,25 @@ _scroll down the page for "Quick Start Instructions"_
          use Statistics::Descriptive;  
      ```    
     2.2. [HMMER](http://hmmer.org/) (>= v3.1b2)   
-    2.3. [Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)   
-      Remarks: executable must be named prodigal and not prodigal.linux  
+    2.3. [Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)        
+    &emsp;Remarks: executable must be named prodigal and not prodigal.linux  
     2.4. [SAMtools](http://www.htslib.org/) (>= v0.1.19)  
     2.5. [BAMtools](https://github.com/pezmaster31/bamtools/wiki) (>= v2.4.0)   
     2.6. [CoverM](https://github.com/wwood/CoverM)  
     2.7. [Parallel](https://www.gnu.org/software/parallel/)  
     2.8. [R](https://www.r-project.org/) (>= 3.6.0)  
-        Installing required R packages using Rscript:  
-        Copy and paste the following command into your terminal window (may require super user permissions to run):  
+        &emsp;Installing required R packages using Rscript:  
+        &emsp;Copy and paste the following command into your terminal window (may require super user permissions to run):  
   
 ```
     Rscript -e 'install.packages("diagram", repos = "http://cran.us.r-project.org")'
-```
-  
-You can follow the install instruction of each program, or you could also  
-install them via Conda and add them to your system path:  
-Link: <https://anaconda.org>
-  	  
+```    
+
+
+   &emsp;&emsp;You can follow the install instruction of each program, or you could also    
+   &emsp;&emsp;install them via Conda and add them to your system path:  
+   &emsp;&emsp;Link: <https://anaconda.org>    
+    
   
 3. METABOLIC requires the KofamKOALA hmm and METABOLIC hmm database   
   [KofamKOALA website](https://www.genome.jp/tools/kofamkoala/)
@@ -100,7 +100,7 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_2.fastq
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_2.fastq
 ```
-The paired reads are in the same line. An example file is located **HERE**.
+One should notice that the paired reads are in the same line.
 
 
 ## Result files 
