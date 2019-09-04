@@ -98,6 +98,8 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
   tar zxvf 5_genomes_test.tgz
 ```
 
+NOTE: For the Step3-7, we provide a "run_to_setup.sh" script for easily setting up dependent databases.
+
 ## Software work flow 
 
 <img src="https://github.com/ChaoLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
