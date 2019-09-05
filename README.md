@@ -170,8 +170,9 @@ One could use this to test whether you have successfully installed all the prere
 ## Instructions on running on real data
 Follow similar instructions for your real files.
 ```
-perl METABOLIC_v1.0.pl -in-gn [folder with all your genomes] -t [number of threads]
+perl METABOLIC_v1.1.pl -in-gn [folder with all your genomes] -t [number of threads]
 
 ```
-
-
+## Version updates
+v1.1 -- Sep 4, 2019 -- 
+fix the parallel problem and update the "METABOLIC_temp_and_db"
