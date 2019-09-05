@@ -34,6 +34,7 @@ Department of Bacteriology, University of Wisconsin, Madison
          use Excel::Writer::XLSX;    
          use Getopt::Long;    
          use Statistics::Descriptive;  
+         use Array::Split qw(split_by split_into);
      ```    
     2.2. [HMMER](http://hmmer.org/) (>= v3.1b2)   
     2.3. [Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)        
@@ -41,8 +42,7 @@ Department of Bacteriology, University of Wisconsin, Madison
     2.4. [SAMtools](http://www.htslib.org/) (>= v0.1.19)  
     2.5. [BAMtools](https://github.com/pezmaster31/bamtools/wiki) (>= v2.4.0)   
     2.6. [CoverM](https://github.com/wwood/CoverM)  
-    2.7. [Parallel](https://www.gnu.org/software/parallel/)  
-    2.8. [R](https://www.r-project.org/) (>= 3.6.0)  
+    2.7. [R](https://www.r-project.org/) (>= 3.6.0)  
         &emsp;Installing required R packages using Rscript:  
         &emsp;Copy and paste the following command into your terminal window (may require super user permissions to run):  
   
@@ -175,4 +175,4 @@ perl METABOLIC_v1.1.pl -in-gn [folder with all your genomes] -t [number of threa
 ```
 ## Version updates
 v1.1 -- Sep 4, 2019 -- 
-fix the parallel problem and update the "METABOLIC_temp_and_db"
+fix the parallel problem, change from hmmscan to hmmsearch, and update the "METABOLIC_temp_and_db"
