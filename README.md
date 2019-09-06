@@ -170,7 +170,8 @@ One could use this to test whether you have successfully installed all the prere
 ## Instructions on running on real data
 Follow similar instructions for your real files.
 ```
-perl METABOLIC_v1.3.pl -in-gn [folder with all your genomes] -t [number of threads] -o [METABOLIC output folder]
+
+perl your/path/to/put/METABOLIC-folder/METABOLIC_v1.3.pl -in-gn [folder with all your genomes] -t [number of threads] -o [METABOLIC output folder] -m your/path/to/put/METABOLIC-folder
 
 ```
 ## Version updates
