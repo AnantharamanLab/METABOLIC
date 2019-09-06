@@ -3,7 +3,7 @@
 
 # METABOLIC
 **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
-Version 1.0
+Version 1.3
 
 This software finds a metabolic and biogeochemical function trait profile to given genome datasets. These genome datasets can either be metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes. It also calculates the genome coverage. The information is parsed and diagrams for element cycling pathways (currently Nitrogen, Carbon, Sulfur and "other") are produced.  
 
@@ -170,7 +170,7 @@ One could use this to test whether you have successfully installed all the prere
 ## Instructions on running on real data
 Follow similar instructions for your real files.
 ```
-perl METABOLIC_v1.1.pl -in-gn [folder with all your genomes] -t [number of threads]
+perl METABOLIC_v1.3.pl -in-gn [folder with all your genomes] -t [number of threads] -o [METABOLIC output folder]
 
 ```
 ## Version updates
