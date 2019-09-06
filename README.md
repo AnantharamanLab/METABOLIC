@@ -178,3 +178,5 @@ v1.1 -- Sep 4, 2019 --
 fix the parallel problem, change from hmmscan to hmmsearch, and update the "METABOLIC_temp_and_db"    
 v1.2 -- Sep 5, 2019 --    
 fix the prodigal parallel run, change "working-dir" to "METABOLI-dir"    
+v1.3 -- Sep 5, 2019 --     
+fix the output folder problem, the perl script could be called in another place instead of the original place    
