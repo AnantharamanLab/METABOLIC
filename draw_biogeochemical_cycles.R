@@ -570,7 +570,7 @@ for (i in 1:length(files)){
   input <- read.table(files[i], sep="\t")
   name.of.genome <- as.character(files[i])
   
-  name.of.genome <- unlist(strsplit(name.of.genome, "/"))[-1]
+  name.of.genome <- tail(unlist(strsplit(name.of.genome, "/")),n=1)
   name.of.genome <- unlist(strsplit(name.of.genome, ".R_input.txt"))
 
   print(name.of.genome)
