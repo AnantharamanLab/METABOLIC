@@ -51,12 +51,12 @@ Department of Bacteriology, University of Wisconsin, Madison
 ```    
 
 
-   &emsp;&emsp;You can follow the install instruction of each program, or you could also    
+   &emsp;&emsp;You can follow the install instructions of each program, or you could also    
    &emsp;&emsp;install them via Conda and add them to your system path:  
    &emsp;&emsp;Link: <https://anaconda.org>    
     
   
-3. METABOLIC requires the KofamKOALA hmm and METABOLIC hmm database   
+3. METABOLIC requires the KofamKOALA hmm and METABOLIC hmm databases   
   [KofamKOALA website](https://www.genome.jp/tools/kofamkoala/)
   
    3.1. Download KofamKOALA hmm database files: 
@@ -98,7 +98,7 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
   tar zxvf 5_genomes_test.tgz
 ```
 
-NOTE: For the Step3-7, we provide a "run_to_setup.sh" script for easily setting up dependent databases.
+NOTE: For steps 3-7, we provide a "run_to_setup.sh" script for easily setting up dependent databases.
 
 ## Software work flow 
 
@@ -108,15 +108,15 @@ NOTE: For the Step3-7, we provide a "run_to_setup.sh" script for easily setting 
 
 ## Input Files
 
-1. The genome files should be ended with ".fasta"; The genome amino acid or protein files should be ended with ".faa". These files should be in one single folder, which you will use as argument for the option "-in-gn" in the Perl script "perl METABOLIC_v1.0.pl" (See example at end of page)
+1. The genome files should end with ".fasta"; The protein files should end with ".faa". These files should be in one single folder, which you will use as an argument for the option "-in-gn" in the Perl script "perl METABOLIC_v1.3.pl" (See example at end of page)
 
-2. The "-o" option requires inputting a text file to show the path of where the metagenomic reads are located. The metagenomics reads refer to which are/is the metagenomic datasets that you used to generate the MAGs. A sample for this txt is like:   
+2. The "-o" option requires inputting a text file to show the path of where the metagenomic reads are located. The metagenomics reads refer to the metagenomic read datasets that you used to generate the MAGs. A sample for this txt is as follows:     
 ```
 #Reads pair name with complete pathway: 
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_2.fastq
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_2.fastq
 ```
-&emsp;One should notice that the paired reads are in the same line.
+&emsp;Please notice that the paired reads are in the same line.
 
 
 ## Result files  
@@ -131,7 +131,7 @@ After running the whole program (perl script) you will obtain the following file
 
 
 
-- **Element cycling pathways for each genome and a summary scheme (Both files and figures)**
+- **Elemental/Biogeochemical cycling pathways for each genome and a summary scheme (Both files and figures)**
 
 In the designated R output folder named "R_ouput", you will have the following files for EACH MAG:
 ```
@@ -154,20 +154,18 @@ You could also run the Rscript separately. Once you have the "R_input" folders, 
 RScript draw_biogeochemical_cycles.R R_input R_Output TRUE
 
 ```
-The first argument is the name of the folder with your inputs (in this case "R_input_files"). This is where your files that end wiith "...R_input.txt" and your "Total.R_input.txt" files is. **Note!: There is no forward slash after the folder name**
+The first argument is the name of the folder with your inputs (in this case "R_input_files"). This is where your files that end with "...R_input.txt" and your "Total.R_input.txt" files are. **Note!: There is no forward slash after the folder name**
 
 The second argument is the the name of the output folder where your images will be saved. The folder does not have to exist already (e.i. no need to mkdir first). **Note!: Once again there is no forward slash after the folder name**
 
-The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that links to mapped reads where used in the beginning, and you have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).
+The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that you have inputted mapped reads in the beginning, and you will have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).
 
 ## Instructions on running test files
 
-The test files are given in the folder "5_genomes_test.tgz", which includes the input five genome files and the running results.  
-The running command is given as "perl METABOLIC_v1.0.pl -in-gn Genome_files -t 60", which means that you run METABOLIC for genomes contained in the folder "Genome_files" with 60 threads. The others settings are kept as default settings.    
+The test files are given in the folder "5_genomes_test.tgz", which includes the input five genome files and the running results.     
+One could use this to test whether you have successfully installed all the prerequisites in a proper way.   
 
-One could use this to test whether you have successfully installed all the prerequisites in a proper way.
-
-## Instructions on running on real data
+## Instructions on running real data
 Follow similar instructions for your real files.
 ```
 
