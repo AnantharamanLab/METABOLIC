@@ -1,7 +1,7 @@
 tar zxvf Accessory_scripts.tgz
 tar zxvf METABOLIC_hmm_db.tgz
 tar zxvf METABOLIC_temp_and_db.tgz
-tar zxvf Motif.tgz.tgz
+tar zxvf Motif.tgz
 mkdir kofam_database  
 cd kofam_database  
 wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz  
