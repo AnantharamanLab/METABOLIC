@@ -17,7 +17,7 @@
 userprefs <- commandArgs(trailingOnly = TRUE)
 R_input <- userprefs[1] # Path to folder with all the summary files R_input.txt
 plots.folder.path <- userprefs[2] # Name of new directory to make to store things
-summary <- userprefs[3]
+summary <- userprefs[3] # Value: TRUE or FALSE, whether you have the Total.R_input.txt file or not in the R_input folder.
 
 if (length(userprefs) > 3){
   mirror.location <- userprefs[4]
@@ -570,7 +570,7 @@ for (i in 1:length(files)){
   input <- read.table(files[i], sep="\t")
   name.of.genome <- as.character(files[i])
   
-  name.of.genome <- unlist(strsplit(name.of.genome, "/"))[-1]
+  name.of.genome <- tail(unlist(strsplit(name.of.genome, "/")),n=1)
   name.of.genome <- unlist(strsplit(name.of.genome, ".R_input.txt"))
 
   print(name.of.genome)
