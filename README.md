@@ -154,9 +154,11 @@ You could also run the Rscript separately. Once you have the "R_input" folders, 
 RScript draw_biogeochemical_cycles.R R_input R_Output TRUE
 
 ```
-The first argument is the name of the folder with your inputs (in this case "R_input_files"). This is where your files that end with "...R_input.txt" and your "Total.R_input.txt" files are. **Note!: There is no forward slash after the folder name**
+The draw_biogeochemical_cycles.R command can be given as a relative paths or full path. 
 
-The second argument is the the name of the output folder where your images will be saved. The folder does not have to exist already (e.i. no need to mkdir first). **Note!: Once again there is no forward slash after the folder name**
+The first argument is the name of the folder with your inputs (in this case "R_input_files"). This is where your files that end with "...R_input.txt" and your "Total.R_input.txt" files are. **Note!: There is no forward slash after the folder name**. You can use full paths or relative paths to the input folder.
+
+The second argument is the the name of the output folder where your images will be saved. The folder does not have to exist already (i.e. no need to mkdir first). **Note!: Once again there is no forward slash after the folder name**
 
 The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that you have inputted mapped reads in the beginning, and you will have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).
 
