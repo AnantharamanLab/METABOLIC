@@ -135,6 +135,9 @@ GetOptions(
 
 ##Main Body
 #The present time
+
+`mkdir $output`;
+
 my $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 
 #Store the hmm table template
@@ -221,7 +224,7 @@ if ($input_genome_folder){
 	close IN;
 	`rm $output/tmp_run_annotate.sh.2`;
 
-	my @arrayrefs2 = split_by($cpu_numbers,@Runs); 
+	my @arrayrefs2 = split_by($cpu_numbers,@Runs2); 
 
 	foreach my $key (@arrayrefs2){
 		my $cmd; # to store the bash cmd
@@ -984,13 +987,13 @@ sub _get_Genome_coverge{
 	}
 	close __IN;
 	
-	open __OUT, ">All_gene_collections.gene";
+	open __OUT, ">$output/All_gene_collections.gene";
 	foreach my $key (sort keys %Seq){
 		print __OUT "$key\n$Seq{$key}\n";
 	}
 	close __OUT;
 	
-	system ("bowtie2-build All_gene_collections.gene All_gene_collections.gene.scaffold --quiet");
+	system ("bowtie2-build $output/All_gene_collections.gene $output/All_gene_collections.gene.scaffold --quiet");
 	my %Reads = ();
 	open __IN, "$reads";
 	while (<__IN>){
@@ -1008,19 +1011,19 @@ sub _get_Genome_coverge{
 	}
 	my $reads1 = join(',',@Reads1);
 	my $reads2 = join(',',@Reads2);
-	system("bowtie2 -x All_gene_collections.gene.scaffold -1 $reads1 -2 $reads2 -S All_gene_collections_mapped.sam -p $cpu_numbers --quiet");
-	system("samtools view -bS All_gene_collections_mapped.sam > All_gene_collections_mapped.bam -@ $cpu_numbers 2> /dev/null");
-	system("bamtools sort -in All_gene_collections_mapped.bam -out All_gene_collections_mapped.sorted.bam -mem 500 > /dev/null");
-	system("samtools index All_gene_collections_mapped.sorted.bam > /dev/null");
-	system("samtools flagstat All_gene_collections_mapped.sorted.bam > All_gene_collections_mapped.sorted.stat 2> /dev/null");
-	system("rm All_gene_collections_mapped.sam All_gene_collections_mapped.bam ");
-	system ("coverm contig --methods metabat --bam-files  All_gene_collections_mapped.sorted.bam > All_gene_collections_mapped.depth.txt 2> /dev/null");
+	system("bowtie2 -x $output/All_gene_collections.gene.scaffold -1 $reads1 -2 $reads2 -S $output/All_gene_collections_mapped.sam -p $cpu_numbers --quiet");
+	system("samtools view -bS $output/All_gene_collections_mapped.sam > $output/All_gene_collections_mapped.bam -@ $cpu_numbers 2> /dev/null");
+	system("bamtools sort -in $output/All_gene_collections_mapped.bam -out $output/All_gene_collections_mapped.sorted.bam -mem 500 > /dev/null");
+	system("samtools index $output/All_gene_collections_mapped.sorted.bam > /dev/null");
+	system("samtools flagstat $output/All_gene_collections_mapped.sorted.bam > $output/All_gene_collections_mapped.sorted.stat 2> /dev/null");
+	system("rm $output/All_gene_collections_mapped.sam $output/All_gene_collections_mapped.bam ");
+	system ("coverm contig --methods metabat --bam-files  $output/All_gene_collections_mapped.sorted.bam > $output/All_gene_collections_mapped.depth.txt 2> /dev/null");
 	
 	my %h = (); # bam => bin => all gene coverage values
 	my @h_head = ();  
 	my @h_head_num = (); 
 	my %Bin = ();
-	open __IN, "All_gene_collections_mapped.depth.txt";
+	open __IN, "$output/All_gene_collections_mapped.depth.txt";
 	while (<__IN>){
         chomp;
         if (/^contigName/){
@@ -1044,7 +1047,7 @@ sub _get_Genome_coverge{
         }
 	}
 	close __IN;
-	system ("rm All_gene_collections_mapped.depth.txt");
+	system ("rm $output/All_gene_collections_mapped.depth.txt");
 	
 	my %Bin2Cov = (); #bin => cov value
 	my $total_cov = 0;
@@ -1065,7 +1068,7 @@ sub _get_Genome_coverge{
 		my $percentage = $Bin2Cov{$bin} / $total_cov;
 		$Bin2cov_percentage{$bin} = $percentage;
 	}
-	system ("rm All_gene_collections*");
+	system ("rm $output/All_gene_collections*");
 	return %Bin2cov_percentage;
 }
 
