@@ -12,8 +12,13 @@ Zhichao Zhou, zczhou2017@gmail.com
 Patricia Tran, ptran5@wisc.edu  
 Karthik Anantharaman, karthik@bact.wisc.edu  
 Anantharaman Microbiome Laboratory  
-Department of Bacteriology, University of Wisconsin, Madison  
+Department of Bacteriology, University of Wisconsin, Madison 
 
+Please cite our preprint for the time being:
+
+```
+Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman A. "METABOLIC: A scalable high-throughput metabolic and biogeochemical functional trait profiler based on microbial genomes". bioXriv doi: https://doi.org/10.1101/761643 
+```
 
 ## Installation instruction
 
