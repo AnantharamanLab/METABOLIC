@@ -14,8 +14,12 @@ Karthik Anantharaman, karthik@bact.wisc.edu
 Anantharaman Microbiome Laboratory  
 Department of Bacteriology, University of Wisconsin, Madison  
 
+If you are using this program, please consider citing our preprint, available on [BioRxiv](https://www.biorxiv.org/content/10.1101/761643v1)
+```
+    Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman K. "METABOLIC: A scalable high-throughput metabolic and biogeochemical functional trait profiler based on microbial genomes" (2019). BioRxiv doi: https://doi.org/10.1101/761643
+```
 
-## Installation instruction
+## Installation instructions
 
 1. Go to where you want the program to be and clone the github repository or click the green buttom "download ZIP" folder, and unzip. The perl and R scripts and dependent databases should be kept in the same directory.
 
@@ -54,7 +58,8 @@ Department of Bacteriology, University of Wisconsin, Madison
    &emsp;&emsp;You can follow the install instructions of each program, or you could also    
    &emsp;&emsp;install them via Conda and add them to your system path:  
    &emsp;&emsp;Link: <https://anaconda.org>    
-    
+   
+*NOTE: For steps 3-7, we provide a "run_to_setup.sh" script for easily setting up dependent databases.*
   
 3. METABOLIC requires the KofamKOALA hmm and METABOLIC hmm databases   
   [KofamKOALA website](https://www.genome.jp/tools/kofamkoala/)
@@ -98,7 +103,7 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
   tar zxvf 5_genomes_test.tgz
 ```
 
-NOTE: For steps 3-7, we provide a "run_to_setup.sh" script for easily setting up dependent databases.
+
 
 ## Software work flow 
 
@@ -110,7 +115,7 @@ NOTE: For steps 3-7, we provide a "run_to_setup.sh" script for easily setting up
 
 1. The genome files should end with ".fasta"; The protein files should end with ".faa". These files should be in one single folder, which you will use as an argument for the option "-in-gn" in the Perl script "perl METABOLIC_v1.3.pl" (See example at end of page)
 
-2. The "-o" option requires inputting a text file to show the path of where the metagenomic reads are located. The metagenomics reads refer to the metagenomic read datasets that you used to generate the MAGs. A sample for this txt is as follows:     
+2. The "-o" or "-r" option requires inputting a text file to show the path of where the metagenomic reads are located. The metagenomics reads refer to the metagenomic read datasets that you used to generate the MAGs. A sample for this txt is as follows:     
 ```
 #Reads pair name with complete pathway: 
 /slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_2.fastq
@@ -125,6 +130,14 @@ After running the whole program (perl script) you will obtain the following file
 
 - **METABOLIC result table**
 
+This spreadsheet has four tabs:
+
+    - "HMMHitNum" = Number of HMM hits. if you scroll to the right with the coloured cells you'll find the presence/absence, the number of hits, and on which scaffold it was on. 
+    - "FunctionHit" = hits to custom HMM curated database. 
+    - "KEGGModuleHit" = KEGG module hits with modules and modules category names. 
+    - "KEGGModuleStepHit" = similar to the previous one but broken down into smaller categories (steps). 
+
+In all cases if you scroll down you will see what "Gn00X" colnames refer to (they are based on your fasta file names for the genomes you gave. 
 
 
 - **Each hmm hit protein collection** 
