@@ -24,7 +24,7 @@ If you are using this program, please consider citing our preprint, available on
 1. Go to where you want the program to be and clone the github repository or click the green buttom "download ZIP" folder, and unzip. The perl and R scripts and dependent databases should be kept in the same directory.
 
 ```
-    git-clone https://github.com/ChaoLab/METABOLIC.git
+    git-clone https://github.com/AnantharamanLab/METABOLIC.git
 ```
 
 2. METABOLIC requires the following programs to be added to your system path:  
