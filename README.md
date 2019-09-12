@@ -40,6 +40,10 @@ Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman A. "METABOLIC: A scalable high-thro
          use Getopt::Long;    
          use Statistics::Descriptive;  
          use Array::Split qw(split_by split_into);
+         use Bio::SeqIO;
+         use Bio::Perl;
+         use Bio::Tools::CodonTable;
+         use Carp;
      ```    
     2.2. [HMMER](http://hmmer.org/) (>= v3.1b2)   
     2.3. [Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)        
