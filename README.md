@@ -146,13 +146,14 @@ In all cases if you scroll down you will see what "Gn00X" colnames refer to (the
 
 - **Elemental/Biogeochemical cycling pathways for each genome and a summary scheme (Both files and figures)**
 
-In the designated R output folder named "R_ouput", you will have the following files for EACH MAG:
+In the designated R output folder named "R_ouput", you will have the following files for EACH MAG: 
 ```
   GenomeName.draw_sulfur_cycle_single.PDF
   GenomeName.draw_nitrogen_cycle_single.PDF
   GenomeName.draw_other_cycle_single.PDF
   GenomeName.draw_carbon_cycle_single.PDF
 ```
+A red arrow means present, and a black arrow means absent.
 
 If you input a "metagenomic reads" txt file, the software will help to calculate the gene abundance, then you will have have the following output as the summary diagram of pathways at a community scale:
 ```
