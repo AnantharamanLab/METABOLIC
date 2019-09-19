@@ -164,12 +164,12 @@ drawNcycle.total <- function(R_input, OutputFolder){
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[16],"%"))) 
   textplain(mid = c(0.55, 0.65), 
             lab = c("Step9: Anammox",
-                    paste("Genomes:",input.total$Nb.Genome[17]),
-                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[17],"%"))) 
+                    paste("Genomes:",input.total$Nb.Genome[18]),
+                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[18],"%"))) 
   textplain(mid = c(0.47, 0.35), 
             lab = c("Step8: Nitrite ammonification",
-                    paste("Genomes:",input.total$Nb.Genome[18]),
-                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[18],"%")))
+                    paste("Genomes:",input.total$Nb.Genome[17]),
+                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[17],"%")))
   
   #Once the plot is done, export it:
   dev.off()
