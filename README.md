@@ -18,12 +18,6 @@ Department of Bacteriology, University of Wisconsin, Madison
 If you are using this program, please consider citing our preprint, available on [BioRxiv](https://www.biorxiv.org/content/10.1101/761643v1)
 ```
     Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman K. "METABOLIC: A scalable high-throughput metabolic and biogeochemical functional trait profiler based on microbial genomes" (2019). BioRxiv doi: https://doi.org/10.1101/761643
-
-Please cite our preprint for the time being:
-
-```
-Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman A. "METABOLIC: A scalable high-throughput metabolic and biogeochemical functional trait profiler based on microbial genomes". bioXriv doi: https://doi.org/10.1101/761643 
-
 ```
 
 ## Installation instructions
