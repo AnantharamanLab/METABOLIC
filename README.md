@@ -170,7 +170,7 @@ If you input a "metagenomic reads" txt file, the software will help to calculate
 
 You could also run the Rscript separately. Once you have the "R_input" folders, use it as input to visualize your results in the R script
 ```
-RScript draw_biogeochemical_cycles.R R_input R_Output TRUE
+Rscript draw_biogeochemical_cycles.R R_input R_Output TRUE
 
 ```
 The draw_biogeochemical_cycles.R command can be given as a relative paths or full path. 
@@ -199,4 +199,5 @@ fix the parallel problem, change from hmmscan to hmmsearch, and update the "META
 v1.2 -- Sep 5, 2019 --    
 fix the prodigal parallel run, change "working-dir" to "METABOLIC-dir"    
 v1.3 -- Sep 5, 2019 --     
-fix the output folder problem, the perl script could be called in another place instead of the original place    
+fix the output folder problem, the perl script could be called in another place instead of the original place  
+
