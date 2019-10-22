@@ -64,7 +64,7 @@ If you are using this program, please consider citing our preprint, available on
    &emsp;&emsp;install them via Conda and add them to your system path:  
    &emsp;&emsp;Link: <https://anaconda.org>    
    
-*NOTE: For steps 3-7, we provide a "run_to_setup.sh" script for easily setting up dependent databases.*
+*NOTE: For steps 3-9, we provide a "run_to_setup.sh" script for easily setting up dependent databases.*
   
 3. METABOLIC requires the KofamKOALA hmm and METABOLIC hmm databases   
   [KofamKOALA website](https://www.genome.jp/tools/kofamkoala/)
