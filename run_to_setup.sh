@@ -12,3 +12,14 @@ cd profiles
 cp ../../Accessory_scripts/batch_hmmpress.pl ./  
 perl batch_hmmpress.pl
 cd ../
+mkdir dbCAN2
+cd dbCAN2
+wget http://bcb.unl.edu/dbCAN2/download/Databases/dbCAN-old@UGA/dbCAN-fam-HMMs.txt
+perl ../Accessory_scripts/batch_hmmpress_for_dbCAN2_HMMdb.pl
+cd ../
+mkdir MEROPS
+cd MEROPS
+wget ftp://ftp.ebi.ac.uk/pub/databases/merops/current_release/pepunit.lib
+perl ../Accessory_scripts/make_pepunit_db.pl
+cd ../
+tar zxvf 5_genomes_test.tgz
