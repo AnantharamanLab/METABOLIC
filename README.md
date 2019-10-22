@@ -103,7 +103,23 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
 ```
   tar zxvf Motif.tgz
 ```
-7. Finally, this software also contains "5_genomes_test.tgz", which needs to be decompressed before use. This is a set of 5 genomes that you can use to test run the program to see if it works correctly before running your real samples. (see end of page)
+7. You will download the most recent dbCAN-fam-HMMs.txt into a directory (that is made by you) “dbCAN2”. And parse the dbCAN-HMMdb.txt by "batch_hmmpress_for_dbCAN2_HMMdb.pl".    
+```
+  mkdir dbCAN2
+  cd dbCAN2
+  wget http://bcb.unl.edu/dbCAN2/download/Databases/dbCAN-old@UGA/dbCAN-fam-HMMs.txt
+  perl ../Accessory_scripts/batch_hmmpress_for_dbCAN2_HMMdb.pl
+  cd ../
+```
+8. You will download the MEROPS Peptidase Protein Sequences (https://www.ebi.ac.uk/merops/download_list.shtml, No. 3 option). And parse the pepunit.lib by DIAMOND to make the BLASTP database.      
+```
+  mkdir MEROPS
+  cd MEROPS
+  wget ftp://ftp.ebi.ac.uk/pub/databases/merops/current_release/pepunit.lib
+  perl ../Accessory_scripts/make_pepunit_db.pl
+  cd ../
+```
+9. Finally, this software also contains "5_genomes_test.tgz", which needs to be decompressed before use. This is a set of 5 genomes that you can use to test run the program to see if it works correctly before running your real samples. (see end of page)
 ```
   tar zxvf 5_genomes_test.tgz
 ```
