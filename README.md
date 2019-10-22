@@ -48,7 +48,7 @@ If you are using this program, please consider citing our preprint, available on
     2.2. [HMMER](http://hmmer.org/) (>= v3.1b2)   
     2.3. [Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)        
     &emsp;Remarks: executable must be named prodigal and not prodigal.linux  
-    2.4. [SAMtools](http://www.htslib.org/) (>= v0.1.19)  
+    2.4. [Sambamba](https://github.com/biod/sambamba) (>= v0.7.0)  
     2.5. [BAMtools](https://github.com/pezmaster31/bamtools/wiki) (>= v2.4.0)   
     2.6. [CoverM](https://github.com/wwood/CoverM)  
     2.7. [R](https://www.r-project.org/) (>= 3.6.0)  
