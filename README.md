@@ -160,12 +160,15 @@ After running the whole program (perl script) you will obtain the following file
 
 - **METABOLIC result table**
 
-This spreadsheet has four tabs:
+This spreadsheet has 7 tabs:
 
     - "HMMHitNum" = Number of HMM hits. if you scroll to the right with the coloured cells you'll find the presence/absence, the number of hits, and on which scaffold it was on. 
     - "FunctionHit" = hits to custom HMM curated database. 
     - "KEGGModuleHit" = KEGG module hits with modules and modules category names. 
-    - "KEGGModuleStepHit" = similar to the previous one but broken down into smaller categories (steps). 
+    - "KEGGModuleStepHit" = similar to the previous one but broken down into smaller categories (steps).    
+	- "KEGGidentifierHit" = the KEGG identifier searching result - KEGG identifier numbers and hits.    
+	- "dbCAN2Hit" = the dbCAN2 searching result - the CAZys numbers and hits.    
+	- "MEROPSHit" = the MEROPS peptidase searching result - the MEROPS peptidase numbers and hits.    
 
 In all cases if you scroll down you will see what "Gn00X" colnames refer to (they are based on your fasta file names for the genomes you gave. 
 
@@ -204,7 +207,14 @@ The first argument is the name of the folder with your inputs (in this case "R_i
 
 The second argument is the the name of the output folder where your images will be saved. The folder does not have to exist already (i.e. no need to mkdir first). **Note!: Once again there is no forward slash after the folder name**
 
-The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that you have inputted mapped reads in the beginning, and you will have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).
+The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that you have inputted mapped reads in the beginning, and you will have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).    
+The "Sequential transformation digram" and "Metabolic network digram" will be generated accordingly, including both the input txt files and the resulted Rscript-generated diagrams    
+```
+For Sequential transformation digram, We have summarized and visualized the genome number and genome coverage (relative abundance of microorganism) of the microorganisms that were putatively involved in the sequential transformation of both important inorganic elements and organic compounds    
+For Metabolic network digram, a Sankey diagram will be generated, representing the function fractions that are contributed by various microbial groups in a given community 
+
+```
+
 
 ## Instructions on running test files
 
