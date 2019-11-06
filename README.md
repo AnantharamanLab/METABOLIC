@@ -209,6 +209,8 @@ The second argument is the the name of the output folder where your images will 
 
 The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that you have inputted mapped reads in the beginning, and you will have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).    
 
+- **Community level digrams: Sequential transformation and Metabolic network**
+
 The "Sequential transformation digram" and "Metabolic network digram" will be generated accordingly, including both the input txt files and the resulted Rscript-generated diagrams    
 ```
 For Sequential transformation digram, We have summarized and visualized the genome number and genome coverage (relative abundance of microorganism) of the microorganisms that were putatively involved in the sequential transformation of both important inorganic elements and organic compounds.    
