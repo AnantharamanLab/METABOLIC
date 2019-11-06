@@ -56,8 +56,8 @@ If you are using this program, please consider citing our preprint, available on
         &emsp;Copy and paste the following command into your terminal window (may require super user permissions to run):  
   
 ```
-    Rscript -e 'install.packages("diagram", repos = "http://cran.us.r-project.org")'   
-	Rscript -e 'install.packages("tidyverse", repos = "http://cran.us.r-project.org")'   
+    Rscript -e 'install.packages("diagram", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("tidyverse", repos = "http://cran.us.r-project.org")'    
 ```    
 
 
