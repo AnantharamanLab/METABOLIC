@@ -66,6 +66,7 @@ If you are using this program, please consider citing our preprint, available on
     Rscript -e 'install.packages("stringi", repos = "http://cran.us.r-project.org")'    
     Rscript -e 'install.packages("ggthemes", repos = "http://cran.us.r-project.org")'    
     Rscript -e 'install.packages("ggalluvial", repos = "http://cran.us.r-project.org")'    
+	Rscript -e 'install.packages("reshape2", repos = "http://cran.us.r-project.org")'    
 ```    
 
 
