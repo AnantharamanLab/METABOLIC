@@ -240,4 +240,6 @@ v1.2 -- Sep 5, 2019 --
 fix the prodigal parallel run, change "working-dir" to "METABOLIC-dir"    
 v1.3 -- Sep 5, 2019 --     
 fix the output folder problem, the perl script could be called in another place instead of the original place  
+v2.0 -- Nov 5, 2019 --     
+add more functions on visualization, add more annotations, make the software faster
 
