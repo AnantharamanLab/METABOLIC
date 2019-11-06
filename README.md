@@ -1,4 +1,4 @@
-<img src="https://github.com/ChaoLab/METABOLIC/blob/master/METABOLIC.jpg" width="85%">
+<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC.jpg" width="85%">
 
 
 # METABOLIC
@@ -137,7 +137,7 @@ Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" a
 
 ## Software work flow 
 
-<img src="https://github.com/ChaoLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
+<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
 
 ## Preparing your files:
 
