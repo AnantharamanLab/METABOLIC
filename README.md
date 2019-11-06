@@ -208,11 +208,14 @@ The first argument is the name of the folder with your inputs (in this case "R_i
 The second argument is the the name of the output folder where your images will be saved. The folder does not have to exist already (i.e. no need to mkdir first). **Note!: Once again there is no forward slash after the folder name**
 
 The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that you have inputted mapped reads in the beginning, and you will have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).    
+
 The "Sequential transformation digram" and "Metabolic network digram" will be generated accordingly, including both the input txt files and the resulted Rscript-generated diagrams    
 ```
-For Sequential transformation digram, We have summarized and visualized the genome number and genome coverage (relative abundance of microorganism) of the microorganisms that were putatively involved in the sequential transformation of both important inorganic elements and organic compounds    
-For Metabolic network digram, a Sankey diagram will be generated, representing the function fractions that are contributed by various microbial groups in a given community 
+For Sequential transformation digram, We have summarized and visualized the genome number and genome coverage (relative abundance of microorganism) of the microorganisms that were putatively involved in the sequential transformation of both important inorganic elements and organic compounds.    
+The resulted file is "Sequential_transformation_01.pdf" and "Sequential_transformation_02.pdf".        
 
+For Metabolic network digram, a Sankey diagram will be generated, representing the function fractions that are contributed by various microbial groups in a given community.    
+The resulted file is "Metabolic_network.pdf".
 ```
 
 
