@@ -57,7 +57,15 @@ If you are using this program, please consider citing our preprint, available on
   
 ```
     Rscript -e 'install.packages("diagram", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("forcats", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("digest", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("htmltools", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("rmarkdown", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("reprex", repos = "http://cran.us.r-project.org")'    
     Rscript -e 'install.packages("tidyverse", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("stringi", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("ggthemes", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("ggalluvial", repos = "http://cran.us.r-project.org")'    
 ```    
 
 
