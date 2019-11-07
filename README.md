@@ -229,6 +229,7 @@ One could use this to test whether you have successfully installed all the prere
 
 ## Instructions on running real data
 Follow similar instructions for your real files.     
+ 
 <img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC-G.jpg" width="30%">  
 
 METABOLIC-G.pl is specifically for users who do not have metagenomic reads and only want to get metabolic profiles and biogeochemical cycling diagram of input genomes.
