@@ -229,7 +229,7 @@ One could use this to test whether you have successfully installed all the prere
 
 ## Instructions on running real data
 Follow similar instructions for your real files. 
-<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC-G.jpg" width="70%">  
+<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC-G.jpg" width="30%">  
 
 METABOLIC-G.pl is specifically for users who do not have metagenomic reads and only want to get metabolic profiles and biogeochemical cycling diagram of input genomes.
 ```
@@ -237,7 +237,7 @@ METABOLIC-G.pl is specifically for users who do not have metagenomic reads and o
 perl your/path/to/put/METABOLIC-folder/METABOLIC-G.pl -in-gn [folder with all your genomes] -t [number of threads] -o [METABOLIC output folder] -m your/path/to/put/METABOLIC-folder
 
 ```
-<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC-C.jpg" width="70%">  
+<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC-C.jpg" width="30%">  
 
 METABOLIC-C.pl is specifically for users who have metagenomic reads and want to include them in the community analysis. 
 ```
