@@ -66,7 +66,7 @@ If you are using this program, please consider citing our preprint, available on
     Rscript -e 'install.packages("stringi", repos = "http://cran.us.r-project.org")'    
     Rscript -e 'install.packages("ggthemes", repos = "http://cran.us.r-project.org")'    
     Rscript -e 'install.packages("ggalluvial", repos = "http://cran.us.r-project.org")'    
-	Rscript -e 'install.packages("reshape2", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("reshape2", repos = "http://cran.us.r-project.org")'    
 ```    
 
 
@@ -228,10 +228,21 @@ The test files are given in the folder "5_genomes_test.tgz", which includes the 
 One could use this to test whether you have successfully installed all the prerequisites in a proper way.   
 
 ## Instructions on running real data
-Follow similar instructions for your real files.
+Follow similar instructions for your real files. 
+<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC-G.jpg" width="70%">  
+
+METABOLIC-G.pl is specifically for users who do not have metagenomic reads and only want to get metabolic profiles and biogeochemical cycling diagram of input genomes.
 ```
 
-perl your/path/to/put/METABOLIC-folder/METABOLIC_v1.3.pl -in-gn [folder with all your genomes] -t [number of threads] -o [METABOLIC output folder] -m your/path/to/put/METABOLIC-folder
+perl your/path/to/put/METABOLIC-folder/METABOLIC-G.pl -in-gn [folder with all your genomes] -t [number of threads] -o [METABOLIC output folder] -m your/path/to/put/METABOLIC-folder
+
+```
+<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC-C.jpg" width="70%">  
+
+METABOLIC-C.pl is specifically for users who have metagenomic reads and want to include them in the community analysis. 
+```
+
+perl your/path/to/put/METABOLIC-folder/METABOLIC-C.pl -in-gn [folder with all your genomes] -t [number of threads] -o [METABOLIC output folder] -m your/path/to/put/METABOLIC-folder -r [omic reads parameter file]
 
 ```
 ## Version updates
