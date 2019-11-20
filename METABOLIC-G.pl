@@ -903,7 +903,7 @@ while (<IN>){
 	chomp;
 	my $file = $_;
 	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/;
-	print OUT "diamond blastp -d $METABOLIC_dir/MEROPS/pepunit.db -q $file -o $output/intermediate_files/$gn_id.MEROPSout.m8 -k 1 -e 1e-10 --query-cover 80 --id 50 --quiet\n";
+	print OUT "diamond blastp -d $METABOLIC_dir/MEROPS/pepunit.db -q $file -o $output/intermediate_files/$gn_id.MEROPSout.m8 -k 1 -e 1e-10 --query-cover 80 --id 50 --quiet > /dev/null\n";
 }
 close IN;
 close OUT;
