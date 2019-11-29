@@ -341,7 +341,7 @@ my $worksheet1 = $hmm_result->add_worksheet("HMMHitNum"); #$worksheet1 indicates
 my $worksheet2 = $hmm_result->add_worksheet("FunctionHit"); #$worksheet2 indicates the hmm result - Function presence 
 my $worksheet3 = $hmm_result->add_worksheet("KEGGModuleHit"); #$worksheet3 indicates the hmm result - module presence 
 my $worksheet4 = $hmm_result->add_worksheet("KEGGModuleStepHit"); #$worksheet4 indicates the hmm result - module step presence 
-my $worksheet5 = $hmm_result->add_worksheet("KEGGidentifierHit"); #$worksheet5 indicates the KEGG identifier searching result - KEGG identifier numbers and hits
+#my $worksheet5 = $hmm_result->add_worksheet("KEGGidentifierHit"); #$worksheet5 indicates the KEGG identifier searching result - KEGG identifier numbers and hits
 my $worksheet6 = $hmm_result->add_worksheet("dbCAN2Hit"); #$worksheet6 indicates the dbCAN2 searching result - the CAZys numbers and hits 
 my $worksheet7 = $hmm_result->add_worksheet("MEROPSHit"); #$worksheet7 indicates the MEROPS peptidase searching result - the MEROPS peptidase numbers and hits 
  
@@ -468,7 +468,7 @@ foreach my $line_no (sort keys %Hmm_table_temp_2){
 	my $line_no_4_table_1 = $tmp_table_2[1];
 	
 	if ($line_no_4_table_1 !~ /\|\|/){
-		my @tmp_table_1 = split(/\t/,$Hmm_table_temp{$line_no});
+		my @tmp_table_1 = split(/\t/,$Hmm_table_temp{$line_no_4_table_1});
 		my $hmm = $tmp_table_1[5];	
 		foreach my $gn_id (sort keys %Genome_id_new){
 			my $hmm_presence = "Absent";
@@ -761,7 +761,7 @@ print "\[$datestring\] The KEGG identifier \(KO id\) result is calculating...\n"
 #my %Hmmscan_hits = (); # genome_name => hmm => hits
 my %Hmmscan_result_for_KO = ();  # new gn id => KO => numbers
 my %Hmmscan_hits_for_KO = (); # new gn id => KO => hits
-my %New_hmmid = ();
+my %New_hmmid = (); #KOs (without extension) => 1
 
 foreach my $genome_name (sort keys %Hmmscan_result){
 	my $gn = $Genome_id_new{$genome_name}; 
@@ -782,31 +782,25 @@ foreach my $genome_name (sort keys %Hmmscan_result){
 	}
 }
 
-#pre-set the coordinates
-my $col5 = 0; my $row5 = 0; # for worksheet5
-
-#write the head of hmm result to worksheet5
-$worksheet5->write(0, 0, "KEGG identifier", $format_head);
-$col5 = 1;
+`mkdir $output/KEGG_identifier_result`;
 foreach my $gn_id (sort keys %Genome_id_new){
-	$worksheet5->write($row5, ($col5++), "$Genome_id_new{$gn_id} Hit numbers", $format_head);
-	$worksheet5->write($row5, ($col5++), "$Genome_id_new{$gn_id} Hit", $format_head);
-}
-
-#write the body of worksheet5
-$col5 = 0; $row5 = 1; # for worksheet5
-foreach my $hmmid (sort keys %New_hmmid){
-	$worksheet5->write($row5, ($col5++), $hmmid , $format_mainbody);
-	foreach my $gn_id (sort keys %Genome_id_new){
+	open OUT1, ">$output/KEGG_identifier_result/$gn_id.result.txt";
+	open OUT2, ">$output/KEGG_identifier_result/$gn_id.hits.txt";
+	foreach my $hmmid (sort keys %New_hmmid){	
 		my $new_gn_id = $Genome_id_new{$gn_id};
-		$worksheet5->write($row5, ($col5++), $Hmmscan_result_for_KO{$new_gn_id}{$hmmid}, $format_mainbody);	
-		my $hits;
+		my $result = "";
+		if ($Hmmscan_result_for_KO{$new_gn_id}{$hmmid}){
+			$result = $Hmmscan_result_for_KO{$new_gn_id}{$hmmid}; 
+		}
+		print OUT1 "$hmmid\t$result\n";
+		my $hits = "";
 		if ($Hmmscan_hits_for_KO{$new_gn_id}{$hmmid}){
 			$hits = $Hmmscan_hits_for_KO{$new_gn_id}{$hmmid}; 
 		}
-		$worksheet5->write($row5, ($col5++), $hits, $format_mainbody);
+		print OUT2 "$hmmid\t$hits\n";
 	}
-	$col5 = 0; $row5++;
+	close OUT1;
+	close OUT2;
 }
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
@@ -903,7 +897,7 @@ while (<IN>){
 	chomp;
 	my $file = $_;
 	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/;
-	print OUT "diamond blastp -d $METABOLIC_dir/MEROPS/pepunit.db -q $file -o $output/intermediate_files/$gn_id.MEROPSout.m8 -k 1 -e 1e-10 --query-cover 80 --id 50 --quiet > /dev/null\n";
+	print OUT "diamond blastp -d $METABOLIC_dir/MEROPS/pepunit.db -q $file -o $output/intermediate_files/$gn_id.MEROPSout.m8 -k 1 -e 1e-10 --query-cover 80 --id 50 --quiet -p 1  > /dev/null\n";
 }
 close IN;
 close OUT;

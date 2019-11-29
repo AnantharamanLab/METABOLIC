@@ -67,6 +67,7 @@ If you are using this program, please consider citing our preprint, available on
     Rscript -e 'install.packages("ggthemes", repos = "http://cran.us.r-project.org")'    
     Rscript -e 'install.packages("ggalluvial", repos = "http://cran.us.r-project.org")'    
     Rscript -e 'install.packages("reshape2", repos = "http://cran.us.r-project.org")'    
+	Rscript -e 'install.packages("ggraph", repos = "http://cran.us.r-project.org")'    
 ```    
 
 
@@ -161,13 +162,12 @@ After running the whole program (perl script) you will obtain the following file
 
 - **METABOLIC result table**
 
-This spreadsheet has 7 tabs:
+This spreadsheet has 6 tabs:
 
     - "HMMHitNum" = Number of HMM hits. if you scroll to the right with the coloured cells you'll find the presence/absence, the number of hits, and on which scaffold it was on. 
     - "FunctionHit" = hits to custom HMM curated database. 
     - "KEGGModuleHit" = KEGG module hits with modules and modules category names. 
     - "KEGGModuleStepHit" = similar to the previous one but broken down into smaller categories (steps).    
-	- "KEGGidentifierHit" = the KEGG identifier searching result - KEGG identifier numbers and hits.    
 	- "dbCAN2Hit" = the dbCAN2 searching result - the CAZys numbers and hits.    
 	- "MEROPSHit" = the MEROPS peptidase searching result - the MEROPS peptidase numbers and hits.    
 
@@ -176,7 +176,8 @@ In all cases if you scroll down you will see what "Gn00X" colnames refer to (the
 
 - **Each hmm hit protein collection** 
 
-
+- **KEGG_identifier_result** 
+the KEGG identifier searching result - KEGG identifier numbers and hits of each genome that could be used to visualize the pathways in KEGG Mapper
 
 - **Elemental/Biogeochemical cycling pathways for each genome and a summary scheme (Both files and figures)**
 
