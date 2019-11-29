@@ -67,7 +67,7 @@ If you are using this program, please consider citing our preprint, available on
     Rscript -e 'install.packages("ggthemes", repos = "http://cran.us.r-project.org")'    
     Rscript -e 'install.packages("ggalluvial", repos = "http://cran.us.r-project.org")'    
     Rscript -e 'install.packages("reshape2", repos = "http://cran.us.r-project.org")'    
-	Rscript -e 'install.packages("ggraph", repos = "http://cran.us.r-project.org")'    
+    Rscript -e 'install.packages("ggraph", repos = "http://cran.us.r-project.org")'    
 ```    
 
 
@@ -176,7 +176,7 @@ In all cases if you scroll down you will see what "Gn00X" colnames refer to (the
 
 - **Each hmm hit protein collection** 
 
-- **KEGG_identifier_result** 
+- **KEGG_identifier_result**    
 the KEGG identifier searching result - KEGG identifier numbers and hits of each genome that could be used to visualize the pathways in KEGG Mapper
 
 - **Elemental/Biogeochemical cycling pathways for each genome and a summary scheme (Both files and figures)**
@@ -211,15 +211,18 @@ The second argument is the the name of the output folder where your images will 
 
 The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that you have inputted mapped reads in the beginning, and you will have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).    
 
-- **Community level diagrams: Sequential transformation and Metabolic network**
+- **Community level diagrams: Sequential transformation， Metabolic energy flow and Metabolic network**
 
-The "Sequential transformation diagram" and "Metabolic network diagram" will be generated accordingly, including both the input txt files and the resulted Rscript-generated diagrams    
+The "Sequential transformation" diagram, "Metabolic energy flow" diagram and "Metabolic network" diagrams will be generated accordingly, including both the input txt files and the resulted Rscript-generated diagrams    
 ```
 For Sequential transformation diagram, We have summarized and visualized the genome number and genome coverage (relative abundance of microorganism) of the microorganisms that were putatively involved in the sequential transformation of both important inorganic elements and organic compounds.    
 The resulted file is "Sequential_transformation_01.pdf" and "Sequential_transformation_02.pdf".        
 
-For Metabolic network diagram, a Sankey diagram will be generated, representing the function fractions that are contributed by various microbial groups in a given community.    
+For Metabolic energy flow diagram, a Sankey diagram will be generated, representing the function fractions that are contributed by various microbial groups in a given community.    
 The resulted file is "Metabolic_network.pdf".
+
+For Metabolic network diagrams, diagrams representing metabolic connections of biogeochemical cycling steps at both phylum level and the whole community level will be generated.    
+The resulted files are placed in the folder of "Metabolic_network".
 ```
 
 
