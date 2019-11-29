@@ -12,6 +12,7 @@ cd profiles
 cp ../../Accessory_scripts/batch_hmmpress.pl ./  
 perl batch_hmmpress.pl
 cd ../
+cd ../
 mkdir dbCAN2
 cd dbCAN2
 wget http://bcb.unl.edu/dbCAN2/download/Databases/dbCAN-old@UGA/dbCAN-fam-HMMs.txt
