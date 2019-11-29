@@ -211,7 +211,7 @@ The second argument is the the name of the output folder where your images will 
 
 The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that you have inputted mapped reads in the beginning, and you will have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).    
 
-- **Community level diagrams: Sequential transformation， Metabolic energy flow and Metabolic network**
+- **Community level diagrams: Sequential transformation, Metabolic energy flow and Metabolic network**
 
 The "Sequential transformation" diagram, "Metabolic energy flow" diagram and "Metabolic network" diagrams will be generated accordingly, including both the input txt files and the resulted Rscript-generated diagrams    
 ```
