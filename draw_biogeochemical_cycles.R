@@ -60,8 +60,8 @@ drawNcycle.single <- function(R_input, OutputFolder){
   straightarrow(from = elpos[6, ], to = elpos[4, ], lty = 1, lcol = input[14,2]) #N-S-05:Nitrite reduction
   straightarrow(from = elpos[4, ], to = elpos[2, ], lty = 1, lcol = input[15,2]) #N-S-06:Nitric oxide reduction
   straightarrow(from = elpos[2, ], to = elpos[1, ], lty = 1, lcol = input[16,2]) #N-S-07:Nitrous oxide reduction
-  splitarrow(from = elpos[c(3,6), ], to = elpos[1, ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[17,2]) #N-S-08:Nitrite ammonification
-  straightarrow(from = elpos[8, ], to = elpos[3, ], lty = 1, lcol = input[18,2]) #N-S-09:Anammox
+  splitarrow(from = elpos[c(3,6), ], to = elpos[1, ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[18,2]) #N-S-09:Anammox
+  straightarrow(from = elpos[8, ], to = elpos[3, ], lty = 1, lcol = input[17,2])#N-S-08:Nitrite ammonification 
   
   textrect (elpos[1, ], 0.05, 0.05, lab = expression(paste(N['2'],' ',(0))), cex = 1.5)
   textrect (elpos[2, ], 0.07, 0.05, lab = expression(paste(N['2'],O,' ',(+1))), cex = 1.5)
