@@ -260,7 +260,7 @@ fix the output folder problem, the perl script could be called in another place 
 v2.0 -- Nov 5, 2019 --     
 add more functions on visualization, add more annotations, make the software faster    
 v3.0 -- Feb 18, 2020 --     
-1. Reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation.
-2. Change HMMER to v3.3 to speed up the calculation.
+Reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation.
+Change HMMER to v3.3 to speed up the calculation.
 
 
