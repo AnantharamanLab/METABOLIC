@@ -253,15 +253,15 @@ perl your/path/to/put/METABOLIC-folder/METABOLIC-C.pl -in-gn [folder with all yo
 ```
 ## Version updates
 v1.1 -- Sep 4, 2019 --     
-fix the parallel problem, change from hmmscan to hmmsearch, and update the "METABOLIC_temp_and_db"    
+Fix the parallel problem, change from hmmscan to hmmsearch, and update the "METABOLIC_temp_and_db"    
 v1.2 -- Sep 5, 2019 --    
-fix the prodigal parallel run, change "working-dir" to "METABOLIC-dir"    
+Fix the prodigal parallel run, change "working-dir" to "METABOLIC-dir"    
 v1.3 -- Sep 5, 2019 --     
-fix the output folder problem, the perl script could be called in another place instead of the original place  
+Fix the output folder problem, the perl script could be called in another place instead of the original place  
 v2.0 -- Nov 5, 2019 --     
-add more functions on visualization, add more annotations, make the software faster    
+Add more functions on visualization, add more annotations, make the software faster    
 v3.0 -- Feb 18, 2020 --     
-Reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation.
-Change HMMER to v3.3 to speed up the calculation.
+Reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
+Change HMMER to v3.3 to speed up the calculation
 
 
