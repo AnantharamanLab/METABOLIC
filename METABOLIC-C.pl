@@ -93,7 +93,7 @@ my $input_genome_folder; #input microbial genome fasta files
 my $omic_reads_parameters; #The address of omic reads
 my $prodigal_method = "meta"; #the prodigal method to annotate orfs
 my $output = `pwd`; # the output folder 
-my $version="METABOLIC-C.pl v2.0";
+my $version="METABOLIC-C.pl v3.0";
 
 GetOptions(
 	'cpu|t=i' => \$cpu_numbers,
@@ -212,30 +212,49 @@ if ($input_genome_folder){
 	print "\[$datestring\] The Prodigal annotation is finished\n";
 }
 
-my %Total_faa_seq = (); #Store the total faa file into a hash
-my %Genome_id = (); # genome id => Gn001 like new id 
-open OUT, ">$output/tmp_run_hmmsearch.sh";
+my %Genome_id = (); # genome id => 1
+my %Seqid2Genomeid = (); # seq id => genome id 
+my %Total_faa_seq = (); #Store the total faa file into a hash{$line_no}
 open IN,"ls $input_protein_folder/*.faa |";
 while (<IN>){
 	chomp;
 	my $file = $_;
-	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/; $Genome_id{$gn_id} = 1; 
 	#Store faa file into a hash
 	%Total_faa_seq = (%Total_faa_seq, _get_faa_seq($file));
+	
+	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/; 
+	$Genome_id{$gn_id} = 1; 
+	open IN_, "$file";
+	while (<IN_>){
+		if (/>/){
+			my ($seq) = $_ =~ /^>(.+?)\s/;
+			$Seqid2Genomeid{$seq} = $gn_id;
+		}
+	}
+	close IN_;
+}
+
+
+open OUT, ">$output/tmp_run_hmmsearch.sh";
+`cat $input_protein_folder/*.faa > $input_protein_folder/faa.total; mv $input_protein_folder/faa.total $input_protein_folder/total.faa`;
+open IN,"ls $input_protein_folder/total.faa |";
+while (<IN>){
+	chomp;
+	my $file = $_;
 	foreach my $hmm (sort keys %Total_hmm2threshold){
 		my ($threshold,$score_type) = $Total_hmm2threshold{$hmm} =~ /^(.+?)\|(.+?)$/;
 		#print "$hmm\t$threshold\t$score_type\n";
 		if ($score_type eq "full"){
 			if ($hmm !~ /K\d\d\d\d\d/){
-				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.$gn_id.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/$gn_id.faa\n";
+				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
 			}else{
-				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.$gn_id.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/$gn_id.faa\n";
+				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
 			}
 		}else{
 			if ($hmm !~ /K\d\d\d\d\d/){
-				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.$gn_id.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/$gn_id.faa\n";
+				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
 			}else{
-				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.$gn_id.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/$gn_id.faa\n";
+				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
 			}
 		}
 	}
@@ -249,6 +268,7 @@ print "\[$datestring\] The hmmsearch is running with $cpu_numbers cpu threads...
 #parallel run hmmsearch
 
 _run_parallel("$output/tmp_run_hmmsearch.sh", $cpu_numbers); `rm $output/tmp_run_hmmsearch.sh`;
+`rm $input_protein_folder/total.faa`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] The hmmsearch is finished\n";
@@ -267,14 +287,15 @@ while (<IN>){
         my $file_name = $_;
         my ($hmm) = $file_name =~ /^$output\/intermediate_files\/(.+?\.hmm)\./; 
 		$Hmm_id{$hmm} = 1;
-		my ($gn_id) = $file_name =~ /\.hmm\.(.+?)\.hmmsearch_result/;
+		#my ($gn_id) = $file_name =~ /\.hmm\.(.+?)\.hmmsearch_result/;
+		my $gn_id = "";
         my @Hits = ();
         open INN, "$file_name";
         while (<INN>){
                 chomp;
                 if (!/^#/){
                         my $line = $_; $line =~ s/\s+/\t/g;
-						my @tmp = split (/\t/,$line);
+						my @tmp = split (/\t/,$line); $gn_id = $Seqid2Genomeid{$tmp[0]};
 						my ($threshold,$score_type) = $Total_hmm2threshold{$hmm} =~ /^(.+?)\|(.+?)$/; 
 						if ($score_type eq "domain"){
 							if ($tmp[8] >= $threshold){
@@ -1016,9 +1037,11 @@ foreach my $gn (sort keys %Hmmscan_result){
 	close OUT;
 }
 
+my %Genome_cov_constant = ();
 #The genome coverage: genome id => coverage value
 if ($omic_reads_parameters){
 	my %Genome_cov = _get_Genome_coverge($omic_reads_parameters,$input_genome_folder);
+	%Genome_cov_constant = %Genome_cov;
 	
 	my %Total_R_input_2 = (); #pathway => genome numbers \t genome coverage percentage
 	foreach my $pth (sort keys %Total_R_input){
@@ -1113,7 +1136,7 @@ foreach my $gn (sort keys %Hmmscan_result){
 
 #The genome coverage: genome id => coverage value
 if ($omic_reads_parameters){
-	my %Genome_cov = _get_Genome_coverge($omic_reads_parameters,$input_genome_folder);
+	my %Genome_cov = %Genome_cov_constant;
 	
 	my %Total_R_hm_input_1 = (); #step => genome numbers \t genome coverage percentage
 	foreach my $step (sort keys %R_mh_01){
@@ -1220,7 +1243,7 @@ foreach my $step (sort keys %R_mh_02){
 
 #The genome coverage: genome id => coverage value
 if ($omic_reads_parameters){
-	my %Genome_cov = _get_Genome_coverge($omic_reads_parameters,$input_genome_folder);
+	my %Genome_cov = %Genome_cov_constant;
 	
 	my %Total_R_hm_input_2 = (); #step => genome numbers \t genome coverage percentage
 	foreach my $step (sort keys %R_mh_02){
@@ -1243,6 +1266,7 @@ if ($omic_reads_parameters){
 	close OUT;
 }
 
+`mkdir $output/newdir`;
 `Rscript $METABOLIC_dir/draw_sequential_reaction.R $output/R_hm_input_1.txt $output/R_hm_input_2.txt $R_mh_tsv $R_order_of_input_01 $R_order_of_input_02 $output/newdir > /dev/null 2>/dev/null`;
 `mv $output/newdir/Bar_plot/bar_plot_input_1.pdf $output/Sequential_transformation_01.pdf`;
 `mv $output/newdir/Bar_plot/bar_plot_input_2.pdf $output/Sequential_transformation_02.pdf`;
@@ -1292,7 +1316,7 @@ close IN;
 my %Hash_gn_n_pth = (); 
 my %Total_R_community_coverage = (); # genome\tpathway => category \t pathway \t genome coverage percentage
 if ($omic_reads_parameters){
-	my %Genome_cov = _get_Genome_coverge($omic_reads_parameters,$input_genome_folder);
+	my %Genome_cov = %Genome_cov_constant;
 	#%Total_R_input pathway => gn => 1 or 0
 	foreach my $pth (sort keys %Total_R_input){
 		my $gn_cov_percentage = 0;
@@ -1355,7 +1379,7 @@ print "\[$datestring\] Drawing energy flow chart finished\n";
 ##subroutines
 #input ko_list, return a result hash of threshold and score_type
 sub _get_kofam_db_KO_threshold{
-	my $list = $_[0]; my $prok_list = "$_[1]/prokaryote.hal"; 	
+	my $list = $_[0]; my $prok_list = "$_[1]/All_Module_KO_ids.txt";
 	my %result = ();	
 	open IN, "$list";
 	while (<IN>){
@@ -1495,10 +1519,10 @@ sub _get_Genome_coverge{
 		my @tmp = split (/\t/,$key);
 		print OUT__ "bowtie2 -x $output/All_gene_collections.gene.scaffold -1 $tmp[0] -2 $tmp[1] -S $output/All_gene_collections_mapped.$j.sam -p $cpu_numbers --quiet;";
 		print OUT__ "samtools view -bS $output/All_gene_collections_mapped.$j.sam > $output/All_gene_collections_mapped.$j.bam -@ $cpu_numbers 2> /dev/null;";
-		print OUT__ "sambamba sort  $output/All_gene_collections_mapped.$j.bam -o $output/All_gene_collections_mapped.$j.sorted.bam 2> /dev/null;";
+		print OUT__ "mkdir $output/sambamba_tmpfiles; sambamba sort  $output/All_gene_collections_mapped.$j.bam --tmpdir $output/sambamba_tmpfiles -o $output/All_gene_collections_mapped.$j.sorted.bam 2> /dev/null;";
 		print OUT__ "samtools index $output/All_gene_collections_mapped.$j.sorted.bam > /dev/null;";
 		print OUT__ "samtools flagstat $output/All_gene_collections_mapped.$j.sorted.bam > $output/All_gene_collections_mapped.$j.sorted.stat 2> /dev/null\n";
-		print OUT__ "rm $output/All_gene_collections_mapped.$j.sam $output/All_gene_collections_mapped.$j.bam\n";
+		print OUT__ "rm $output/All_gene_collections_mapped.$j.sam $output/All_gene_collections_mapped.$j.bam; rm -r $output/sambamba_tmpfiles\n";
 	}
 	close OUT__;
 	

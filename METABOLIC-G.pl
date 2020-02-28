@@ -93,7 +93,7 @@ my $input_genome_folder; #input microbial genome fasta files
 #my $omic_reads_parameters; #The address of omic reads
 my $prodigal_method = "meta"; #the prodigal method to annotate orfs
 my $output = `pwd`; # the output folder 
-my $version="METABOLIC-G.pl v2.0";
+my $version="METABOLIC-G.pl v3.0";
 
 GetOptions(
 	'cpu|t=i' => \$cpu_numbers,
@@ -211,30 +211,49 @@ if ($input_genome_folder){
 	print "\[$datestring\] The Prodigal annotation is finished\n";
 }
 
-my %Total_faa_seq = (); #Store the total faa file into a hash
-my %Genome_id = (); # genome id => Gn001 like new id 
-open OUT, ">$output/tmp_run_hmmsearch.sh";
+my %Genome_id = (); # genome id => 1
+my %Seqid2Genomeid = (); # seq id => genome id 
+my %Total_faa_seq = (); #Store the total faa file into a hash{$line_no}
 open IN,"ls $input_protein_folder/*.faa |";
 while (<IN>){
 	chomp;
 	my $file = $_;
-	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/; $Genome_id{$gn_id} = 1; 
 	#Store faa file into a hash
 	%Total_faa_seq = (%Total_faa_seq, _get_faa_seq($file));
+	
+	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/; 
+	$Genome_id{$gn_id} = 1; 
+	open IN_, "$file";
+	while (<IN_>){
+		if (/>/){
+			my ($seq) = $_ =~ /^>(.+?)\s/;
+			$Seqid2Genomeid{$seq} = $gn_id;
+		}
+	}
+	close IN_;
+}
+
+
+open OUT, ">$output/tmp_run_hmmsearch.sh";
+`cat $input_protein_folder/*.faa > $input_protein_folder/faa.total; mv $input_protein_folder/faa.total $input_protein_folder/total.faa`;
+open IN,"ls $input_protein_folder/total.faa |";
+while (<IN>){
+	chomp;
+	my $file = $_;
 	foreach my $hmm (sort keys %Total_hmm2threshold){
 		my ($threshold,$score_type) = $Total_hmm2threshold{$hmm} =~ /^(.+?)\|(.+?)$/;
 		#print "$hmm\t$threshold\t$score_type\n";
 		if ($score_type eq "full"){
 			if ($hmm !~ /K\d\d\d\d\d/){
-				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.$gn_id.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/$gn_id.faa\n";
+				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
 			}else{
-				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.$gn_id.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/$gn_id.faa\n";
+				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
 			}
 		}else{
 			if ($hmm !~ /K\d\d\d\d\d/){
-				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.$gn_id.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/$gn_id.faa\n";
+				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
 			}else{
-				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.$gn_id.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/$gn_id.faa\n";
+				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
 			}
 		}
 	}
@@ -248,6 +267,7 @@ print "\[$datestring\] The hmmsearch is running with $cpu_numbers cpu threads...
 #parallel run hmmsearch
 
 _run_parallel("$output/tmp_run_hmmsearch.sh", $cpu_numbers); `rm $output/tmp_run_hmmsearch.sh`;
+`rm $input_protein_folder/total.faa`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] The hmmsearch is finished\n";
@@ -266,14 +286,15 @@ while (<IN>){
         my $file_name = $_;
         my ($hmm) = $file_name =~ /^$output\/intermediate_files\/(.+?\.hmm)\./; 
 		$Hmm_id{$hmm} = 1;
-		my ($gn_id) = $file_name =~ /\.hmm\.(.+?)\.hmmsearch_result/;
+		#my ($gn_id) = $file_name =~ /\.hmm\.(.+?)\.hmmsearch_result/;
+		my $gn_id = "";
         my @Hits = ();
         open INN, "$file_name";
         while (<INN>){
                 chomp;
                 if (!/^#/){
                         my $line = $_; $line =~ s/\s+/\t/g;
-						my @tmp = split (/\t/,$line);
+						my @tmp = split (/\t/,$line); $gn_id = $Seqid2Genomeid{$tmp[0]};
 						my ($threshold,$score_type) = $Total_hmm2threshold{$hmm} =~ /^(.+?)\|(.+?)$/; 
 						if ($score_type eq "domain"){
 							if ($tmp[8] >= $threshold){
@@ -817,8 +838,8 @@ while (<IN>){
 	chomp;
 	my $file = $_;
 	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/;
-	print OUT "hmmscan --domtblout $output/intermediate_files/$gn_id.dbCAN2.out.dm --cpu 1 $METABOLIC_dir/dbCAN2/dbCAN-fam-HMMs.txt $file > $output/intermediate_files/$gn_id.dbCAN2.out;";
-	print OUT "bash $METABOLIC_dir/Accessory_scripts/hmmscan-parser.sh $output/intermediate_files/$gn_id.dbCAN2.out.dm > $output/intermediate_files/$gn_id.dbCAN2.out.dm.ps\n";
+		print OUT "hmmscan --domtblout $output/intermediate_files/$gn_id.dbCAN2.out.dm --cpu 1 $METABOLIC_dir/dbCAN2/dbCAN-fam-HMMs.txt $file > $output/intermediate_files/$gn_id.dbCAN2.out;";
+		print OUT "bash $METABOLIC_dir/Accessory_scripts/hmmscan-parser.sh $output/intermediate_files/$gn_id.dbCAN2.out.dm > $output/intermediate_files/$gn_id.dbCAN2.out.dm.ps\n";
 }
 close IN;
 close OUT;
@@ -844,7 +865,7 @@ while (<IN>)
 			   my $num=(sprintf "%03d", $hmmid_p2);
 			   $hmmid = $hmmid_p1.$num;
 			   $Hmm_dbCAN2_id{$hmmid} = 1; 
-               my ($name) = $tmp[2];
+               my ($name) = $tmp[2]; 
                #my @tmp2 = split (/\|/, $name); $Genome_name{$tmp2[0]} = 1;
                $dbCANout{$gn_id}{$hmmid}++;
                if (!exists $dbCANout2{$gn_id}{$hmmid}){
@@ -897,7 +918,7 @@ while (<IN>){
 	chomp;
 	my $file = $_;
 	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/;
-	print OUT "diamond blastp -d $METABOLIC_dir/MEROPS/pepunit.db -q $file -o $output/intermediate_files/$gn_id.MEROPSout.m8 -k 1 -e 1e-10 --query-cover 80 --id 50 --quiet -p 1  > /dev/null\n";
+		print OUT "diamond blastp -d $METABOLIC_dir/MEROPS/pepunit.db -q $file -o $output/intermediate_files/$gn_id.MEROPSout.m8 -k 1 -e 1e-10 --query-cover 80 --id 50 --quiet -p 1 > /dev/null\n";
 }
 close IN;
 close OUT;
@@ -929,7 +950,7 @@ while (<IN>)
 	while (<INN>){
 	   my @tmp = split(/\t/,$_); 
 	   my ($meropsid) = $MEROPS_map{$tmp[1]} =~ /\#(.+?)\#/; $MEROPSid{$meropsid} = 1;
-	   my ($name) = $tmp[0];
+	   my ($name) = $tmp[0]; 
 	   $MEROPSout{$gn_id}{$meropsid}++;
 	   if (!exists $MEROPSout2{$gn_id}{$meropsid}){
                 $MEROPSout2{$gn_id}{$meropsid} = $name;
@@ -1026,7 +1047,7 @@ print "\[$datestring\] Drawing element cycling diagrams finished\n";
 ##subroutines
 #input ko_list, return a result hash of threshold and score_type
 sub _get_kofam_db_KO_threshold{
-	my $list = $_[0]; my $prok_list = "$_[1]/prokaryote.hal"; 	
+	my $list = $_[0]; my $prok_list = "$_[1]/All_Module_KO_ids.txt"; 	
 	my %result = ();	
 	open IN, "$list";
 	while (<IN>){
