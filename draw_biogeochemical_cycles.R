@@ -193,14 +193,15 @@ drawScycle.single <- function(R_input, OutputFolder){
   
   elpos <- coordinates (c(1, 3, 3, 3, 1)) # Put the coordinate
   elpos
-  straightarrow(from = elpos[1, ], to = elpos[4, ], lty = 1, lcol = input[24,2]) #S-S-01:Sulfide oxidation
-  straightarrow(from = elpos[4, ], to = elpos[1, ], lty = 1, lcol = input[25,2]) #S-S-02:Sulfur reduction
-  straightarrow(from = elpos[4, ], to = elpos[10, ], lty = 1, lcol = input[26,2]) #S-S-03:Sulfur oxidation
-  straightarrow(from = elpos[10, ], to = elpos[11, ], lty = 1, lcol = input[27,2]) #S-S-04:Sulfite oxidation
-  straightarrow(from = elpos[11, ], to = elpos[5, ], lty = 1, lcol = input[28,2]) #S-S-05:Sulfate reduction
-  straightarrow(from = elpos[5, ], to = elpos[1, ], lty = 1, lcol = input[29,2]) #S-S-06:Sulfite reduction
-  straightarrow(from = elpos[6, ], to = elpos[11, ], lty = 1, lcol = input[30,2]) #S-S-07:Thiosulfate oxidation
-  splitarrow(from = elpos[6, ], to = elpos[c(1,10), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[31,2]) #S-S-08:Thiosulfate disproportionation
+  straightarrow(from = elpos[1, ], to = elpos[4, ], lty = 1, lcol = input[23,2]) #S-S-01:Sulfide oxidation
+  straightarrow(from = elpos[4, ], to = elpos[1, ], lty = 1, lcol = input[24,2]) #S-S-02:Sulfur reduction
+  straightarrow(from = elpos[4, ], to = elpos[10, ], lty = 1, lcol = input[25,2]) #S-S-03:Sulfur oxidation
+  straightarrow(from = elpos[10, ], to = elpos[11, ], lty = 1, lcol = input[26,2]) #S-S-04:Sulfite oxidation
+  straightarrow(from = elpos[11, ], to = elpos[5, ], lty = 1, lcol = input[27,2]) #S-S-05:Sulfate reduction
+  straightarrow(from = elpos[5, ], to = elpos[1, ], lty = 1, lcol = input[28,2]) #S-S-06:Sulfite reduction
+  straightarrow(from = elpos[6, ], to = elpos[11, ], lty = 1, lcol = input[29,2]) #S-S-07:Thiosulfate oxidation
+  splitarrow(from = elpos[6, ], to = elpos[c(1,10), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[30,2]) #S-S-08:Thiosulfate disproportionation
+  splitarrow(from = elpos[6, ], to = elpos[c(4,11), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[31,2]) #S-S-09:Thiosulfate disproportionation 2
   
   #https://stackoverflow.com/questions/17083362/colorize-parts-of-the-title-in-a-plot
   
@@ -228,7 +229,9 @@ drawScycle.single <- function(R_input, OutputFolder){
   textplain(mid = c(0.605, 0.32), 
             lab = c("Step7: Thiosulfate oxidation"))
   textplain(mid = c(0.45, 0.61), 
-            lab = c("Step8: Thiosulfate disproportionation"))
+            lab = c("Step8: Thiosulfate disproportionation 1"))
+  textplain(mid = c(0.45, 0.61), 
+            lab = c("Step8: Thiosulfate disproportionation 2"))
   
   #Once the plot is done, export it:
   dev.off()
@@ -258,7 +261,8 @@ drawScycle.total <- function(R_input, OutputFolder){
   straightarrow(from = elpos[11, ], to = elpos[5, ], lty = 1, lcol = 1) #S-S-05:Sulfate reduction
   straightarrow(from = elpos[5, ], to = elpos[1, ], lty = 1, lcol = 1) #S-S-06:Sulfite reduction
   straightarrow(from = elpos[6, ], to = elpos[11, ], lty = 1, lcol = 1) #S-S-07:Thiosulfate oxidation
-  splitarrow(from = elpos[6, ], to = elpos[c(1,10), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = 1) #S-S-08:Thiosulfate disproportionation
+  splitarrow(from = elpos[6, ], to = elpos[c(1,10), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = 1) #S-S-08:Thiosulfate disproportionation 1
+  splitarrow(from = elpos[6, ], to = elpos[c(4,11), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = 1) #S-S-09:Thiosulfate disproportionation 2
   
   #https://stackoverflow.com/questions/17083362/colorize-parts-of-the-title-in-a-plot
   
@@ -274,35 +278,39 @@ drawScycle.total <- function(R_input, OutputFolder){
   
   textplain(mid = c(0.8, 0.85), 
             lab = c("Step1: Sulfide oxidation",
-                    paste("Genomes:",input.total$Nb.Genome[24]),
-                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[24],"%"))) 
+                    paste("Genomes:",input.total$Nb.Genome[23]),
+                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[23],"%"))) 
   textplain(mid = c(0.68, 0.68), 
             lab = c("Step2: Sulfur reduction",
-                    paste("Genomes:",input.total$Nb.Genome[25]),
-                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[25],"%"))) 
+                    paste("Genomes:",input.total$Nb.Genome[24]),
+                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[24],"%"))) 
   textplain(mid = c(0.93, 0.5), 
             lab = c("Step3: Sulfur",
                     "oxidation",
-                    paste("Genomes:",input.total$Nb.Genome[26]),
-                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[26],"%")))
+                    paste("Genomes:",input.total$Nb.Genome[25]),
+                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[25],"%")))
   textplain(mid = c(0.75, 0.12), 
             lab = c("Step4: Sulfite oxidation",
-                    paste("Genomes:",input.total$Nb.Genome[27]),
-                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[27],"%")))
+                    paste("Genomes:",input.total$Nb.Genome[26]),
+                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[26],"%")))
   textplain(mid = c(0.25, 0.20), 
             lab = c("Step5: Sulfate reduction",
-                    paste("Genomes:",input.total$Nb.Genome[28]),
-                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[28],"%"))) 
+                    paste("Genomes:",input.total$Nb.Genome[27]),
+                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[27],"%"))) 
   textplain(mid = c(0.23, 0.75), 
             lab = c("Step6: Sulfite reduction",
-                    paste("Genomes:",input.total$Nb.Genome[29]),
-                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[29],"%")))
+                    paste("Genomes:",input.total$Nb.Genome[28]),
+                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[28],"%")))
   textplain(mid = c(0.61, 0.32), 
             lab = c("Step7: Thiosulfate oxidation",
+                    paste("Genomes:",input.total$Nb.Genome[29]),
+                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[29],"%")))
+  textplain(mid = c(0.45, 0.62), 
+            lab = c("Step8: Thiosulfate disproportionation 1",
                     paste("Genomes:",input.total$Nb.Genome[30]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[30],"%")))
   textplain(mid = c(0.45, 0.62), 
-            lab = c("Step8: Thiosulfate disproportionation",
+            lab = c("Step8: Thiosulfate disproportionation 2",
                     paste("Genomes:",input.total$Nb.Genome[31]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[31],"%")))
   
@@ -451,18 +459,13 @@ drawOthercycles.single<- function(R_input, OutputFolder){
   elpos <- coordinates (c(5, 5, 2, 2)) # Put the coordinate
   elpos
   curvedarrow(from = elpos[2, ], to = elpos[7, ], curve = 0.1, lty = 1, lcol = input[19,2]) #O-S-01:Metal reduction
-  curvedarrow(from = elpos[7, ], to = elpos[2, ], curve = 0.1, lty = 1, lcol = input[19,2]) #
-  straightarrow(from = elpos[3, ], to = elpos[9, ], lty = 1, lcol = input[20,2]) #O-S-02:chlorate reduction
-  straightarrow(from = elpos[5, ], to = elpos[9, ], lty = 1, lcol = input[20,2]) #O-S-02:Perchlorate reduction
-  curvedarrow(from = elpos[11, ], to = elpos[13, ], curve = 0.1, lty = 1, lcol = input[21,2]) #O-S-03:Arsenate reduction
+  curvedarrow(from = elpos[7, ], to = elpos[2, ], curve = 0.1, lty = 1, lcol = input[19,2]) #O-S-01:Metal reduction
+  curvedarrow(from = elpos[11, ], to = elpos[13, ], curve = 0.1, lty = 1, lcol = input[20,2]) #O-S-03:Arsenate reduction
   curvedarrow(from = elpos[13, ], to = elpos[11, ], curve = 0.1, lty = 1, lcol = input[21,2]) #O-S-04:Arsenite oxidation
-  straightarrow(from = elpos[12, ], to = elpos[14, ], lty = 1, lcol = input[23,2]) #C-S-05:Selenate reduction
+  straightarrow(from = elpos[12, ], to = elpos[14, ], lty = 1, lcol = input[22,2]) #O-S-05:Selenate reduction
 
   textrect (elpos[2, ], 0.07, 0.05, lab = expression(Fe^'3+'), cex = 1.5)
-  textrect (elpos[3, ], 0.07, 0.05, lab = expression(paste(ClO['2'])^'-'), cex=1.5)
-  textrect (elpos[5, ], 0.07, 0.05, lab = expression(paste(ClO['4'])^'-'), cex=1.5)
   textrect (elpos[7, ], 0.07, 0.05, lab = expression(Fe^'2+'), cex = 1.5)
-  textrect (elpos[9, ], 0.07, 0.05, lab = expression(Cl^'-1'), cex = 1.5)
   textrect (elpos[11, ], 0.07, 0.05, lab = expression(As^'5+'), cex = 1.5)
   textrect (elpos[13, ], 0.07, 0.05, lab = expression(As^'3+'), cex = 1.5)
   textrect (elpos[12, ], 0.10, 0.05, lab = expression(paste(SeO['4'])^'2-'), cex=1.5)
@@ -470,11 +473,10 @@ drawOthercycles.single<- function(R_input, OutputFolder){
   
   par(lheight=0.01)
   
-  textplain(mid = c(0.15, 0.75), lab = "Step1: Metal reduction")
-  textplain(mid = c(0.87, 0.7), lab = "Step2: Chlorate reduction")
-  textplain(mid = c(0.12, 0.25), lab ="Step3: Arsenate reduction")
-  textplain(mid = c(0.4, 0.25), lab = "Step4: Arsenite oxidation")
-  textplain(mid = c(0.88, 0.25), lab = "Step5: Selenate reduction")
+  textplain(mid = c(0.15, 0.75), lab = "Metal reduction")
+  textplain(mid = c(0.12, 0.25), lab ="Arsenate reduction")
+  textplain(mid = c(0.4, 0.25), lab = "Arsenite oxidation")
+  textplain(mid = c(0.88, 0.25), lab = "Selenate reduction")
   dev.off()
   cat("made plot: ", plot.name, "\n")
 
@@ -496,9 +498,7 @@ drawOthercycles.total<- function(R_input, OutputFolder){
   elpos <- coordinates (c(5, 5, 2, 2)) # Put the coordinate
   elpos
   curvedarrow(from = elpos[2, ], to = elpos[7, ], curve = 0.1, lty = 1, lcol = 1) #O-S-01:Metal reduction
-  curvedarrow(from = elpos[7, ], to = elpos[2, ], curve = 0.1, lty = 1, lcol = 1) #
-  straightarrow(from = elpos[3, ], to = elpos[9, ], lty = 1, lcol = 1) #O-S-02:chlorate reduction
-  straightarrow(from = elpos[5, ], to = elpos[9, ], lty = 1, lcol = 1) #O-S-02:Perchlorate reduction
+  curvedarrow(from = elpos[7, ], to = elpos[2, ], curve = 0.1, lty = 1, lcol = 1) #O-S-01:Metal reduction
   curvedarrow(from = elpos[11, ], to = elpos[13, ], curve = 0.1, lty = 1, lcol = 1) #O-S-03:Arsenate reduction
   curvedarrow(from = elpos[13, ], to = elpos[11, ], curve = 0.1, lty = 1, lcol = 1) #O-S-04:Arsenite oxidation
   straightarrow(from = elpos[12, ], to = elpos[14, ], lty = 1, lcol = 1) #C-S-05:Selenate reduction
@@ -519,25 +519,20 @@ drawOthercycles.total<- function(R_input, OutputFolder){
                     paste("Genomes:",input.total$Nb.Genome[19]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[19],"%")))
   
-  textplain(mid = c(0.9, 0.68), 
-            lab = c("Step2: Chlorate reduction",
+  textplain(mid = c(0.1, 0.25), 
+            lab = c("Step3: Arsenate reduction",
                     paste("Genomes:",input.total$Nb.Genome[20]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[20],"%")))
   
-  textplain(mid = c(0.1, 0.25), 
-            lab = c("Step3: Arsenate reduction",
+  textplain(mid = c(0.4, 0.25), 
+            lab = c("Step4: Arsenite oxidation",
                     paste("Genomes:",input.total$Nb.Genome[21]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[21],"%")))
   
-  textplain(mid = c(0.4, 0.25), 
-            lab = c("Step4: Arsenite oxidation",
-                    paste("Genomes:",input.total$Nb.Genome[22]),
-                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[22],"%")))
-  
   textplain(mid = c(0.90, 0.25), 
             lab = c("Step5: Selenate reduction",
-                    paste("Genomes:",input.total$Nb.Genome[23]),
-                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[23],"%")))
+                    paste("Genomes:",input.total$Nb.Genome[22]),
+                    paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[22],"%")))
   
   dev.off()
   cat("made plot: ", plot.name, "\n")
