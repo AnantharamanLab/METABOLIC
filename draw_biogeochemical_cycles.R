@@ -310,7 +310,7 @@ drawScycle.total <- function(R_input, OutputFolder){
                     paste("Genomes:",input.total$Nb.Genome[30]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[30],"%")))
   textplain(mid = c(0.45, 0.62), 
-            lab = c("Step8: Thiosulfate disproportionation 2",
+            lab = c("Step9: Thiosulfate disproportionation 2",
                     paste("Genomes:",input.total$Nb.Genome[31]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[31],"%")))
   
@@ -504,10 +504,7 @@ drawOthercycles.total<- function(R_input, OutputFolder){
   straightarrow(from = elpos[12, ], to = elpos[14, ], lty = 1, lcol = 1) #C-S-05:Selenate reduction
   
   textrect (elpos[2, ], 0.07, 0.05, lab = expression(Fe^'3+'), cex = 1.5)
-  textrect (elpos[3, ], 0.07, 0.05, lab = expression(paste(ClO['2'])^'-'), cex=1.5)
-  textrect (elpos[5, ], 0.07, 0.05, lab = expression(paste(ClO['4'])^'-'), cex=1.5)
   textrect (elpos[7, ], 0.07, 0.05, lab = expression(Fe^'2+'), cex = 1.5)
-  textrect (elpos[9, ], 0.07, 0.05, lab = expression(Cl^'-1'), cex = 1.5)
   textrect (elpos[11, ], 0.07, 0.05, lab = expression(As^'5+'), cex = 1.5)
   textrect (elpos[13, ], 0.07, 0.05, lab = expression(As^'3+'), cex = 1.5)
   textrect (elpos[12, ], 0.10, 0.05, lab = expression(paste(SeO['4'])^'2-'), cex=1.5)
