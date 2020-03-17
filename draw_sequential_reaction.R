@@ -5,7 +5,7 @@
 # Receive arguments from command line:
 userprefs <- commandArgs(trailingOnly = TRUE)
 R_input_1 <- userprefs[1] # Path to to R_hm_input_1.txt
-R_input_2 <- userprefs[2] # Path to to R_hm_input_1.txt
+R_input_2 <- userprefs[2] # Path to to R_hm_input_2.txt
 Sequential_info <- userprefs[3] # Path to sequential information file sequential-transformations.tsv
 order_input1 <- userprefs[4] # Path to order_of_input_01.txt
 order_input2 <- userprefs[5] # Path to order_of_input_02.txt
@@ -42,6 +42,8 @@ library(tidyverse)
 # Read input 1
 energy.flow.input <- read.table(R_input_1, sep="\t")
 colnames(energy.flow.input) <- c("Reaction_Letter","Number.of.Genomes","Genome.Coverage")
+#convert the Genome Coverage into Percentages:
+energy.flow.input$Genome.Coverage <- energy.flow.input$Genome.Coverage*100
 
 # Plot 1:
 plot.name <- paste(plot.folder,"/",".R_input_1.plot", sep="")
@@ -92,6 +94,8 @@ dev.off()
 
 energy.flow.input.second <- read.table(R_input_2, sep="\t")
 colnames(energy.flow.input.second) <- c("Reaction_Letter","Number.of.Genomes","Genome.Coverage")
+# convert Genome Coverage into percentages:
+energy.flow.input.second$Genome.Coverage <- energy.flow.input.second$Genome.Coverage*100
 
 energy.flow.input.second.2 <- left_join(energy.flow.input.second, sequential.transformations, by ="Reaction_Letter")
 
