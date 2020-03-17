@@ -230,8 +230,8 @@ drawScycle.single <- function(R_input, OutputFolder){
             lab = c("Step7: Thiosulfate oxidation"))
   textplain(mid = c(0.45, 0.61), 
             lab = c("Step8: Thiosulfate disproportionation 1"))
-  textplain(mid = c(0.45, 0.61), 
-            lab = c("Step8: Thiosulfate disproportionation 2"))
+  textplain(mid = c(0.68, 0.40), 
+            lab = c("Step9: Thiosulfate disproportionation 2"))
   
   #Once the plot is done, export it:
   dev.off()
@@ -301,7 +301,7 @@ drawScycle.total <- function(R_input, OutputFolder){
             lab = c("Step6: Sulfite reduction",
                     paste("Genomes:",input.total$Nb.Genome[28]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[28],"%")))
-  textplain(mid = c(0.61, 0.32), 
+  textplain(mid = c(0.41, 0.35), 
             lab = c("Step7: Thiosulfate oxidation",
                     paste("Genomes:",input.total$Nb.Genome[29]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[29],"%")))
@@ -309,7 +309,7 @@ drawScycle.total <- function(R_input, OutputFolder){
             lab = c("Step8: Thiosulfate disproportionation 1",
                     paste("Genomes:",input.total$Nb.Genome[30]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[30],"%")))
-  textplain(mid = c(0.45, 0.62), 
+  textplain(mid = c(0.68, 0.40), 
             lab = c("Step9: Thiosulfate disproportionation 2",
                     paste("Genomes:",input.total$Nb.Genome[31]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[31],"%")))
