@@ -101,10 +101,10 @@ If you are using this program, please consider citing our preprint, available on
   tar zxvf METABOLIC_hmm_db.tgz
 ```
   
-4. METABOLIC uses the "METABOLIC_temp_and_db" which contains the hmm result table and KEGG database information.  
-Decompress the METABOLIC_temp_and_db.tgz to the folder "METABOLIC_temp_and_db" and keep it in the same directory of KofamKOALA hmm database and scripts.  
+4. METABOLIC uses the "METABOLIC_template_and_database" which contains the hmm result table and KEGG database information.  
+Decompress the METABOLIC_template_and_database.tgz to the folder "METABOLIC_template_and_database" and keep it in the same directory of KofamKOALA hmm database and scripts.  
 ```
-  tar zxvf METABOLIC_temp_and_db.tgz
+  tar zxvf METABOLIC_template_and_database.tgz
 ```
 
 5. This software also contains "Accessory_scripts.gz", which needs to be decompressed before use. 
@@ -253,7 +253,7 @@ perl your/path/to/put/METABOLIC-folder/METABOLIC-C.pl -in-gn [folder with all yo
 ```
 ## Version updates
 v1.1 -- Sep 4, 2019 --     
-Fix the parallel problem, change from hmmscan to hmmsearch, and update the "METABOLIC_temp_and_db"    
+Fix the parallel problem, change from hmmscan to hmmsearch, and update the "METABOLIC_template_and_database"    
 v1.2 -- Sep 5, 2019 --    
 Fix the prodigal parallel run, change "working-dir" to "METABOLIC-dir"    
 v1.3 -- Sep 5, 2019 --     

@@ -48,10 +48,10 @@ use Parallel::ForkManager;
         
 =head1 USAGE       
 
-        perl METABOLIC-G.pl -t 40 -m-cutoff 0.75 -m . -in Genome_proteins -o METABOLIC_out
+        perl METABOLIC-G.pl -t 40 -m-cutoff 0.75 -m . -in Genome_proteins -kofam-db full -o METABOLIC_out
 		import genome proteins by users
         
-        perl METABOLIC-G.pl -t 40 -m-cutoff 0.75 -m . -in-gn Genome_files -o METABOLIC_out
+        perl METABOLIC-G.pl -t 40 -m-cutoff 0.75 -m . -in-gn Genome_files -kofam-db full -o METABOLIC_out
 		import genome sequences by users, we will translate them by prodigal
         
 =head1 OPTIONS
@@ -61,6 +61,7 @@ use Parallel::ForkManager;
         -m         or METABOLIC-dir   [string]  The directory that you store your METABOLIC database folers and scripts (default: '.') 
         -in                           [string]  The folder pf given genome faa files [should also give the genome fasta files and genone gene files if the (meta)genome/(meta)transciptome datasets are included]
         -in-gn                        [string]  The folder of given genome fasta files (Prodigal will be used to annotate your genomes)
+        -kofam-db                     [string]  to use the "small" size or "full" size of KOfam database in METABOLIC (default: 'full')
 	-p         or prodigal-method [string]  "meta" or "single" for prodigal to annotate the orf
 	-o         or output          [string]  The METABOLIC output folder (default: current address)
 		
@@ -92,6 +93,7 @@ my $input_protein_folder;  #input microbial genome protein files
 my $input_genome_folder; #input microbial genome fasta files
 #my $omic_reads_parameters; #The address of omic reads
 my $prodigal_method = "meta"; #the prodigal method to annotate orfs
+my $kofam_db_size = "full"; #the full kofam size
 my $output = `pwd`; # the output folder 
 my $version="METABOLIC-G.pl v3.0";
 
@@ -102,6 +104,7 @@ GetOptions(
 	'in=s' => \$input_protein_folder,
 	'in-gn=s' => \$input_genome_folder,
 	'prodigal-method|p=s' => \$prodigal_method,
+	'kofam-db=s' => \$kofam_db_size,
 	'output|o=s' => \$output,
 	'help|h' => sub{system('perldoc', $0); exit;},
 	'v|version'=>sub{print $version."\n"; exit;}
@@ -117,27 +120,27 @@ GetOptions(
  my $kofam_db_KO_list = "$METABOLIC_dir/kofam_database/ko_list";
  
  #input hmm information table as a template
- my $hmm_table_temp = "$METABOLIC_dir/METABOLIC_temp_and_db/hmm_table_template.txt";
- my $hmm_table_temp_2 = "$METABOLIC_dir/METABOLIC_temp_and_db/hmm_table_template_2.txt"; 
+ my $hmm_table_temp = "$METABOLIC_dir/METABOLIC_template_and_database/hmm_table_template.txt";
+ my $hmm_table_temp_2 = "$METABOLIC_dir/METABOLIC_template_and_database/hmm_table_template_2.txt"; 
  
  #the KEGG module information
- my $ko_module_table = "$METABOLIC_dir/METABOLIC_temp_and_db/ko00002.keg";
+ my $ko_module_table = "$METABOLIC_dir/METABOLIC_template_and_database/ko00002.keg";
  
  #the KEGG module step db 
- my $ko_module_step_db = "$METABOLIC_dir/METABOLIC_temp_and_db/kegg_module_step_db.txt";
+ my $ko_module_step_db = "$METABOLIC_dir/METABOLIC_template_and_database/kegg_module_step_db.txt";
  
  #the pathway information to draw element cycling diagrams and metabolic handoff
- my $R_pathways = "$METABOLIC_dir/METABOLIC_temp_and_db/R_pathways.txt";
- my $R_mh_01 = "$METABOLIC_dir/METABOLIC_temp_and_db/Sequential_transformations_01.txt";
- my $R_mh_02 = "$METABOLIC_dir/METABOLIC_temp_and_db/Sequential_transformations_02.txt";
- my $R_mh_tsv = "$METABOLIC_dir/METABOLIC_temp_and_db/Sequential-transformations.tsv";
- my $R_order_of_input_01 = "$METABOLIC_dir/METABOLIC_temp_and_db/order_of_input_01.txt";
- my $R_order_of_input_02 = "$METABOLIC_dir/METABOLIC_temp_and_db/order_of_input_02.txt";
- my $CAZy_map_address = "$METABOLIC_dir/METABOLIC_temp_and_db/CAZy_map.txt";
+ my $R_pathways = "$METABOLIC_dir/METABOLIC_template_and_database/R_pathways.txt";
+ my $R_mh_01 = "$METABOLIC_dir/METABOLIC_template_and_database/Sequential_transformations_01.txt";
+ my $R_mh_02 = "$METABOLIC_dir/METABOLIC_template_and_database/Sequential_transformations_02.txt";
+ my $R_mh_tsv = "$METABOLIC_dir/METABOLIC_template_and_database/Sequential-transformations.tsv";
+ my $R_order_of_input_01 = "$METABOLIC_dir/METABOLIC_template_and_database/order_of_input_01.txt";
+ my $R_order_of_input_02 = "$METABOLIC_dir/METABOLIC_template_and_database/order_of_input_02.txt";
+ my $CAZy_map_address = "$METABOLIC_dir/METABOLIC_template_and_database/CAZy_map.txt";
  
  #the motif files to validate specific protein hits
- my $motif_file = "$METABOLIC_dir/METABOLIC_temp_and_db/motif.txt";
- my $motif_pair_file = "$METABOLIC_dir/METABOLIC_temp_and_db/motif.pair.txt";
+ my $motif_file = "$METABOLIC_dir/METABOLIC_template_and_database/motif.txt";
+ my $motif_pair_file = "$METABOLIC_dir/METABOLIC_template_and_database/motif.pair.txt";
 
 
 ##Main Body
@@ -1001,16 +1004,28 @@ $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime;
 print "\[$datestring\] Drawing element cycling diagrams...\n";
 
 #Store R pathways
-my %R_pathways = (); #step => KOs
+my %R_pathways = (); #step => hmms
 my %R_hmm_ids = ();
 open IN, "$R_pathways";
 while (<IN>){
 	chomp;
 	my @tmp = split (/\t/);
 	$R_pathways{$tmp[0]} = $tmp[1];
-	my @tmp2 = split (/\,/,$tmp[1]);
-	foreach my $key (@tmp2){
-		$R_hmm_ids{$key} = 1;
+	if ($tmp[1] !~ /\;/){
+		my @tmp2 = split (/\,/,$tmp[1]);
+		foreach my $key (@tmp2){
+			$R_hmm_ids{$key} = 1;
+		}
+	}elsif ($tmp[1] =~ /\;/){
+		my @tmp2 = split (/\;/,$tmp[1]);
+		foreach my $key (@tmp2){
+			my @tmp3 = split (/\,/,$key);
+			foreach my $key2 (@tmp3){
+				if ($key2 !~ /NO/){
+					$R_hmm_ids{$key2} = 1;
+				}
+			}
+		}
 	}
 }
 close IN;
@@ -1023,12 +1038,44 @@ foreach my $gn (sort keys %Hmmscan_result){
 	foreach my $key (sort keys %R_pathways){
 		$R_input{$key} = 0; $Total_R_input{$key}{$gn} = 0;
 		my $hmms = $R_pathways{$key};
-		foreach my $hmm_id (sort keys %R_hmm_ids){
-			if ($hmms =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
-				$R_input{$key} = 1; $Total_R_input{$key}{$gn} = 1;
+		if ($hmms !~ /\;/){
+			foreach my $hmm_id (sort keys %R_hmm_ids){
+				if ($hmms =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
+					$R_input{$key} = 1; $Total_R_input{$key}{$gn} = 1;
+				}
+			}
+		}elsif ($hmms =~ /\;/){
+			my ($hmms_1,$hmms_2) = $hmms =~ /^(.+?)\;(.+?)$/;
+			if ($hmms_2 !~ /NO/){
+				my $logic1 = 0; my $logic2 = 0;
+				foreach my $hmm_id (sort keys %R_hmm_ids){
+					if ($hmms_1 =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
+						$logic1 = 1;	
+					}
+					if ($hmms_2 =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
+						$logic2 = 1;	
+					}
+				}
+				if ($logic1 and $logic2){
+					$R_input{$key} = 1; $Total_R_input{$key}{$gn} = 1;
+				}
+			}elsif ($hmms_2 =~ /NO/){
+				my $logic1 = 0; my $logic2 = 0;
+				foreach my $hmm_id (sort keys %R_hmm_ids){
+					if ($hmms_1 =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
+						$logic1 = 1;	
+					}			
+					if ($hmms_2 !~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
+						$logic2 = 1;	
+					}		
+				}
+				if ($logic1 and $logic2){
+					$R_input{$key} = 1; $Total_R_input{$key}{$gn} = 1;
+				}
 			}
 		}
 	}
+	
 	open OUT, ">$output/R_input/$gn.R_input.txt";
 	foreach my $key (sort keys %R_input){
 		print OUT "$key\t$R_input{$key}\n";
@@ -1047,7 +1094,13 @@ print "\[$datestring\] Drawing element cycling diagrams finished\n";
 ##subroutines
 #input ko_list, return a result hash of threshold and score_type
 sub _get_kofam_db_KO_threshold{
-	my $list = $_[0]; my $prok_list = "$_[1]/All_Module_KO_ids.txt"; 	
+	my $list = $_[0]; 
+	my $prok_list = "";
+	if ($kofam_db_size eq "full"){
+		$prok_list = "$_[1]/prokaryote.hal";
+	}elsif ($kofam_db_size eq "small"){
+		$prok_list = "$_[1]/All_Module_KO_ids.txt";
+	} 	
 	my %result = ();	
 	open IN, "$list";
 	while (<IN>){
