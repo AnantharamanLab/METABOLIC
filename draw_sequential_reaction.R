@@ -1,5 +1,5 @@
 # Patricia Tran
-# Oct 23, 2019
+# Oct 2019. Updated March 20, 2020
 # Bar plot of metabolic tradeoffs:
 
 # Receive arguments from command line:
@@ -73,13 +73,21 @@ energy.flow.input.gathered$category_f =
 
 energy.flow.input.gathered$Reaction_Letter_Long_f <- factor(energy.flow.input.gathered$Reaction_Letter_Long, levels = order.1)
 
+install.packages("gsub")
+library(gsub)
+
+energy.flow.input.gathered$Category.to.plot <- gsub("Number.of.Genomes", "Number of Genomes", energy.flow.input.gathered$Category.to.plot)
+energy.flow.input.gathered$Category.to.plot <- gsub("Genome.Coverage", "Genome Coverage(%)", energy.flow.input.gathered$Category.to.plot)
+
+  
 library(forcats)
 plot1 <- ggplot(energy.flow.input.gathered, aes(x=Reaction_Letter_Long_f, y=value.to.plot))+
   geom_bar(stat="identity",position=position_dodge())+
-  facet_grid(Category.to.plot~category_f, scales="free")+
+  facet_grid(Category.to.plot~category_f, scales="free", switch="y")+
   theme_bw()+
-  theme(axis.text.x = element_text(angle = 25, hjust = 1))+
-  ylab("Number of Genome or Genome coverage")+
+  theme(axis.text.x = element_text(angle = 25, hjust = 1),
+        strip.placement = "outside")+
+  ylab("Value")+
   xlab("Reaction identifier")+
   ggtitle("Input 1")
 
