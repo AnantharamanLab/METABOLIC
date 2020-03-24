@@ -132,14 +132,19 @@ energy.flow.input.gathered.second$Reaction_Letter_Long_f <- factor(energy.flow.i
 # Now we want to put AG oligosacchahride degradation into one category:
 energy.flow.input.gathered.second$short_category_name <- gsub('AG-\noligosaccharide\ndegradation.*', 'AG-\noligosaccharide\ndegradation', energy.flow.input.gathered.second$short_category_name)  
 
+# Change y labels:
+energy.flow.input.gathered.second$Category.to.plot <- gsub("Number.of.Genomes", "Number of Genomes", energy.flow.input.gathered$Category.to.plot)
+energy.flow.input.gathered.second$Category.to.plot <- gsub("Genome.Coverage", "Genome Coverage(%)", energy.flow.input.gathered$Category.to.plot)
+
 # plot second diagram:
 
 plot2 <- ggplot(energy.flow.input.gathered.second, aes(x=Reaction_Letter_Long_f, y=value.to.plot))+
   geom_bar(stat="identity",position=position_dodge())+
-  facet_grid(Category.to.plot~short_category_name, scales="free")+
+  facet_grid(Category.to.plot~short_category_name, scales="free", switch="y")+
   theme_bw()+
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
-        strip.text.x = element_text(size = 8))+
+        strip.text.x = element_text(size = 8),
+        strip.placement = "outside")+
   ylab("Number of Genome or Genome coverage")+
   xlab("Reaction identifier")+
   ggtitle("Input 2")
