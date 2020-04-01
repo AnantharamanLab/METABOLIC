@@ -3,7 +3,7 @@
 
 # METABOLIC
 **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
-Version 2.0
+Version 3.0
 
 This software enables the prediction of metabolic and biogeochemical functional trait profiles to any given genome datasets. These genome datasets can either be metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes. It can also calculate the genome coverage. The information is parsed and diagrams for elemental/biogeochemical cycling pathways (currently Nitrogen, Carbon, Sulfur and "other") are produced.  
 
@@ -261,7 +261,7 @@ Fix the output folder problem, the perl script could be called in another place 
 v2.0 -- Nov 5, 2019 --     
 Add more functions on visualization, add more annotations, make the software faster    
 v3.0 -- Feb 18, 2020 --     
-Reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
+Provide an option to let the user reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
 Change HMMER to v3.3 to speed up the calculation
 
 
