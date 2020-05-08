@@ -73,9 +73,6 @@ energy.flow.input.gathered$category_f =
 
 energy.flow.input.gathered$Reaction_Letter_Long_f <- factor(energy.flow.input.gathered$Reaction_Letter_Long, levels = order.1)
 
-install.packages("gsub")
-library(gsub)
-
 energy.flow.input.gathered$Category.to.plot <- gsub("Number.of.Genomes", "Number of Genomes", energy.flow.input.gathered$Category.to.plot)
 energy.flow.input.gathered$Category.to.plot <- gsub("Genome.Coverage", "Genome Coverage(%)", energy.flow.input.gathered$Category.to.plot)
 
