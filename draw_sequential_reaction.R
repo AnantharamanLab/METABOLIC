@@ -13,12 +13,12 @@ plots.folder.path <- userprefs[6] # Name of new directory to make to store thing
 
 
 ## Loading test data:
-R_input_1 <- "R_hm_input_1.txt"
-R_input_2 <-"R_hm_input_2.txt"
-Sequential_info <- "Sequential-transformations.tsv"
-order_input1 <- "order_of_input_01.txt"
-order_input2 <- "order_of_input_02.txt"
-plots.folder.path <- "newdir"
+#R_input_1 <- "R_hm_input_1.txt"
+#R_input_2 <-"R_hm_input_2.txt"
+#Sequential_info <- "Sequential-transformations.tsv"
+#order_input1 <- "order_of_input_01.txt"
+#order_input2 <- "order_of_input_02.txt"
+#plots.folder.path <- "newdir"
   
 if (length(userprefs) > 6){
   mirror.location <- userprefs[7]
