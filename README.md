@@ -89,7 +89,7 @@ If you are using this program, please consider citing our preprint, available on
     wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz  
     gzip -d ko_list.gz  
     tar xzf profiles.tar.gz; rm profiles.tar.gz  
-    mv All_Module_KO_ids.txt profiles  
+    mv ../All_Module_KO_ids.txt profiles  
     cd profiles  
     cp ../../Accessory_scripts/batch_hmmpress.pl ./  
     perl batch_hmmpress.pl  
