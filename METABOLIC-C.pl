@@ -304,7 +304,7 @@ while (<IN>){
 							if ($tmp[8] >= $threshold){
 								my ($hmm_basename) = $hmm =~ /^(.+?)\.hmm/; 
 								if (exists $Motif{$hmm_basename}){
-									#print "$hmm_basename in $gn_id motif validaiton is effective\n";
+									#print "$hmm_basename in $gn_id motif validation is effective\n";
 									my $seq; # the protein seq
 									my $motif = $Motif{$hmm_basename};
 									my $motif_anti = "111"; # the meaningless numbers that serve as the anti motif
@@ -315,21 +315,29 @@ while (<IN>){
 									my %Seq_gn = _store_seq("$input_protein_folder/$gn_id.faa"); # get the genome sequences
 									$seq = $Seq_gn{">$tmp[0]"};
 									if ($seq =~ /$motif/ and $seq !~ /$motif_anti/){
-										push @Hits, $tmp[0];
+										if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
+											$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
+										}else{
+											$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
+										}
 										$Hmmscan_result{$gn_id}{$hmm}++; 
 										#print "$hmm_basename in $gn_id has been tested, and it has passed\n";
 									}else{
 										#print "$hmm_basename in $gn_id has been tested, and it has failed\n";
 									}
 								}else{
-									push @Hits, $tmp[0];
+									if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
+										$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
+									}else{
+										$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
+									}
 									$Hmmscan_result{$gn_id}{$hmm}++;
 								}
 							}
 						}else{
 							my ($hmm_basename) = $hmm =~ /^(.+?)\.hmm/; 
 							if (exists $Motif{$hmm_basename}){
-								#print "$hmm_basename in $gn_id motif validaiton is effective\n";
+								#print "$hmm_basename in $gn_id motif validation is effective\n";
 								my $seq; # the protein seq
 								my $motif = $Motif{$hmm_basename};
 								my $motif_anti = "111"; # the meaningless numbers that serve as the anti motif
@@ -340,21 +348,28 @@ while (<IN>){
 								my %Seq_gn = _store_seq("$input_protein_folder/$gn_id.faa"); # get the genome sequences
 								$seq = $Seq_gn{">$tmp[0]"};
 								if ($seq =~ /$motif/ and $seq !~ /$motif_anti/){
-									push @Hits, $tmp[0];
+									if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
+										$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
+									}else{
+										$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
+									}
 									$Hmmscan_result{$gn_id}{$hmm}++; 
 									#print "$hmm_basename in $gn_id has been tested, and it has passed\n";
 								}else{
 									#print "$hmm_basename in $gn_id has been tested, and it has failed\n";
 								}
 							}else{
-								push @Hits, $tmp[0];
+								if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
+									$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
+								}else{
+									$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
+								}
 								$Hmmscan_result{$gn_id}{$hmm}++;
 							}
 						}
                 }
         }
         close INN;
-        $Hmmscan_hits{$gn_id}{$hmm} = join("\,",@Hits);
 }
 close IN;
 
@@ -1317,7 +1332,7 @@ if ($omic_reads_parameters){
 `Rscript $METABOLIC_dir/draw_sequential_reaction.R $output/R_hm_input_1.txt $output/R_hm_input_2.txt $R_mh_tsv $R_order_of_input_01 $R_order_of_input_02 $output/newdir > /dev/null 2>/dev/null`;
 `mv $output/newdir/Bar_plot/bar_plot_input_1.pdf $output/Sequential_transformation_01.pdf`;
 `mv $output/newdir/Bar_plot/bar_plot_input_2.pdf $output/Sequential_transformation_02.pdf`;
-`rm -r $output/newdir`;
+#`rm -r $output/newdir`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing metabolic handoff diagrams finished\n";

@@ -291,7 +291,6 @@ while (<IN>){
 		$Hmm_id{$hmm} = 1;
 		#my ($gn_id) = $file_name =~ /\.hmm\.(.+?)\.hmmsearch_result/;
 		my $gn_id = "";
-        my @Hits = ();
         open INN, "$file_name";
         while (<INN>){
                 chomp;
@@ -303,7 +302,7 @@ while (<IN>){
 							if ($tmp[8] >= $threshold){
 								my ($hmm_basename) = $hmm =~ /^(.+?)\.hmm/; 
 								if (exists $Motif{$hmm_basename}){
-									#print "$hmm_basename in $gn_id motif validaiton is effective\n";
+									#print "$hmm_basename in $gn_id motif validation is effective\n";
 									my $seq; # the protein seq
 									my $motif = $Motif{$hmm_basename};
 									my $motif_anti = "111"; # the meaningless numbers that serve as the anti motif
@@ -314,21 +313,29 @@ while (<IN>){
 									my %Seq_gn = _store_seq("$input_protein_folder/$gn_id.faa"); # get the genome sequences
 									$seq = $Seq_gn{">$tmp[0]"};
 									if ($seq =~ /$motif/ and $seq !~ /$motif_anti/){
-										push @Hits, $tmp[0];
+										if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
+											$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
+										}else{
+											$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
+										}
 										$Hmmscan_result{$gn_id}{$hmm}++; 
 										#print "$hmm_basename in $gn_id has been tested, and it has passed\n";
 									}else{
 										#print "$hmm_basename in $gn_id has been tested, and it has failed\n";
 									}
 								}else{
-									push @Hits, $tmp[0];
+									if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
+										$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
+									}else{
+										$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
+									}
 									$Hmmscan_result{$gn_id}{$hmm}++;
 								}
 							}
 						}else{
 							my ($hmm_basename) = $hmm =~ /^(.+?)\.hmm/; 
 							if (exists $Motif{$hmm_basename}){
-								#print "$hmm_basename in $gn_id motif validaiton is effective\n";
+								#print "$hmm_basename in $gn_id motif validation is effective\n";
 								my $seq; # the protein seq
 								my $motif = $Motif{$hmm_basename};
 								my $motif_anti = "111"; # the meaningless numbers that serve as the anti motif
@@ -339,21 +346,28 @@ while (<IN>){
 								my %Seq_gn = _store_seq("$input_protein_folder/$gn_id.faa"); # get the genome sequences
 								$seq = $Seq_gn{">$tmp[0]"};
 								if ($seq =~ /$motif/ and $seq !~ /$motif_anti/){
-									push @Hits, $tmp[0];
+									if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
+										$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
+									}else{
+										$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
+									}
 									$Hmmscan_result{$gn_id}{$hmm}++; 
 									#print "$hmm_basename in $gn_id has been tested, and it has passed\n";
 								}else{
 									#print "$hmm_basename in $gn_id has been tested, and it has failed\n";
 								}
 							}else{
-								push @Hits, $tmp[0];
+								if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
+									$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
+								}else{
+									$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
+								}
 								$Hmmscan_result{$gn_id}{$hmm}++;
 							}
-						}
+						}						
                 }
         }
-        close INN;
-        $Hmmscan_hits{$gn_id}{$hmm} = join("\,",@Hits);
+        close INN;		
 }
 close IN;
 
