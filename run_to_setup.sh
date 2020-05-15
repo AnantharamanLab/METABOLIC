@@ -1,6 +1,6 @@
 tar zxvf Accessory_scripts.tgz
 tar zxvf METABOLIC_hmm_db.tgz
-tar zxvf METABOLIC_temp_and_db.tgz
+tar zxvf METABOLIC_template_and_database.tgz
 tar zxvf Motif.tgz
 mkdir kofam_database  
 cd kofam_database  

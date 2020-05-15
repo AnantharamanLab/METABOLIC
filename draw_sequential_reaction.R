@@ -1,5 +1,5 @@
 # Patricia Tran
-# Oct 2019. Updated March 20, 2020
+# Oct 2019. Updated May 10, 2020
 # Bar plot of metabolic tradeoffs:
 
 # Receive arguments from command line:
@@ -11,6 +11,15 @@ order_input1 <- userprefs[4] # Path to order_of_input_01.txt
 order_input2 <- userprefs[5] # Path to order_of_input_02.txt
 plots.folder.path <- userprefs[6] # Name of new directory to make to store things
 
+
+## Loading test data:
+#R_input_1 <- "R_hm_input_1.txt"
+#R_input_2 <-"R_hm_input_2.txt"
+#Sequential_info <- "Sequential-transformations.tsv"
+#order_input1 <- "order_of_input_01.txt"
+#order_input2 <- "order_of_input_02.txt"
+#plots.folder.path <- "newdir"
+  
 if (length(userprefs) > 6){
   mirror.location <- userprefs[7]
 }else{
@@ -88,12 +97,11 @@ plot1 <- ggplot(energy.flow.input.gathered, aes(x=Reaction_Letter_Long_f, y=valu
   xlab("Reaction identifier")+
   ggtitle("Input 1")
 
+#plot1
 plot.name <- paste(plot.folder, "/bar_plot_input_1.pdf", sep="")
 pdf(file = plot.name, width = 11, height = 8.5, onefile=FALSE)
 plot1
 dev.off()
-
-#scale_fill_discrete(name = "Information shown", labels = c("Genome Coverage", "Number of Genomes"))
 
 # Do the same thing for Input #2:
 
@@ -130,8 +138,9 @@ energy.flow.input.gathered.second$Reaction_Letter_Long_f <- factor(energy.flow.i
 energy.flow.input.gathered.second$short_category_name <- gsub('AG-\noligosaccharide\ndegradation.*', 'AG-\noligosaccharide\ndegradation', energy.flow.input.gathered.second$short_category_name)  
 
 # Change y labels:
-energy.flow.input.gathered.second$Category.to.plot <- gsub("Number.of.Genomes", "Number of Genomes", energy.flow.input.gathered$Category.to.plot)
-energy.flow.input.gathered.second$Category.to.plot <- gsub("Genome.Coverage", "Genome Coverage(%)", energy.flow.input.gathered$Category.to.plot)
+# FIX THIS
+energy.flow.input.gathered.second$Category.to.plot <- gsub("Number.of.Genomes", "Number of Genomes", energy.flow.input.gathered.second$Category.to.plot)
+energy.flow.input.gathered.second$Category.to.plot <- gsub("Genome.Coverage", "Genome Coverage(%)", energy.flow.input.gathered.second$Category.to.plot)
 
 # plot second diagram:
 
@@ -151,6 +160,5 @@ pdf(file = plot.name, width = 11, height = 8.5, onefile=FALSE)
 plot2
 dev.off()
 
-#library(ggpubr)
-
-#ggarrange(plot1,plot2, ncol = 1, nrow=2, labels=c("A","B"))
+print("Finished making the Sequential Reaction Plots")
+#plot2
