@@ -1332,7 +1332,7 @@ if ($omic_reads_parameters){
 `Rscript $METABOLIC_dir/draw_sequential_reaction.R $output/R_hm_input_1.txt $output/R_hm_input_2.txt $R_mh_tsv $R_order_of_input_01 $R_order_of_input_02 $output/newdir > /dev/null 2>/dev/null`;
 `mv $output/newdir/Bar_plot/bar_plot_input_1.pdf $output/Sequential_transformation_01.pdf`;
 `mv $output/newdir/Bar_plot/bar_plot_input_2.pdf $output/Sequential_transformation_02.pdf`;
-#`rm -r $output/newdir`;
+`rm -r $output/newdir`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing metabolic handoff diagrams finished\n";
