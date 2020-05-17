@@ -55,7 +55,7 @@ use Parallel::ForkManager;
         
 =head1 OPTIONS
 
-	-t         or -cpu            [integer] The cpu numbers to run the hmmsearch (default: 40)
+	-t         or -cpu            [integer] The cpu numbers to run the hmmsearch (default: 20)
         -m-cutoff  or -module-cutoff  [float]   The cutoff value to assign the presence of a specific KEGG module (KEGG module step present numbers / KEGG module step total number) (default: 0.75) 
         -m         or METABOLIC-dir   [string]  The directory that you store your METABOLIC database folers and scripts (default: '.') 
         -in                           [string]  The folder pf given genome faa files [should also give the genome fasta files and genone gene files if the (meta)genome/(meta)transciptome datasets are included]
@@ -86,7 +86,7 @@ use Parallel::ForkManager;
 
 #The options 
 # option variables with default value
-my $cpu_numbers = 40; #parallel running cpu numbers
+my $cpu_numbers = 20; #parallel running cpu numbers
 my $module_cutoff = 0.75; # The cutoff value to assign the existence of a module
 my $METABOLIC_dir = '.' ; # The working directory
 my $input_protein_folder;  #input microbial genome protein files
