@@ -135,7 +135,7 @@ q()
 ```
 git clone https://github.com/AnantharamanLab/METABOLIC.git
 ```    
-&emsp;&emsp;or click the green buttom "download ZIP" folder at the top of the github and unzip the downloaded file.   
+&emsp;&emsp;or click the green button "download ZIP" folder at the top of the github and unzip the downloaded file.   
 &emsp;&emsp;The perl and R scripts and dependent databases should be kept in the same directory.  
 
 *NOTE: Before following the next steps, make sure your working directory is the directory that was created by the METABOLIC download, that is, the directory containing the main scripts for METABOLIC (METABOLIC-G.pl, METABOLIC-C.pl, etc.).*
@@ -147,8 +147,6 @@ For steps 2-8, we provide a "run_to_setup.sh" script along with the data downloa
 sh run_to_setup.sh
 ```
 
-*The directory containing all METABOLIC scripts and dependent databases can be added to the system path in order to allow for the main scripts to be run from any directory*
-
 
 ## <a name="running_metabolic"></a> Running METABOLIC: 
 
@@ -156,24 +154,24 @@ sh run_to_setup.sh
 
 #### <a name="flags"></a> All Required and Optional Flags:
 
-* **-in-gn [required]** Defines the location of the genome fasta files ending with ".fasta" to be run by this program
-* **-m [required]** Defines the location of all dependent databases and scripts, which are downloaded with the program or installed above (Default './')
+To view the options that METABOLIC-c.pl and METABOLIC-g.pl have type:
+
+```
+perl METABOLIC-G.pl -help
+perl METABOLIC-C.pl -help
+```
+
+* **-in-gn [required if you are starting from nucleotide fasta files]** Defines the location of the genome fasta files ending with ".fasta" to be run by this program
+* **-in [required if you are starting from faa files]** Defines the location of the genome amino acid files ending with ".faa" to be run by this program
+* **-m [required]** Defines the location of the all dependent databases and scripts, which are downloaded with the program or installed above (Default './')
 * **-r [required]** Defines the path to a text file containing the location of paried reads
-* **-t [optional]** Defines the number of threads to run the program with (Default: 40)
+* **-t [optional]** Defines the number of threads to run the program with (Default: 20)
 * **-m-cutoff [optional]** Defines the fraction of KEGG module steps present to designate a KEGG module as present (Default: 0.75)
-* **-in [optional]**
 * **-kofam-db [optional]** Defines the use of the full ("full") or reduced ("small") KOfam database by the program (Default: 'full')
 * **-p [optional]** Defines the prodigal method used to annotate ORFs ("meta" or "single")
 * **-o [optional]** Defines the output directory to be created by the program (Default: current directory)
 
-1. The directory specified by the "-in-gn" flag should contain nucleotide genomes sequences with the file extension ".fasta", and if you are also supplying amino acid fasta files for each genome, these should be contained within the same directory and have the file extension ".faa". The names of the amino acid fasta files and the nucleotide fasta files for each genome should have the same base name but different file extensions.
-```
-Example:
-genome_1.fasta
-genome_1.faa
-genome_2.fasta
-genome_2.faa
-```
+1. The directory specified by the "-in-gn" flag should contain nucleotide sequences for your genomes with the file extension ".fasta". If you are supplying amino acid fasta files for each genome, these should be contained within a directory and have the file extension ".faa", and you will be using the "-in" option instead. Ensure that the fasta headers of each .fasta or .faa file is unique, and that your file names do not contains spaces.
 
 2. The "-r" flag allows input of a text file defining the path of metagenomic reads (if running METABOLIC-C). The metagenomic reads refer to the metagenomic read datasets that you used to generate the MAGs. Sets of paired reads are entered in one line, separated by a ",". A sample for this text file is as follows:     
 ```
@@ -181,7 +179,7 @@ genome_2.faa
 SRR3577362_sub_1.fastq,SRR3577362_sub_2.fastq
 SRR3577362_sub2_1.fastq,SRR3577362_sub2_2.fastq
 ```
-&emsp;&emsp;*Note that the two different sets of paired reads are separated by a newspace character*
+&emsp;&emsp;*Note that the two different sets of paired reads are separated by a line return (new line)*
 
 #### Running Test Data:
 
@@ -191,9 +189,14 @@ The main METABOLIC directory also contains a set of 5 genomes, which can be used
 
 The main scripts that should be used to run the program are METABOLIC-G.pl or METABOLIC-C.pl.  
 
-In order to run METABOLIC-G, **AT LEAST** the following flags should be used for METABOLIC-G:
+In order to run METABOLIC-G starting from **nucleotide** sequences, **AT LEAST** the following flags should be used for METABOLIC-G:
 ```
 METABOLIC-G.pl -in-gn [path_to_genome_files] -m [path_to_METABOLIC_directory] -o [output_directory_to_be_created]
+```
+
+In order to run METABOLIC-G starting from **amino acid** sequences, **AT LEAST** the following flags should be used for METABOLIC-G:
+```
+METABOLIC-G.pl -in [path_to_genome_files] -m [path_to_METABOLIC_directory] -o [output_directory_to_be_created]
 ```
 
 In order to run METABOLIC-C, **AT LEAST** the following flags should be used for METABOLIC-C:
@@ -203,13 +206,16 @@ METABOLIC-C.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -
 
 <br />
 
-We also offer a supplementary script titled "METABOLIC-C-jump.pl", which allows for the running of METABOLIC-C.pl with a reduced run time. This script bypasses some initial steps in the running of METABOLIC-C.pl if the `intermediate_files/` directory (See "METABOLIC Output Files" below) has already been generated by METABOLIC.  
+We also offer a supplementary script titled "METABOLIC-C-jump.pl", which allows for the running of METABOLIC-C.pl with a reduced run time. You can use METABOLIC-C-jump.pl if you have **previously run** METABOLIC-C.pl and the `intermediate_files/` directory (See "METABOLIC Output Files" below) has already been generated.
+
 <br />
-To run this script, make sure that the `intermediate_files/` directory is within a directory which will serve as the output directory for METABOLIC-C-jump.pl. To run this script, **AT LEAST** the following flags should be used:
+To run this script, make sure that the `intermediate_files/` directory is within a directory which will serve as the output directory [-o option] for METABOLIC-C-jump.pl. To run this script, **AT LEAST** the following flags should be used:
+
 ```
 METABOLIC-C-jump.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -m [path_to_METABOLIC_directory] -o [premade_output_directory]
 ```
-&emsp;*Note: This script can be used to re-run METABOLIC only if errors arose **AFTER** generation of all intermediate files*
+
+&emsp;*Note: METABOLIC-C-jump.pl can be used to re-run METABOLIC only if errors arose **AFTER** generation of all intermediate files*
 
 ## <a name="metabolic_output"></a> METABOLIC Output Files:
 
