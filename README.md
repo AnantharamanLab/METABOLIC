@@ -3,184 +3,339 @@
 
 # METABOLIC
 **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
-Version 3.0
+Current Version: 3.0
 
-This software enables the prediction of metabolic and biogeochemical functional trait profiles to any given genome datasets. These genome datasets can either be metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes. It can also calculate the genome coverage. The information is parsed and diagrams for elemental/biogeochemical cycling pathways (currently Nitrogen, Carbon, Sulfur and "other") are produced.  
+This software enables the prediction of metabolic and biogeochemical functional trait profiles to any given genome datasets. These genome datasets can either be metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes. METABOLIC has two main implementations, which are METABOLIC-G and METABOLIC-C. METABOLIC-G.pl allows for generation of metabolic profiles and biogeochemical cycling diagrams of input genomes and does not require input of sequencing reads. METABOLIC-C.pl generates the same output as METABOLIC-G.pl, but as it allows for the input of metagenomic read data, it will generate information pertaining to community metabolism. It can also calculate the genome coverage. The information is parsed and diagrams for elemental/biogeochemical cycling pathways (currently Nitrogen, Carbon, Sulfur and "other") are produced.  
 
-## Copyright:  
-Zhichao Zhou, zczhou2017@gmail.com  
-Patricia Tran, ptran5@wisc.edu  
-Karthik Anantharaman, karthik@bact.wisc.edu  
-Anantharaman Microbiome Laboratory  
-Department of Bacteriology, University of Wisconsin, Madison 
+| Program Name|Program Description |
+|---|---|
+|METABOLIC-G.pl|Allows for classification of the metabolic capabilities of input genomes. |
+|METABOLIC-C.pl|Allows for classification of the metabolic capabilities of input genomes, <br />calculation of genome coverage, creation of biogeochemical cycling diagrams,<br /> and visualization of community metabolic interactions. |
 
-
-If you are using this program, please consider citing our preprint, available on [BioRxiv](https://www.biorxiv.org/content/10.1101/761643v1)
+If you are using this program, please consider citing our preprint, available on [BioRxiv](https://www.biorxiv.org/content/10.1101/761643v1):
 ```
-    Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman K. "METABOLIC: A scalable high-throughput metabolic and biogeochemical functional trait profiler based on microbial genomes" (2019). BioRxiv doi: https://doi.org/10.1101/761643
+Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman K. "METABOLIC: A scalable high-throughput metabolic and biogeochemical functional trait profiler based on microbial genomes" (2019). BioRxiv doi: https://doi.org/10.1101/761643
 ```
 
-## Installation instructions
+## Table of Contents:
+1. [Version History](#version_updates)
+2. [System Requirements](#system_requirements)
+3. [Dependencies Overview](#dependencies_overview)
+4. [Detailed Dependencies](#dependencies_detailed)
+5. [Installation Instructions](#install_instructions)  
+&emsp;a. [Quick Installation](#quick_install)  
+&emsp;b. [Detailed Installation](#det_install)  
+6. [Running METABOLIC](#running_metabolic)  
+&emsp;a. [Required and Optional Flags](#flags)  
+&emsp;b. [How to Run](#running)  
+7. [METABOLIC Output Descriptions](#metabolic_output)  
+&emsp;a. [Outputs Overview](#output_overview)  
+&emsp;b. [Outputs Detailed](#output_detailed)  
+8. [Copyright](#copyright)
 
-1. Go to where you want the program to be and clone the github repository or click the green buttom "download ZIP" folder, and unzip. The perl and R scripts and dependent databases should be kept in the same directory.
+## <a name="version_updates"></a> Version History:
+v3.0 -- Feb 18, 2020 --     
+* Provide an option to let the user reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
+* Change HMMER to v3.3 to speed up the calculation<br />
 
+v2.0 -- Nov 5, 2019 --     
+* Add more functions on visualization, add more annotations, make the software faster<br /> 
+
+v1.3 -- Sep 5, 2019 --     
+* Fix the output folder problem, the perl script could be called in another place instead of the original place<br />
+
+v1.2 -- Sep 5, 2019 --    
+* Fix the prodigal parallel run, change "working-dir" to "METABOLIC-dir"<br />
+
+v1.1 -- Sep 4, 2019 --     
+* Fix the parallel problem, change from hmmscan to hmmsearch, and update the "METABOLIC_template_and_database"<br />   
+
+## <a name="system_requirements"></a> System Requirements:
+
+**System Memory Requirements:**  
+- Due to requirements of some of this program's dependencies, it is highly recommended that METABOLIC-C is run on a system containing at least 100 Gb of memory.
+- METABOLIC-G is not as demanding as METABOLIC-C and requires significantly less memory to run.
+
+**System Storage Requirements:**
+|Necessary Databases|Approximate System Storage Required|
+|---|---|
+|METABOLIC Data|7.69 Gb|
+|GTDB-Tk Reference Data|28 Gb|
+
+## <a name="dependencies_overview"></a> Dependencies Overview:
+1. **[Perl](https://www.perl.org) (>= v5.010)**
+2. **[HMMER](http://hmmer.org/) (>= v3.1b2)**
+3. **[Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)**
+4. **[Sambamba](https://github.com/biod/sambamba) (>= v0.7.0)**
+5. **[BAMtools](https://github.com/pezmaster31/bamtools/wiki) (>= v2.4.0)**
+6. **[CoverM](https://github.com/wwood/CoverM)**
+7. **[R](https://www.r-project.org/) (>= 3.6.0)**
+8. **[Diamond](https://github.com/bbuchfink/diamond)**
+9. **[Samtools](https://www.htslib.org)**
+10. **[Bowtie2](https://github.com/BenLangmead/bowtie2)**
+11. **[Gtdb-Tk](https://github.com/cerebis/GtdbTk)**
+
+## <a name="dependencies_detailed"></a> Dependencies Detailed:
+
+**Perl Modules:**<br />
+&emsp;&emsp;To install, use the cpan shell by entering "perl -MCPAN -e shell cpan" and then entering<br />
+&emsp;&emsp;"install [Module Name]", or install by using "cpan -i [Module Name]", or by entering<br />
+&emsp;&emsp;"cpanm [Module Name]".<br />
 ```
-    git clone https://github.com/AnantharamanLab/METABOLIC.git
+Example 1:
+perl -MCPAN -e shell cpan
+install Data::Dumper
+
+Example 2:
+cpan -i Data::Dumper
+
+Example 3:
+cpanm Data::Dumper
 ```
 
-2. METABOLIC requires the following programs to be added to your system path:  
+&emsp;&emsp;&emsp;&emsp;1. *Data::Dumper*<br />
+&emsp;&emsp;&emsp;&emsp;2. *POSIX*<br />
+&emsp;&emsp;&emsp;&emsp;3. *Excel::Writer::XLSX*<br />
+&emsp;&emsp;&emsp;&emsp;4. *Getopt::Long*<br />
+&emsp;&emsp;&emsp;&emsp;5. *Statistics::Descriptive*<br />
+&emsp;&emsp;&emsp;&emsp;6. *Array::Split*<br />
+&emsp;&emsp;&emsp;&emsp;7. *Bio::SeqIO*<br />
+&emsp;&emsp;&emsp;&emsp;8. *Bio::Perl*<br />
+&emsp;&emsp;&emsp;&emsp;9. *Bio::Tools::CodonTable*<br />
+&emsp;&emsp;&emsp;&emsp;10. *Carp*<br />
 
-    2.1. Perl (>= v5.010)  
-      ```
-      Perl modules:
-      (to install, use: "perl -MCPAN -e shell cpan" or "cpan -i Data::Dumper"; to check if present, use "perldoc -l Data::Dumper")    
-         use Data::Dumper;    
-         use POSIX qw(strftime);    
-         use Excel::Writer::XLSX;    
-         use Getopt::Long;    
-         use Statistics::Descriptive;  
-         use Array::Split qw(split_by split_into);
-         use Bio::SeqIO;
-         use Bio::Perl;
-         use Bio::Tools::CodonTable;
-         use Carp;
-     ```    
-    2.2. [HMMER](http://hmmer.org/) (>= v3.1b2)   
-    2.3. [Prodigal](https://github.com/hyattpd/Prodigal) (>= v2.6.3)        
-    &emsp;Remarks: executable must be named prodigal and not prodigal.linux  
-    2.4. [Sambamba](https://github.com/biod/sambamba) (>= v0.7.0)  
-    2.5. [BAMtools](https://github.com/pezmaster31/bamtools/wiki) (>= v2.4.0)   
-    2.6. [CoverM](https://github.com/wwood/CoverM)  
-    2.7. [R](https://www.r-project.org/) (>= 3.6.0)  
-        &emsp;Installing required R packages using Rscript:  
-        &emsp;Copy and paste the following command into your terminal window (may require super user permissions to run):  
-  
+**R Packages**  
+&emsp;&emsp;To install, open the R command line interface by entering "R" into the command line, and then enter<br />
+&emsp;&emsp;"install.packages("[Package Name]")".<br />
 ```
-    Rscript -e 'install.packages("diagram", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("forcats", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("digest", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("htmltools", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("rmarkdown", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("reprex", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("tidyverse", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("stringi", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("ggthemes", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("ggalluvial", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("reshape2", repos = "http://cran.us.r-project.org")'    
-    Rscript -e 'install.packages("ggraph", repos = "http://cran.us.r-project.org")'    
+Example:
+R
+install.packages("diagram")
+```
+&emsp;&emsp;&emsp;&emsp;1. *diagram*<br />
+&emsp;&emsp;&emsp;&emsp;2. *forcats*<br />
+&emsp;&emsp;&emsp;&emsp;3. *digest*<br />
+&emsp;&emsp;&emsp;&emsp;4. *htmltools*<br />
+&emsp;&emsp;&emsp;&emsp;5. *rmarkdown*<br />
+&emsp;&emsp;&emsp;&emsp;6. *reprex*<br />
+&emsp;&emsp;&emsp;&emsp;7. *tidyverse*<br />
+&emsp;&emsp;&emsp;&emsp;8. *stringi*<br />
+&emsp;&emsp;&emsp;&emsp;9. *ggthemes*<br />
+&emsp;&emsp;&emsp;&emsp;10. *ggalluvial*<br />
+&emsp;&emsp;&emsp;&emsp;11. *reshape2*<br />
+&emsp;&emsp;&emsp;&emsp;12. *ggraph*<br />
+
+
+To ensure efficient and successful installation of METABOLIC, make sure that all dependencies are properly installed prior to download of the METABOLIC software.
+
+## <a name="install_instructions"></a> Installation Instructions:
+
+1. Go to where you want the program to be and clone the github repository by using the following command:  
+```
+git clone https://github.com/AnantharamanLab/METABOLIC.git
 ```    
+&emsp;&emsp;or click the green buttom "download ZIP" folder at the top of the github and unzip the downloaded file. The perl and R scripts  
+&emsp;&emsp;and dependent databases should be kept in the same directory.  
 
+*NOTE: Before following the next steps, make sure your working directory is the directory that was created by the METABOLIC download, that is, the directory containing the main scripts for METABOLIC (METABOLIC-C.pl, etc.).*
 
-   &emsp;&emsp;You can follow the install instructions of each program, or you could also    
-   &emsp;&emsp;install them via Conda and add them to your system path:  
-   &emsp;&emsp;Link: <https://anaconda.org>    
-   
-*NOTE: For steps 3-9, we provide a "run_to_setup.sh" script for easily setting up dependent databases.*
+#### <a name="quick_install"></a> Quick Installation:
+
+For steps 2-8, we provide a "run_to_setup.sh" script along with the data downloaded from the GitHub for easy setup of dependent databases. This can be run by using the following command:
+```
+sh run_to_setup.sh
+```
+
+#### <a name="det_install"></a> Detailed Installation:
+
+2. METABOLIC requires the KofamKOALA hmm and METABOLIC hmm databases ([KofamKOALA website](https://www.genome.jp/tools/kofamkoala/))
   
-3. METABOLIC requires the KofamKOALA hmm and METABOLIC hmm databases   
-  [KofamKOALA website](https://www.genome.jp/tools/kofamkoala/)
+&emsp;&emsp;&emsp;&emsp;2.1. While within the downloaded METABOLIC directory, copy and paste the following code into the  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;command line to install the dependent KofamKOALA HMM database files: 
+
+```
+mkdir kofam_database  
+cd kofam_database  
+wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz  
+wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz  
+gzip -d ko_list.gz  
+tar xzf profiles.tar.gz; rm profiles.tar.gz  
+mv All_Module_KO_ids.txt profiles  
+cd profiles  
+cp ../../Accessory_scripts/batch_hmmpress.pl ./  
+perl batch_hmmpress.pl  
+cd ../../
+```
+
+&emsp;&emsp;&emsp;&emsp;2.2. The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files,  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;self-parsed Pfam and TIRGfam files. It needs to be decompressed prior to  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;running. To decompress the database, enter the following code into the  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;command line:  
+
+```
+tar -zxvf METABOLIC_hmm_db.tgz
+```
   
-   3.1. Download KofamKOALA hmm database files: 
-
+3. METABOLIC uses the "METABOLIC_template_and_database" which contains the hmm result table and KEGG database information. METABOLIC_template_and_database.tgz needs to be decompressed prior to use. To decompress, enter the following code into the command line: 
 ```
-    mkdir kofam_database  
-    cd kofam_database  
-    wget -c ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz  
-    wget -c ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz  
-    gzip -d ko_list.gz  
-    tar xzf profiles.tar.gz; rm profiles.tar.gz  
-    mv ../All_Module_KO_ids.txt profiles  
-    cd profiles  
-    cp ../../Accessory_scripts/batch_hmmpress.pl ./  
-    perl batch_hmmpress.pl  
+tar -zxvf METABOLIC_template_and_database.tgz
 ```
 
-   &emsp; &emsp;3.2. The METABOLIC hmm database in "METABOLIC_hmm_db.tgz" contains custom hmm files, self-parsed Pfam and TIRGfam files. It needs to be decompressed to the folder "METABOLIC_hmm_db" and stays in the same directory of KofamKOALA hmm database and scripts.  
-
+4. Accessory scripts are kept within the METABOLIC download in a file titled "Accessory_scripts.tgz," which needs to be decompressed before use. To decompress, enter the following code into the command line:
 ```
-  tar zxvf METABOLIC_hmm_db.tgz
+tar -zxvf Accessory_scripts.tgz
 ```
-  
-4. METABOLIC uses the "METABOLIC_template_and_database" which contains the hmm result table and KEGG database information.  
-Decompress the METABOLIC_template_and_database.tgz to the folder "METABOLIC_template_and_database" and keep it in the same directory of KofamKOALA hmm database and scripts.  
+5. This software also contains a file titled "Motif.tgz," which needs to be decompressed before use. To decompress, enter the following code into the command line:
 ```
-  tar zxvf METABOLIC_template_and_database.tgz
+tar -zxvf Motif.tgz
 ```
-
-5. This software also contains "Accessory_scripts.gz", which needs to be decompressed before use. 
+6. You will need to download the most recent dbCAN-fam-HMMs.txt from the dbCAN2 database into a directory titled “dbCAN2” and parse the dbCAN-HMMdb.txt by running the script titled "batch_hmmpress_for_dbCAN2_HMMdb.pl". To do this, copy the following lines of code into the command line:
 ```
-  tar zxvf Accessory_scripts.tgz
+mkdir dbCAN2
+cd dbCAN2
+wget http://bcb.unl.edu/dbCAN2/download/Databases/dbCAN-old@UGA/dbCAN-fam-HMMs.txt
+perl ../Accessory_scripts/batch_hmmpress_for_dbCAN2_HMMdb.pl
+cd ../
 ```
-6. This software also contains "Motif.tgz", which needs to be decompressed before use. 
+7. You will need to download the MEROPS Peptidase Protein Sequences (https://www.ebi.ac.uk/merops/download_list.shtml, No. 3 option) and parse the pepunit.lib using DIAMOND to make the BLASTP database. To do this, copy the following commands into the command line:   
 ```
-  tar zxvf Motif.tgz
+mkdir MEROPS
+cd MEROPS
+wget ftp://ftp.ebi.ac.uk/pub/databases/merops/current_release/pepunit.lib
+perl ../Accessory_scripts/make_pepunit_db.pl
+cd ../
 ```
-7. You will download the most recent dbCAN-fam-HMMs.txt into a directory (that is made by you) “dbCAN2”. And parse the dbCAN-HMMdb.txt by "batch_hmmpress_for_dbCAN2_HMMdb.pl".    
+8. In order to test the program to make sure it runs correctly, this software contains test genomes within the  file "5_genomes_test.tgz", which needs to be decompressed before use. Within this compressed file are 5 genomes that can be used to test METABOLIC. To decompress, enter the following command within the command line:
 ```
-  mkdir dbCAN2
-  cd dbCAN2
-  wget http://bcb.unl.edu/dbCAN2/download/Databases/dbCAN-old@UGA/dbCAN-fam-HMMs.txt
-  perl ../Accessory_scripts/batch_hmmpress_for_dbCAN2_HMMdb.pl
-  cd ../
-```
-8. You will download the MEROPS Peptidase Protein Sequences (https://www.ebi.ac.uk/merops/download_list.shtml, No. 3 option). And parse the pepunit.lib by DIAMOND to make the BLASTP database.      
-```
-  mkdir MEROPS
-  cd MEROPS
-  wget ftp://ftp.ebi.ac.uk/pub/databases/merops/current_release/pepunit.lib
-  perl ../Accessory_scripts/make_pepunit_db.pl
-  cd ../
-```
-9. Finally, this software also contains "5_genomes_test.tgz", which needs to be decompressed before use. This is a set of 5 genomes that you can use to test run the program to see if it works correctly before running your real samples. (see end of page)
-```
-  tar zxvf 5_genomes_test.tgz
+tar -zxvf 5_genomes_test.tgz
 ```
 
+*The directory containing all METABOLIC scripts and dependent databases can be added to the system path in order to allow for the main scripts to be run from any directory*
 
 
-## Software work flow 
+## <a name="running_metabolic"></a> Running METABOLIC: 
 
 <img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
 
-## Preparing your files:
+#### <a name="flags"></a> All Required and Optional Flags:
 
-## Input Files
+* **-in-gn [required]** Defines the location of the genome fasta files ending with ".fasta" to be run by this program
+* **-in [optional]** Defines the location of the genome faa files ending with ".faa" to by run by this program
+* **-m [required]** Defines the location of all dependent databases and scripts, which are downloaded with the program or installed above (Default './')
+* **-r [required]** Defines the path to a text file containing the location of paried reads
+* **-t [optional]** Defines the number of threads to run the program with (Default: 40)
+* **-m-cutoff [optional]** Defines the fraction of KEGG module steps present to designate a KEGG module as present (Default: 0.75)
+* **-kofam-db [optional]** Defines the use of the full ("full") or reduced ("small") KOfam database by the program (Default: 'full')
+* **-p [optional]** Defines the prodigal method used to annotate ORFs ("meta" or "single")
+* **-o [optional]** Defines the output directory to be created by the program (Default: current directory)
 
-1. The genome files should end with ".fasta"; The protein files should end with ".faa". These files should be in one single folder, which you will use as an argument for the option "-in-gn" in the Perl script "perl METABOLIC_v1.3.pl" (See example at end of page)
-
-2. The "-o" or "-r" option requires inputting a text file to show the path of where the metagenomic reads are located. The metagenomics reads refer to the metagenomic read datasets that you used to generate the MAGs. A sample for this txt is as follows:     
+1. The directory specified by the "-in-gn" flag should contain nucleotide genomes sequences with the file extension ".fasta", and if you are also supplying amino acid fasta files for each genome, these should be contained within the same directory and have the file extension ".faa". The names of the amino acid fasta files and the nucleotide fasta files for each genome should have the same base name but different file extensions.
 ```
-#Reads pair name with complete pathway: 
-/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub_2.fastq
-/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_1.fastq,/slowdata/Reads/METABOLIC_test_reads/SRR3577362_sub2_2.fastq
+Example:
+genome_1.fasta
+genome_1.faa
+genome_2.fasta
+genome_2.faa
 ```
-&emsp;Please notice that the paired reads are in the same line.
 
+2. The "-r" flag allows input of a text file defining the path of metagenomic reads (if running METABOLIC-C). The metagenomic reads refer to the metagenomic read datasets that you used to generate the MAGs. Sets of paired reads are entered in one line, separated by a ",". A sample for this text file is as follows:     
+```
+#Read pairs: 
+SRR3577362_sub_1.fastq,SRR3577362_sub_2.fastq
+SRR3577362_sub2_1.fastq,SRR3577362_sub2_2.fastq
+```
+&emsp;&emsp;*Note that the two different sets of paired reads are separated by a newspace character*
 
-## Result files  
+#### <a name="running"></a> How To Run METABOLIC:
 
-After running the whole program (perl script) you will obtain the following files:
+The main scripts that should be used to run the program are METABOLIC-G.pl or METABOLIC-C.pl.  
 
-- **METABOLIC result table**
+In order to run METABOLIC-G, **AT LEAST** the following flags should be used for METABOLIC-G:
+```
+METABOLIC-G.pl -in-gn [path_to_genome_files] -m [path_to_METABOLIC_directory] -o [output_directory_to_be_created]
+```
+
+In order to run METABOLIC-C, **AT LEAST** the following flags should be used for METABOLIC-C:
+```
+METABOLIC-C.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -m [path_to_METABOLIC_directory] -o [output_directory_to_be_created]
+```
+
+<br />
+
+We also offer a supplementary script titled "METABOLIC-C-jump.pl", which allows for the running of METABOLIC-C.pl with a reduced run time. This script bypasses some initial steps in the running of METABOLIC-C.pl if the `intermediate_files/` directory has already been generated by METABOLIC.  
+<br />
+&emsp;To run this script, make sure that the `intermediate_files/` directory is within a directory which will serve as the output  
+&emsp;directory for METABOLIC-C-jump.pl. To run this script, **AT LEAST** the following flags should be used:
+```
+METABOLIC-C-jump.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -m [path_to_METABOLIC_directory] -o [premade_output_directory]
+```
+&emsp;*Note: This script can be used to re-run METABOLIC only if errors arose **AFTER** generation of all intermediate files*
+## <a name="metabolic_output"></a> METABOLIC Output Files:
+
+After running METABOLIC-G.pl you will obtain the following files:
+
+|Output File|File Description|
+|---|---|
+|||
+
+After running METABOLIC-C.pl you will obtain the following files:
+
+#### <a name="output_overview"></a> Output Files Overview:
+
+|  Output File  |   File Description   |
+|-------|---------|
+|All_gene_collections.gene|All genes combined as the mapping reference|
+|All_gene_collections.gene.scaffold.1.bt2|Mapping reference bowtie2 files |
+|All_gene_collections.gene.scaffold.2.bt2|Mapping reference bowtie2 files |
+|All_gene_collections.gene.scaffold.3.bt2|Mapping reference bowtie2 files |
+|All_gene_collections.gene.scaffold.4.bt2|Mapping reference bowtie2 files |
+|All_gene_collections.gene.scaffold.rev.1.bt2|Mapping reference bowtie2 files |
+|All_gene_collections.gene.scaffold.rev.2.bt2|Mapping reference bowtie2 files |
+|All_gene_collections_mapped.1.sorted.bam|Mapping result - sorted bam file |
+|All_gene_collections_mapped.1.sorted.bam.bai|Mapping result - sorted bam index file |
+|All_gene_collections_mapped.1.sorted.stat|Mapping result - mapping statistics |
+|All_gene_collections_mapped.depth.txt|The gene depth of all input genes |
+|[Each_hmm_faa/](#faa_collection)|The faa collection for each hmm file |
+|intermediate_files/|The hmmsearch, peptides (MEROPS), and CAZymes (dbCAN2) running intermediate files |
+|[KEGG_identifier_result/](#kegg_ident_result)|The hit and result of each genome by Kofam database |
+|Metabolic_energy_flow_input.txt|The input file for metabolic energy flow network |
+|[Metabolic_energy_flow.pdf](#energy_flow)|The resulted diagram for metabolic energy flow network |
+|[Metabolic_network/](#metabolic_networks)|Metabolic network result (metabolic connections, including those for each taxon and for the whole community) |
+|Metabolic_network_input.txt|The input file for drawing metabolic network diagrams |
+|[METABOLIC_result.xlsx](#metabolic_result_table)|The resulted excel file of METABOLIC |
+|R_hm_input_1.txt|The input file 1 of sequential transformation result |
+|R_hm_input_2.txt|The input file 2 of sequential transformation result |
+|R_input/|The input file of element cycling pathways (for each genome and the whole community) |
+|[R_output/](#r_output)|The output diagrams of element cycling pathways (for each genome and the whole community) |
+|[Sequential_transformation_01.pdf](#seq_diagram)|The output diagram 1 of sequential transformation result |
+|[Sequential_transformation_02.pdf](#seq_diagram)|The output diagram 2 of sequential transformation result |
+
+#### <a name="output_detailed"></a> Output Files Detailed:
+<br />
+
+- **<a name="metabolic_result_table"></a> METABOLIC result table (`METABOLIC_result.xlsx`)**
 
 This spreadsheet has 6 tabs:
 
-    - "HMMHitNum" = Number of HMM hits. if you scroll to the right with the coloured cells you'll find the presence/absence, the number of hits, and on which scaffold it was on. 
-    - "FunctionHit" = hits to custom HMM curated database. 
-    - "KEGGModuleHit" = KEGG module hits with modules and modules category names. 
-    - "KEGGModuleStepHit" = similar to the previous one but broken down into smaller categories (steps).    
-	- "dbCAN2Hit" = the dbCAN2 searching result - the CAZys numbers and hits.    
-	- "MEROPSHit" = the MEROPS peptidase searching result - the MEROPS peptidase numbers and hits.    
+1. "**HMMHitNum**" = Presence or absence of custom HMM profiles within each genome, the number of times the HMM profile was identified within a genome, and the scaffold on which the HMM profile was found.
+2. "**FunctionHit**" = Presence or absence of sets of proteins created with the custom HMM profiles for each genome.
+3. "**KEGGModuleHit**" = Annotation of each genome with modules from the KEGG database organized by metabolic category. 
+4. "**KEGGModuleStepHit**" = Presence or absence of modules from the KEGG database within each genome separated into the steps that make up the module.
+5. "**dbCAN2Hit**" = The dbCAN2 annotation results against all genomes (CAZy numbers and hits).     
+6. "**MEROPSHit**" = The MEROPS peptidase searching result (MEROPS peptidase numbers and hits).    
 
-In all cases if you scroll down you will see what "Gn00X" colnames refer to (they are based on your fasta file names for the genomes you gave. 
+*In all cases if you scroll down you will see what "Gn00X" colnames refer to (they are based on your fasta file names for the genomes you gave.* 
 
 
-- **Each hmm hit protein collection** 
+- **<a name="faa_collection"></a> Each HMM Profile Hit Amino Acid Sequence Collection (`Each_hmm_faa/`)** 
 
-- **KEGG_identifier_result**    
-the KEGG identifier searching result - KEGG identifier numbers and hits of each genome that could be used to visualize the pathways in KEGG Mapper
+A collection of all amino acid sequences extracted from the input genome .faa files that were identified as matches to the custom HMM profiles provided by METABOLIC.
 
-- **Elemental/Biogeochemical cycling pathways for each genome and a summary scheme (Both files and figures)**
+- **<a name="kegg_ident_result"></a> KEGG identifier results (`KEGG_identifier_result/`)**  
+
+The KEGG identifier searching result - KEGG identifier numbers and hits of each genome that could be used to visualize the pathways in KEGG Mapper
+
+- **<a name="r_output"></a> Elemental/Biogeochemical cycling pathways for each genome and a summary scheme (`R_output/`)**
 
 In the designated R output folder named "R_ouput", you will have the following files for EACH MAG: 
 ```
@@ -189,9 +344,9 @@ In the designated R output folder named "R_ouput", you will have the following f
   GenomeName.draw_other_cycle_single.PDF
   GenomeName.draw_carbon_cycle_single.PDF
 ```
-A red arrow means present, and a black arrow means absent.
+A red arrow designates presence of a pathway step and a black arrow means absence.
 
-If you input a "metagenomic reads" txt file, the software will help to calculate the gene abundance, then you will have have the following output as the summary diagram of pathways at a community scale:
+If you input a "metagenomic reads" txt file, the software will help to calculate the gene abundance, which will allow for generation of summary diagrams for pathways at a community scale:
 ```
   draw_sulfur_cycle_total.PDF
   draw_other_cycle_total.PDF
@@ -199,69 +354,28 @@ If you input a "metagenomic reads" txt file, the software will help to calculate
   draw_carbon_cycle_total.PDF
 ```
 
-You could also run the Rscript separately. Once you have the "R_input" folders, use it as input to visualize your results in the R script
-```
-Rscript draw_biogeochemical_cycles.R R_input R_Output TRUE
+- **<a name="seq_diagram"></a> Sequential transformation Diagrams (`Sequential_transformation_01.pdf`, `Sequential_transformation_02.pdf`)**   
 
-```
-The draw_biogeochemical_cycles.R command can be given as a relative paths or full path. 
+For Sequential transformation diagram, we have summarized and visualized the genome number and genome coverage (relative abundance of microorganism) of the microorganisms that were putatively involved in the sequential transformation of both important inorganic elements and organic compounds. 
 
-The first argument is the name of the folder with your inputs (in this case "R_input_files"). This is where your files that end with "...R_input.txt" and your "Total.R_input.txt" files are. **Note!: There is no forward slash after the folder name**. You can use full paths or relative paths to the input folder.
+The resulting files are `Sequential_transformation_01.pdf` and `Sequential_transformation_02.pdf`.        
 
-The second argument is the the name of the output folder where your images will be saved. The folder does not have to exist already (i.e. no need to mkdir first). **Note!: Once again there is no forward slash after the folder name**
+- **<a name="energy_flow"></a> Metabolic Energy Flow (`Metabolic_energy_flow.pdf`)**
 
-The last argument takes the value "TRUE" or "FALSE". If it is "TRUE" it means that you have inputted mapped reads in the beginning, and you will have a "Total.R_input.txt" file that can be parsed to make the biogeochemical cycles summary figures. This is important because the summary figure has coverage information (the 3rd column of that file).    
+For Metabolic energy flow diagram, a Sankey diagram is generated, representing the function fractions that are contributed by various microbial groups in a given community.   
 
-- **Community level diagrams: Sequential transformation, Metabolic energy flow and Metabolic network**
+The resulting file is `Metabolic_energy_flow.pdf`.
 
-The "Sequential transformation" diagram, "Metabolic energy flow" diagram and "Metabolic network" diagrams will be generated accordingly, including both the input txt files and the resulted Rscript-generated diagrams    
-```
-For Sequential transformation diagram, We have summarized and visualized the genome number and genome coverage (relative abundance of microorganism) of the microorganisms that were putatively involved in the sequential transformation of both important inorganic elements and organic compounds.    
-The resulted file is "Sequential_transformation_01.pdf" and "Sequential_transformation_02.pdf".        
-
-For Metabolic energy flow diagram, a Sankey diagram will be generated, representing the function fractions that are contributed by various microbial groups in a given community.    
-The resulted file is "Metabolic_network.pdf".
+- **<a name="metabolic_networks"></a> Metabolic Network Diagrams (`Metabolic_network/`)**
 
 For Metabolic network diagrams, diagrams representing metabolic connections of biogeochemical cycling steps at both phylum level and the whole community level will be generated.    
-The resulted files are placed in the folder of "Metabolic_network".
-```
+
+The resulted files are placed in the directory `Metabolic_network/`.
 
 
-## Instructions on running test files
-
-The test files are given in the folder "5_genomes_test.tgz", which includes the input five genome files and the running results.     
-One could use this to test whether you have successfully installed all the prerequisites in a proper way.   
-
-## Instructions on running real data
-Follow similar instructions for your real files.     
- 
-<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC-G.jpg" width="30%">  
-
-METABOLIC-G.pl is specifically for users who do not have metagenomic reads and only want to get metabolic profiles and biogeochemical cycling diagram of input genomes.
-```
-
-perl your/path/to/put/METABOLIC-folder/METABOLIC-G.pl -in-gn [folder with all your genomes] -t [number of threads] -o [METABOLIC output folder] -m your/path/to/put/METABOLIC-folder
-
-```
-<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC-C.jpg" width="30%">  
-
-METABOLIC-C.pl is specifically for users who have metagenomic reads and want to include them in the community analysis. 
-```
-
-perl your/path/to/put/METABOLIC-folder/METABOLIC-C.pl -in-gn [folder with all your genomes] -t [number of threads] -o [METABOLIC output folder] -m your/path/to/put/METABOLIC-folder -r [omic reads parameter file]
-
-```
-## Version updates
-v1.1 -- Sep 4, 2019 --     
-Fix the parallel problem, change from hmmscan to hmmsearch, and update the "METABOLIC_template_and_database"    
-v1.2 -- Sep 5, 2019 --    
-Fix the prodigal parallel run, change "working-dir" to "METABOLIC-dir"    
-v1.3 -- Sep 5, 2019 --     
-Fix the output folder problem, the perl script could be called in another place instead of the original place  
-v2.0 -- Nov 5, 2019 --     
-Add more functions on visualization, add more annotations, make the software faster    
-v3.0 -- Feb 18, 2020 --     
-Provide an option to let the user reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
-Change HMMER to v3.3 to speed up the calculation
-
-
+## <a name="copyright"></a> Copyright
+Zhichao Zhou, zczhou2017@gmail.com  
+Patricia Tran, ptran5@wisc.edu  
+Karthik Anantharaman, karthik@bact.wisc.edu  
+Anantharaman Microbiome Laboratory  
+Department of Bacteriology, University of Wisconsin, Madison 
