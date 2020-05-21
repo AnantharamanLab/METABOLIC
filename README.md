@@ -150,7 +150,7 @@ sh run_to_setup.sh
 
 ## <a name="running_metabolic"></a> Running METABOLIC: 
 
-<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/Software_work_flow.jpg" width="75%">
+<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLICWorkflow.png" width="75%">
 
 #### <a name="flags"></a> All Required and Optional Flags:
 
