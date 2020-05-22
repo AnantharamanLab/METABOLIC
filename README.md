@@ -142,7 +142,7 @@ git clone https://github.com/AnantharamanLab/METABOLIC.git
 
 #### <a name="quick_install"></a> Quick Installation:
 
-For steps 2-8, we provide a "run_to_setup.sh" script along with the data downloaded from the GitHub for easy setup of dependent databases. This can be run by using the following command:
+We provide a "run_to_setup.sh" script along with the data downloaded from the GitHub for easy setup of dependent databases. This can be run by using the following command:
 ```
 sh run_to_setup.sh
 ```
