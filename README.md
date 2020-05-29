@@ -126,6 +126,13 @@ install.packages("ggthemes")
 install.packages("ggalluvial")
 install.packages("reshape2")
 install.packages("ggraph")
+install.packages("pdftools")
+install.packages("igraph")
+install.packages("ggraph")
+install.packages("tidygraph")
+install.packages("stringr")
+install.packages("plyr")
+install.packages("dplyr")
 q()
 ```
 
