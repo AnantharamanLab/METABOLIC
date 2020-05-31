@@ -21,10 +21,10 @@ page5 <- read.delim(paste0(Dir_with_TSV_files,"METABOLIC_result_worksheet5.tsv")
 page6 <- read.delim(paste0(Dir_with_TSV_files,"METABOLIC_result_worksheet6.tsv"), sep="\t", header=TRUE)
 
 #devtools::install_github("colearendt/xlsx@develop")
-library(xlsx)
+#library(xlsx)
 
 #install.packages("rJava",type='source')
-library(rJava)
+#library(rJava)
 
 #+++++++++++++++++++++++++++
 # xlsx.writeMultipleData
