@@ -57,7 +57,7 @@ v1.1 -- Sep 4, 2019 --
 
 **System Storage Requirements:**
 
-If you are planning to use only METABOLIC-g, you don't need to install GTDB-tk.
+If you are planning to use only METABOLIC-G, you don't need to install GTDB-tk.
 
 |Necessary Databases|Approximaate System Storage Required|
 |---|---|
@@ -76,6 +76,8 @@ If you are planning to use only METABOLIC-g, you don't need to install GTDB-tk.
 9. **[Samtools](https://www.htslib.org)** (only for METABOLIG-C)
 10. **[Bowtie2](https://github.com/BenLangmead/bowtie2)** (only for METABOLIG-C)
 11. **[Gtdb-Tk](https://ecogenomics.github.io/GTDBTk/)** (only for METABOLIG-C)
+
+Each of these programs should be in the PATH so that they can be accessed regardless of location.
 
 ## <a name="dependencies_detailed"></a> Perl and R Dependencies Detailed Instructions:
 
@@ -124,6 +126,13 @@ install.packages("ggthemes")
 install.packages("ggalluvial")
 install.packages("reshape2")
 install.packages("ggraph")
+install.packages("pdftools")
+install.packages("igraph")
+install.packages("ggraph")
+install.packages("tidygraph")
+install.packages("stringr")
+install.packages("plyr")
+install.packages("dplyr")
 q()
 ```
 
@@ -138,11 +147,11 @@ git clone https://github.com/AnantharamanLab/METABOLIC.git
 &emsp;&emsp;or click the green button "download ZIP" folder at the top of the github and unzip the downloaded file.   
 &emsp;&emsp;The perl and R scripts and dependent databases should be kept in the same directory.  
 
-*NOTE: Before following the next steps, make sure your working directory is the directory that was created by the METABOLIC download, that is, the directory containing the main scripts for METABOLIC (METABOLIC-G.pl, METABOLIC-C.pl, etc.).*
+*NOTE: Before following the next step, make sure your working directory is the directory that was created by the METABOLIC download, that is, the directory containing the main scripts for METABOLIC (METABOLIC-G.pl, METABOLIC-C.pl, etc.).*
 
 #### <a name="quick_install"></a> Quick Installation:
 
-For steps 2-8, we provide a "run_to_setup.sh" script along with the data downloaded from the GitHub for easy setup of dependent databases. This can be run by using the following command:
+We provide a "run_to_setup.sh" script along with the data downloaded from the GitHub for easy setup of dependent databases. This can be run by using the following command:
 ```
 sh run_to_setup.sh
 ```
@@ -206,16 +215,16 @@ METABOLIC-C.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -
 
 <br />
 
-We also offer a supplementary script titled "METABOLIC-C-jump.pl", which allows for the running of METABOLIC-C.pl with a reduced run time. You can use METABOLIC-C-jump.pl if you have **previously run** METABOLIC-C.pl and the `intermediate_files/` directory (See "METABOLIC Output Files" below) has already been generated.
+We also offer a supplementary script titled “METABOLIC-C-jump.pl,” which allows for the running of METABOLIC-C.pl with a reduced runtime. The script does this by bypassing the use of Prodigal in annotating ORFs and the identification of proteins through `hmmsearch`. You can use this script if you have previously run METABOLIC to generate the `intermediate_files/` directory (See “METABOLIC Output Files:” below) has been generated.
 
-<br />
-To run this script, make sure that the `intermediate_files/` directory is within a directory which will serve as the output directory [-o option] for METABOLIC-C-jump.pl. To run this script, **AT LEAST** the following flags should be used:
+To run this script, make sure that the `intermediate_files/` directory is within a directory which will serve as the output directory [-o option] for METABOLIC-C-jump.pl. The output directory that you specify with the `-o` option must be created prior to running this script and must contain the aforementioned `intermediate_files/` directory. To run this script, **AT LEAST** the following flags should be used:
 
 ```
 METABOLIC-C-jump.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -m [path_to_METABOLIC_directory] -o [premade_output_directory]
 ```
 
-&emsp;*Note: METABOLIC-C-jump.pl can be used to re-run METABOLIC only if errors arose **AFTER** generation of all intermediate files*
+*Note: METABOLIC-C-jump.pl can be used to re-run METABOLIC only if errors arose **AFTER** the initial Prodigal and hmmsearch programs have completed running.*
+
 
 ## <a name="metabolic_output"></a> METABOLIC Output Files:
 
