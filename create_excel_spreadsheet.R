@@ -70,7 +70,7 @@ writeData(wb, sheet = 6, page6)
 
 #wb <- loadWorkbook("Metabolic-Output.xlsx")
 # Create Header Style
-headerStyle <- createStyle(fontSize = 14, fontColour = "#000000", halign = "center",
+headerStyle <- createStyle(fontSize = 11, fontColour = "#000000", halign = "center",
                            fgFill = "#4F81BD", border="TopBottom", borderColour = "#4F81BD",textDecoration= "bold")
 # Apply the bold style to all the sheets:
 addStyle(wb, sheet = 1, headerStyle, rows = 1, cols = 1:ncol(page1), gridExpand = TRUE)
