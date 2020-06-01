@@ -70,7 +70,7 @@ writeData(wb, sheet = 6, page6)
 
 #wb <- loadWorkbook("Metabolic-Output.xlsx")
 # Create Header Style
-headerStyle <- createStyle(fontSize = 14, fontColour = "#FFFFFF", halign = "center",
+headerStyle <- createStyle(fontSize = 14, fontColour = "#000000", halign = "center",
                            fgFill = "#4F81BD", border="TopBottom", borderColour = "#4F81BD",textDecoration= "bold")
 # Apply the bold style to all the sheets:
 addStyle(wb, sheet = 1, headerStyle, rows = 1, cols = 1:ncol(page1), gridExpand = TRUE)
@@ -131,6 +131,9 @@ conditionalFormatting(
   wb, sheet = "MEROPSHit", cols=1:ncol(page6),rows=1:nrow(page6),style = AbsStyle,type = "contains",rule = "Absent")
 conditionalFormatting(
   wb, sheet = "MEROPSHit", cols=1:ncol(page6),rows=1:nrow(page6),style = PresStyle,type = "contains",rule = "Present")
+
+# Make the font to be Arial, bold and size 11.
+modifyBaseFont(wb, fontSize = 11, fontColour = "black", fontName = "Arial")
 
 # Save it and see:
 saveWorkbook(wb, "METABOLIC_result.xlsx", overwrite = TRUE)
