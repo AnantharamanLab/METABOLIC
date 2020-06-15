@@ -115,6 +115,7 @@ Type:
 
 ```
 R
+install_version("ggplot2", version = "3.3.0", repos = "http://cran.us.r-project.org")
 install.packages("diagram")
 install.packages("forcats")
 install.packages("digest")
