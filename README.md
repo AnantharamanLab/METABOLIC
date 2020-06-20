@@ -3,7 +3,7 @@
 
 # METABOLIC
 **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi**C**robes  
-Current Version: 3.0
+Current Version: 4.0
 
 This software enables the prediction of metabolic and biogeochemical functional trait profiles to any given genome datasets. These genome datasets can either be metagenome-assembled genomes (MAGs), single-cell amplified genomes (SAGs) or pure culture sequenced genomes. METABOLIC has two main implementations, which are METABOLIC-G and METABOLIC-C. METABOLIC-G.pl allows for generation of metabolic profiles and biogeochemical cycling diagrams of input genomes and does not require input of sequencing reads. METABOLIC-C.pl generates the same output as METABOLIC-G.pl, but as it allows for the input of metagenomic read data, it will generate information pertaining to community metabolism. It can also calculate the genome coverage. The information is parsed and diagrams for elemental/biogeochemical cycling pathways (currently Nitrogen, Carbon, Sulfur and "other") are produced.  
 
@@ -33,6 +33,10 @@ Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman K. "METABOLIC: A scalable high-thro
 8. [Copyright](#copyright)
 
 ## <a name="version_history"></a> Version History:
+v4.0 -- Jun 20, 2020 --     
+* Fix the resulted excel corrupt issue    
+* Re-organize the result folders<br />
+
 v3.0 -- Feb 18, 2020 --     
 * Provide an option to let the user reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
 * Change HMMER to v3.3 to speed up the calculation<br />
