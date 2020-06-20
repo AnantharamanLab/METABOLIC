@@ -138,4 +138,8 @@ modifyBaseFont(wb, fontSize = 11, fontColour = "black", fontName = "Arial")
 # Save it and see:
 saveWorkbook(wb, "METABOLIC_result.xlsx", overwrite = TRUE)
 
+<<<<<<< HEAD
 print("Finished making the Excel Spreadsheet")
+=======
+print("Finished making the Excel Spreadsheet")
+>>>>>>> 504d316611cab29d1ab54d6a7a952a7667806a8a
