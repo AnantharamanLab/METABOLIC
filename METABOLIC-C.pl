@@ -36,11 +36,12 @@ use warnings;
 ##modules
 use Data::Dumper;
 use POSIX qw(strftime);
-use Excel::Writer::XLSX;
 use Getopt::Long;
 use Statistics::Descriptive;
 use Array::Split qw(split_by split_into);
 use Parallel::ForkManager;
+use File::Spec;
+use File::Basename;
 
 =head1 DESCRIPTION
 
@@ -48,16 +49,18 @@ use Parallel::ForkManager;
         
 =head1 USAGE       
 
-        perl METABOLIC-C.pl -t 40 -m-cutoff 0.75 -m . -in Genome_proteins -kofam-db full -r omic_reads_parameters.txt -o METABOLIC_out
+        perl METABOLIC-C.pl -t 40 -m-cutoff 0.75  -in Genome_proteins -kofam-db full -r omic_reads_parameters.txt -o METABOLIC_out
 		(When you also want to calculate genome coverages, you would have to add genome files with the same basename and the extention as ".fasta" in this folder)
         
-        perl METABOLIC-C.pl -t 40 -m-cutoff 0.75 -m . -in-gn Genome_files -kofam-db full -r omic_reads_parameters.txt -o METABOLIC_out
+        perl METABOLIC-C.pl -t 40 -m-cutoff 0.75  -in-gn Genome_files -kofam-db full -r omic_reads_parameters.txt -o METABOLIC_out
+		
+		perl METABOLIC-G.pl -test true 
+		use the 5 genomes to test the METABOLIC-C script
         
 =head1 OPTIONS
 
 	-t         or -cpu            [integer] The cpu numbers to run the hmmsearch (default: 20)
         -m-cutoff  or -module-cutoff  [float]   The cutoff value to assign the presence of a specific KEGG module (KEGG module step present numbers / KEGG module step total number) (default: 0.75) 
-        -m         or METABOLIC-dir   [string]  The directory that you store your METABOLIC database folers and scripts (default: '.') 
         -in                           [string]  The folder pf given genome faa files [should also give the genome fasta files and genone gene files if the (meta)genome/(meta)transciptome datasets are included]
         -in-gn                        [string]  The folder of given genome fasta files (Prodigal will be used to annotate your genomes)
         -kofam-db                     [string]  to use the "small" size or "full" size of KOfam database in METABOLIC (default: 'full')
@@ -84,23 +87,25 @@ use Parallel::ForkManager;
 	Department of Bacteriology, University of Wisconsin, Madison
 =cut
 
+#Intake the address of METABOLIC directory:
+my $METABOLIC_dir = dirname(File::Spec->rel2abs(__FILE__));
+
 #The options 
 # option variables with default value
 my $cpu_numbers = 20; #parallel running cpu numbers
 my $module_cutoff = 0.75; # The cutoff value to assign the existence of a module
-my $METABOLIC_dir = '.' ; # The working directory
 my $input_protein_folder;  #input microbial genome protein files
 my $input_genome_folder; #input microbial genome fasta files
 my $omic_reads_parameters; #The address of omic reads
 my $prodigal_method = "meta"; #the prodigal method to annotate orfs
 my $kofam_db_size = "full"; #the full kofam size
 my $output = `pwd`; # the output folder 
-my $version="METABOLIC-C.pl v3.0";
+my $version="METABOLIC-C.pl v4.0";
+my $test = "false";
 
 GetOptions(
 	'cpu|t=i' => \$cpu_numbers,
 	'module-cutoff|m-cutoff=f' => \$module_cutoff,
-	'METABOLIC-dir|m=s' => \$METABOLIC_dir,
 	'in=s' => \$input_protein_folder,
 	'in-gn=s' => \$input_genome_folder,
 	'prodigal-method|p=s' => \$prodigal_method,
@@ -108,7 +113,8 @@ GetOptions(
 	'kofam-db=s' => \$kofam_db_size,
 	'output|o=s' => \$output,
 	'help|h' => sub{system('perldoc', $0); exit;},
-	'v|version'=>sub{print $version."\n"; exit;}
+	'v|version'=>sub{print $version."\n"; exit;},
+	'test=s' => \$test
 ) or die("Getting options from the command line failed, please check your options");
 
 ##Pre-required files and documents
@@ -143,6 +149,13 @@ GetOptions(
  my $motif_file = "$METABOLIC_dir/METABOLIC_template_and_database/motif.txt";
  my $motif_pair_file = "$METABOLIC_dir/METABOLIC_template_and_database/motif.pair.txt";
 
+# the test option:
+if ($test eq "true"){
+	$input_genome_folder = "$METABOLIC_dir/METABOLIC_test_files/Guaymas_Basin_genome_files";
+	$output = "METABOLIC_out";
+	$cpu_numbers = "5";
+	$omic_reads_parameters = "$METABOLIC_dir/METABOLIC_test_files/Reads_address.txt";
+}
 
 ##Main Body
 #The present time
@@ -237,9 +250,10 @@ while (<IN>){
 	close IN_;
 }
 
-
 open OUT, ">$output/tmp_run_hmmsearch.sh";
 `cat $input_protein_folder/*.faa > $input_protein_folder/faa.total; mv $input_protein_folder/faa.total $input_protein_folder/total.faa`;
+
+`mkdir $output/intermediate_files/Hmmsearch_Outputs`;
 open IN,"ls $input_protein_folder/total.faa |";
 while (<IN>){
 	chomp;
@@ -249,15 +263,15 @@ while (<IN>){
 		#print "$hmm\t$threshold\t$score_type\n";
 		if ($score_type eq "full"){
 			if ($hmm !~ /K\d\d\d\d\d/){
-				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
+				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
 			}else{
-				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
+				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
 			}
 		}else{
 			if ($hmm !~ /K\d\d\d\d\d/){
-				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
+				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
 			}else{
-				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
+				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
 			}
 		}
 	}
@@ -284,11 +298,11 @@ my %Motif_pair = _get_motif_pair($motif_pair_file); # dsrC => tusE
 my %Hmmscan_result = (); # genome_name => hmm => numbers
 my %Hmmscan_hits = (); # genome_name => hmm => hits
 my %Hmm_id = (); # hmm => 1 
-open IN, "find $output/intermediate_files -type f -name '*.hmmsearch_result.txt' | ";
+open IN, "find $output/intermediate_files/Hmmsearch_Outputs -type f -name '*.hmmsearch_result.txt' | ";
 while (<IN>){
         chomp;
         my $file_name = $_;
-        my ($hmm) = $file_name =~ /^$output\/intermediate_files\/(.+?\.hmm)\./; 
+        my ($hmm) = $file_name =~ /^$output\/intermediate_files\/Hmmsearch_Outputs\/(.+?\.hmm)\./; 
 		$Hmm_id{$hmm} = 1;
 		#my ($gn_id) = $file_name =~ /\.hmm\.(.+?)\.hmmsearch_result/;
 		my $gn_id = "";
@@ -373,151 +387,106 @@ while (<IN>){
 }
 close IN;
 
-#print out hmm result excel file
-my $hmm_result = Excel::Writer::XLSX->new("$output/METABOLIC_result.xlsx");
+#print out hmm result each tsv file
+`mkdir $output/METABOLIC_result_each_spreadsheet`;
 
-# Add worksheets
-my $worksheet1 = $hmm_result->add_worksheet("HMMHitNum"); #$worksheet1 indicates the hmm result - hmm presence, hit numbers and hits 
-my $worksheet2 = $hmm_result->add_worksheet("FunctionHit"); #$worksheet2 indicates the hmm result - Function presence 
-my $worksheet3 = $hmm_result->add_worksheet("KEGGModuleHit"); #$worksheet3 indicates the hmm result - module presence 
-my $worksheet4 = $hmm_result->add_worksheet("KEGGModuleStepHit"); #$worksheet4 indicates the hmm result - module step presence 
-#my $worksheet5 = $hmm_result->add_worksheet("KEGGidentifierHit"); #$worksheet5 indicates the KEGG identifier searching result - KEGG identifier numbers and hits
-my $worksheet6 = $hmm_result->add_worksheet("dbCAN2Hit"); #$worksheet6 indicates the dbCAN2 searching result - the CAZys numbers and hits 
-my $worksheet7 = $hmm_result->add_worksheet("MEROPSHit"); #$worksheet7 indicates the MEROPS peptidase searching result - the MEROPS peptidase numbers and hits 
- 
-
-#  Add and define a format
-my $format_mainbody = $hmm_result->add_format(
-    color => 'black', align => 'left', align  => 'vcenter', font => 'Arial', size => 10, border => 1, border_color => 'black'
-);
-
-my $format_head = $hmm_result->add_format(
-    color => 'black', align => 'left', align  => 'vcenter', font => 'Arial', size => 10, border => 1, border_color => 'black', bold => 1
-);
-
-my $format_mainbody_green = $hmm_result->add_format(
-    color => 'white', align => 'left', align  => 'vcenter', font => 'Arial', size => 10, border => 1, border_color => 'black', bg_color => 'green'
-);
-
-my $format_mainbody_red = $hmm_result->add_format(
-    color => 'white', align => 'left', align  => 'vcenter', font => 'Arial', size => 10, border => 1, border_color => 'black', bg_color => 'red'
-);
-
-$datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
-print "\[$datestring\] The hmm hit result is calculating...\n";
-
-
-#pre-set the coordinates
-my $col = 0; my $row = 0; 
-my $col2 = 0; my $row2 = 0; # for worksheet2
-#write the head of hmm result to worksheet1
+#print worksheet1
+open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet1.tsv";
+#print head
+my @Hmm_table_head_worksheet1 = ();
 for(my $i=0; $i<=9; $i++){
-	$col = $i;
-	$worksheet1->write($row, $col, $Hmm_table_head[($i+1)], $format_head);
+	push @Hmm_table_head_worksheet1, $Hmm_table_head[($i+1)];
 }
-#write the head of hmm result to worksheet2
-for(my $i=0; $i<=3; $i++){
-	$col2 = $i;
-	$worksheet2->write($row2, $col2, $Hmm_table_head[($i+1)], $format_head);
+foreach my $gn_id (sort keys %Genome_id){
+	push @Hmm_table_head_worksheet1, "$gn_id Hmm presence";
+	push @Hmm_table_head_worksheet1, "$gn_id Hit numbers";
+	push @Hmm_table_head_worksheet1, "$gn_id Hits";
 }
+print OUT join("\t",@Hmm_table_head_worksheet1)."\n";
 
-#Make new genome name and print head to worksheet1
-my %Genome_id_new = ();
-my $i = 1;
-foreach my $gn_id (sort keys %Genome_id){	
-	my $num = (sprintf "%04d", $i);
-	$Genome_id_new{$gn_id} = "Gn".$num; #print "$gn_id\t$Genome_id_new{$gn_id}\n";
-	$worksheet1->write($row, ($col++), "Gn$num Hmm presence", $format_head);
-	$worksheet1->write($row, ($col++), "Gn$num Hit numbers", $format_head);
-	$worksheet1->write($row, ($col++), "Gn$num Hits", $format_head);
-	$i++;
-}
-
-#write head to worksheet2
-foreach my $gn_id (sort keys %Genome_id_new){
-	$worksheet2->write($row2, ($col2++), "$Genome_id_new{$gn_id} Hmm presence", $format_head);
-}
-
-#write the main body of hmm result to worksheet1
+#print body
 foreach my $line_no (sort keys %Hmm_table_temp){
-	$row = $line_no;
+	my $row = $line_no;
+	my @Hmm_table_body_worksheet1 = ();
 	if ($row != 205){
 		my @tmp = split(/\t/,$Hmm_table_temp{$line_no});
 		my $hmm = $tmp[5];
 		for(my $i=0; $i<=9; $i++){
-				$col = $i;
-				$worksheet1->write($row, $col, $tmp[($i+1)], $format_mainbody);					
+				push @Hmm_table_body_worksheet1, $tmp[($i+1)];				
 		}
 		
-		foreach my $gn_id (sort keys %Genome_id_new){
+		foreach my $gn_id (sort keys %Genome_id){
 			my $hmm_presence = "Absent";
 			my $hit_num = 0;
 			my @Hits = ();
-			if ($hmm and $hmm !~ /\;/){
+			if ($hmm and $hmm !~ /\,\s/){
 				if ($Hmmscan_result{$gn_id}{$hmm}){
 					$hmm_presence = "Present";
-				}
-				$hit_num = $Hmmscan_result{$gn_id}{$hmm};
-				if ($Hmmscan_hits{$gn_id}{$hmm}){
 					push @Hits, $Hmmscan_hits{$gn_id}{$hmm}; 
+					$hit_num = $Hmmscan_result{$gn_id}{$hmm};
 				}else{
 					push @Hits, "None";
 				}
-			}elsif($hmm){
-				my @tmp = split (/\; /,$hmm);
-				my $sum = 0; my @array_hit_num = ();
+			}elsif($hmm and $hmm =~ /\,\s/){
+				my @tmp = split (/\,\s/,$hmm);
+				my $sum = 0; 
 				for(my $i=0; $i<=$#tmp; $i++){
 					if ($Hmmscan_result{$gn_id}{$tmp[$i]}){
 						$sum += $Hmmscan_result{$gn_id}{$tmp[$i]};
-						push @array_hit_num, $Hmmscan_result{$gn_id}{$tmp[$i]};
 						push @Hits, $Hmmscan_hits{$gn_id}{$tmp[$i]};
 					}else{
-						push @array_hit_num, "0";
 						push @Hits, "None";
 					}
 				}
 				if ($sum){
 					$hmm_presence = "Present";
 				}
-				$hit_num = join ("\; ",@array_hit_num);
+				$hit_num = $sum;
 			}
 			
-			if ($hmm_presence eq "Absent"){
-				$worksheet1->write($row, ($col++), $hmm_presence, $format_mainbody_green);
-			}else{
-				$worksheet1->write($row, ($col++), $hmm_presence, $format_mainbody_red);
-			}		
-			if($hit_num){
-				$worksheet1->write($row, ($col++), $hit_num, $format_mainbody);
-			}else{
-				$worksheet1->write($row, ($col++), "0", $format_mainbody);
-			}
-			$worksheet1->write($row, ($col++), join("\; ",@Hits), $format_mainbody);
+			push @Hmm_table_body_worksheet1,$hmm_presence;
+			push @Hmm_table_body_worksheet1,$hit_num;
+			push @Hmm_table_body_worksheet1,join("\,",@Hits);
 		}
+		print OUT join("\t",@Hmm_table_body_worksheet1)."\n";
+	}else{
+		print OUT "\n";
 	}
 }
+close OUT;
+
+#print worksheet2
+open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet2.tsv";
+#print head
+my @Hmm_table_head_worksheet2 = ();
+for(my $i=0; $i<=3; $i++){
+	push @Hmm_table_head_worksheet2, $Hmm_table_head[($i+1)];
+}
+foreach my $gn_id (sort keys %Genome_id){
+	push @Hmm_table_head_worksheet2, "$gn_id Function presence";
+}
+print OUT join("\t",@Hmm_table_head_worksheet2)."\n";
 
 #write the main body of hmm result to worksheet2
 foreach my $line_no (sort keys %Hmm_table_temp_2){
-	$row2 = $line_no;
+	my @Hmm_table_body_worksheet2 = ();
 	my @tmp_table_2 = split(/\t/,$Hmm_table_temp_2{$line_no});
 	for(my $i=0; $i<=3; $i++){
-		$col2 = $i;
-		$worksheet2->write($row2, $col2, $tmp_table_2[($i+2)], $format_mainbody);					
+		push @Hmm_table_body_worksheet2, $tmp_table_2[($i+2)];			
 	}
 	my $line_no_4_table_1 = $tmp_table_2[1];
 	
 	if ($line_no_4_table_1 !~ /\|\|/){
 		my @tmp_table_1 = split(/\t/,$Hmm_table_temp{$line_no_4_table_1});
 		my $hmm = $tmp_table_1[5];	
-		foreach my $gn_id (sort keys %Genome_id_new){
+		foreach my $gn_id (sort keys %Genome_id){
 			my $hmm_presence = "Absent";
-			if ($hmm and $hmm !~ /\;/){
+			if ($hmm and $hmm !~ /\,\s/){
 				if ($Hmmscan_result{$gn_id}{$hmm}){
 					$hmm_presence = "Present";
 				}
-			}elsif($hmm){
-				my @tmp = split (/\; /,$hmm);
+			}elsif($hmm and $hmm =~ /\,\s/){
+				my @tmp = split (/\,\s/,$hmm);
 				my $sum = 0; my @array_hit_num = ();
 				for(my $i=0; $i<=$#tmp; $i++){
 					if ($Hmmscan_result{$gn_id}{$tmp[$i]}){
@@ -528,11 +497,7 @@ foreach my $line_no (sort keys %Hmm_table_temp_2){
 					$hmm_presence = "Present";
 				}
 			}
-			if ($hmm_presence eq "Absent"){
-				$worksheet2->write($row2, ($col2++), $hmm_presence, $format_mainbody_green);
-			}else{
-				$worksheet2->write($row2, ($col2++), $hmm_presence, $format_mainbody_red);
-			}	
+			push @Hmm_table_body_worksheet2,$hmm_presence;	
 		}		
 	}else{
 		my @array_line_no_4_table_1 = split (/\|\|/, $line_no_4_table_1);
@@ -540,63 +505,38 @@ foreach my $line_no (sort keys %Hmm_table_temp_2){
 		foreach my $line_no_4_table_1 (@array_line_no_4_table_1){
 			my @tmp_table_1 = split(/\t/,$Hmm_table_temp{$line_no_4_table_1});
 			my $hmm = $tmp_table_1[5];
-			if ($hmm and $hmm !~ /\;/){
+			if ($hmm and $hmm !~ /\,\s/){
 				push @array_hmm, $hmm;
-			}elsif($hmm){
-				my @tmp = split (/\; /,$hmm);
+			}elsif($hmm and $hmm =~ /\,\s/){
+				my @tmp = split (/\,\s/,$hmm);
 				foreach my $key (@tmp){
 					push @array_hmm, $key;
 				}
 			}
 		}
-		foreach my $gn_id (sort keys %Genome_id_new){
+		foreach my $gn_id (sort keys %Genome_id){
 			my $hmm_presence = "Absent";
 			my $sum = 0;
 			foreach my $hmm (@array_hmm){
 				if ($Hmmscan_result{$gn_id}{$hmm}){
-						$sum += $Hmmscan_result{$gn_id}{$hmm};
+					$sum += $Hmmscan_result{$gn_id}{$hmm};
 				}
 			}
 			if ($sum){
 				$hmm_presence = "Present";
 			}
-			
-			if ($hmm_presence eq "Absent"){
-				$worksheet2->write($row2, ($col2++), $hmm_presence, $format_mainbody_green);
-			}else{
-				$worksheet2->write($row2, ($col2++), $hmm_presence, $format_mainbody_red);
-			}
+			push @Hmm_table_body_worksheet2,$hmm_presence;
 		}
-	
 	}
+	print OUT join("\t",@Hmm_table_body_worksheet2)."\n";
 }
-#add genome map to worksheet1
-$row = 246;
-$worksheet1->write($row, 0, "Genome ID map", $format_head); 
-$row++;
-foreach my $gn_id (sort keys %Genome_id_new){
-	$worksheet1->write($row, 0, $gn_id, $format_mainbody);
-	$worksheet1->write($row, 1, $Genome_id_new{$gn_id}, $format_mainbody);
-	$row++;
-}
-$worksheet1->set_column( 'A:E', 25 );
-
-#add genome map to worksheet2
-$row2 = 112;
-$worksheet2->write($row2, 0, "Genome ID map", $format_head);
-$row2++;
-foreach my $gn_id (sort keys %Genome_id_new){
-	$worksheet2->write($row2, 0, $gn_id, $format_mainbody);
-	$worksheet2->write($row2, 1, $Genome_id_new{$gn_id}, $format_mainbody);
-	$row2++;
-}
-$worksheet2->set_column( 'A:C', 25 );
+close OUT;
 
 #print out each hmm faa collection
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Generating each hmm faa collection...\n";
 
-`mkdir $output/Each_hmm_faa`;
+`mkdir $output/Each_HMM_Amino_Acid_Sequence`;
 
 foreach my $hmm (sort keys %Hmm_id){
 	my %Hmm_faa_seq = (); #Store the faa seqs in a hmm
@@ -613,7 +553,7 @@ foreach my $hmm (sort keys %Hmm_id){
 		}
 	}
 	if (%Hmm_faa_seq){
-		open OUT, ">$output/Each_hmm_faa/$hmm.collection.faa";
+		open OUT, ">$output/Each_HMM_Amino_Acid_Sequence/$hmm.collection.faa";
 		foreach my $key (sort keys %Hmm_faa_seq){
 			print OUT "$key\n$Hmm_faa_seq{$key}\n";
 		}
@@ -676,7 +616,7 @@ my %Hmm2ko = _get_hmm_2_KO_hash(%Hmm_table_temp); # like: TIGR02694.hmm => K0835
 #to see whether a module step exists for a given genome
 my %Module_step_result = (); # M00804+01 => genome id => 1 / 0
 foreach my $m_step (sort keys %KEGG_module){
-	foreach my $gn_id (sort keys %Genome_id_new){
+	foreach my $gn_id (sort keys %Genome_id){
 		$Module_step_result{$m_step}{$gn_id} = 0; 
 		foreach my $hmm (sort keys %Hmm_id){
 			my $hmm_new = ""; # transfer all the hmm id to ko id
@@ -698,7 +638,7 @@ foreach my $m_step (sort keys %KEGG_module){
 
 my %Module_result = (); # M00804 => genome name => Absent / Present
 foreach my $module (sort keys  %KEGG_module2step_number){
-	foreach my $gn_id (sort keys %Genome_id_new){
+	foreach my $gn_id (sort keys %Genome_id){
 		my $present_no = 0; 		
 		foreach my $module_step (sort keys %Module_step_result){
 			if ($module_step =~ /$module/){
@@ -717,81 +657,76 @@ foreach my $module (sort keys  %KEGG_module2step_number){
 	}	
 }
 
-#pre-set the coordinates
-my $col3 = 0; my $row3 = 0; # for worksheet3
-my $col4 = 0; my $row4 = 0; # for worksheet4
-
+#print worksheet3
 #write the head of hmm result to worksheet3
-$worksheet3->write(0, 0, "Module ID", $format_head);
-$worksheet3->write(0, 1, "Module ", $format_head);
-$worksheet3->write(0, 2, "Module Category", $format_head);
-$col3 = 3;
-foreach my $gn_id (sort keys %Genome_id_new){
-	$worksheet3->write($row3, ($col3++), "$Genome_id_new{$gn_id} Hit", $format_head);
-}
-#write the head of hmm result to worksheet4
-$worksheet4->write(0, 0, "Module step", $format_head);
-$worksheet4->write(0, 1, "Module ", $format_head);
-$worksheet4->write(0, 2, "KO id", $format_head);
-$worksheet4->write(0, 3, "Module Category", $format_head);
-$col4 = 4;
-foreach my $gn_id (sort keys %Genome_id_new){
-	$worksheet4->write($row4, ($col4++), "$Genome_id_new{$gn_id} Hit", $format_head);
-}
+open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet3.tsv";
+#print head
+my @Worksheet3_head = ();
+push @Worksheet3_head, "Module ID";
+push @Worksheet3_head, "Module";
+push @Worksheet3_head, "Module Category";
 
-$col3 = 0; $row3 = 1; # for worksheet3
-$col4 = 0; $row4 = 1; # for worksheet4
+foreach my $gn_id (sort keys %Genome_id){
+	push @Worksheet3_head, "$gn_id Module presence";
+}
+print OUT join("\t",@Worksheet3_head)."\n";
 
 #print the worksheet3 result
 foreach my $module (sort keys %Module_result){
-	$worksheet3->write($row3, ($col3++), $module, $format_mainbody); 
-	$worksheet3->write($row3, ($col3++), $KEGG_module2name{$module}, $format_mainbody); 
+	my @Worksheet3_body = ();
+	push @Worksheet3_body, $module;
+	push @Worksheet3_body, $KEGG_module2name{$module};
 	my $cat_4_module = ""; # the category name for module
 	foreach my $cat (sort keys %Cat2module){
 		if ($Cat2module{$cat} =~ /$module/){
 			$cat_4_module = $cat;
 		}
 	}
-	$worksheet3->write($row3, ($col3++), $cat_4_module, $format_mainbody); 
-	foreach my $gn_id (sort keys %Genome_id_new){
-		if ($Module_result{$module}{$gn_id} eq "Absent"){
-			$worksheet3->write($row3, ($col3++), $Module_result{$module}{$gn_id}, $format_mainbody_green);
-		}else{
-			$worksheet3->write($row3, ($col3++), $Module_result{$module}{$gn_id}, $format_mainbody_red);
-		}
+	push @Worksheet3_body, $cat_4_module;
+	foreach my $gn_id (sort keys %Genome_id){
+		push @Worksheet3_body, $Module_result{$module}{$gn_id};
 	}
-	$col3 = 0; $row3++;
-	
+	print OUT join("\t",@Worksheet3_body)."\n";
 }
-$worksheet3->set_column( 'A:A', 10 );
-$worksheet3->set_column( 'B:C', 35 );
+close OUT;
+
+#print worksheet4
+#write the head of hmm result to worksheet4
+open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet4.tsv";
+#print head
+my @Worksheet4_head = ();
+push @Worksheet4_head, "Module step";
+push @Worksheet4_head, "Module";
+push @Worksheet4_head, "KO id";
+push @Worksheet4_head, "Module Category";
+
+
+foreach my $gn_id (sort keys %Genome_id){
+	push @Worksheet4_head, "$gn_id Module step presence";
+}
+print OUT join("\t",@Worksheet4_head)."\n";
 
 #print the worksheet4 result
 foreach my $module_step (sort keys %Module_step_result){
-	$worksheet4->write($row4, ($col4++), $module_step, $format_mainbody); 
+	my @Worksheet4_body = ();
+	push @Worksheet4_body, $module_step;
 	my ($module) = $module_step =~ /^(M.+?)\+/;
-	$worksheet4->write($row4, ($col4++), $KEGG_module2name{$module}, $format_mainbody); 
-	$worksheet4->write($row4, ($col4++), $KEGG_module{$module_step}[2], $format_mainbody); 
+	push @Worksheet4_body, $KEGG_module2name{$module};
+	push @Worksheet4_body, $KEGG_module{$module_step}[2];
 	my $cat_4_module = ""; # the category name for module
 	foreach my $cat (sort keys %Cat2module){
 		if ($Cat2module{$cat} =~ /$module/){
 			$cat_4_module = $cat;
 		}
 	}
-	$worksheet4->write($row4, ($col4++), $cat_4_module, $format_mainbody); 
-	foreach my $gn_id (sort keys %Genome_id_new){
-		if (!$Module_step_result{$module_step}{$gn_id}){
-			$worksheet4->write($row4, ($col4++), "Absent", $format_mainbody_green);
-		}else{
-			$worksheet4->write($row4, ($col4++), "Present", $format_mainbody_red);
-		}
+	push @Worksheet4_body, $cat_4_module; 
+	foreach my $gn_id (sort keys %Genome_id){
+		push @Worksheet4_body, $Module_result{$module}{$gn_id};
 	}
-	$col4 = 0; $row4++;
+	print OUT join("\t",@Worksheet4_body)."\n";
 	
 }
-$worksheet4->set_column( 'A:A', 10 );
-$worksheet4->set_column( 'B:D', 35 );
-
+close OUT;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] The KEGG identifier \(KO id\) result is calculating...\n";
@@ -804,7 +739,7 @@ my %Hmmscan_hits_for_KO = (); # new gn id => KO => hits
 my %New_hmmid = (); #KOs (without extension) => 1
 
 foreach my $genome_name (sort keys %Hmmscan_result){
-	my $gn = $Genome_id_new{$genome_name}; 
+	my $gn = $genome_name; 
 	foreach my $hmm (sort keys %Hmm_id){
 		my $hmm_new = ""; # transfer all the hmm id to ko id
 		if (exists $Hmm2ko{$hmm}){
@@ -823,11 +758,11 @@ foreach my $genome_name (sort keys %Hmmscan_result){
 }
 
 `mkdir $output/KEGG_identifier_result`;
-foreach my $gn_id (sort keys %Genome_id_new){
+foreach my $gn_id (sort keys %Genome_id){
 	open OUT1, ">$output/KEGG_identifier_result/$gn_id.result.txt";
 	open OUT2, ">$output/KEGG_identifier_result/$gn_id.hits.txt";
 	foreach my $hmmid (sort keys %New_hmmid){	
-		my $new_gn_id = $Genome_id_new{$gn_id};
+		my $new_gn_id = $gn_id;
 		my $result = "";
 		if ($Hmmscan_result_for_KO{$new_gn_id}{$hmmid}){
 			$result = $Hmmscan_result_for_KO{$new_gn_id}{$hmmid}; 
@@ -851,14 +786,15 @@ print "\[$datestring\] The KEGG identifier \(KO id\) seaching result is finished
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Searching CAZymes by dbCAN2...\n";
 
+`mkdir $output/intermediate_files/dbCAN2_Files`;
 open OUT, ">$output/tmp_run_dbCAN2.sh";
 open IN,"ls $input_protein_folder/*.faa |";
 while (<IN>){
 	chomp;
 	my $file = $_;
 	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/;
-	print OUT "hmmscan --domtblout $output/intermediate_files/$gn_id.dbCAN2.out.dm --cpu 1 $METABOLIC_dir/dbCAN2/dbCAN-fam-HMMs.txt $file > $output/intermediate_files/$gn_id.dbCAN2.out;";
-	print OUT "bash $METABOLIC_dir/Accessory_scripts/hmmscan-parser.sh $output/intermediate_files/$gn_id.dbCAN2.out.dm > $output/intermediate_files/$gn_id.dbCAN2.out.dm.ps\n";
+	print OUT "hmmscan --domtblout $output/intermediate_files/dbCAN2_Files/$gn_id.dbCAN2.out.dm --cpu 1 $METABOLIC_dir/dbCAN2/dbCAN-fam-HMMs.txt $file > $output/intermediate_files/dbCAN2_Files/$gn_id.dbCAN2.out;";
+	print OUT "python $METABOLIC_dir/Accessory_scripts/hmmscan-parser-dbCANmeta.py $output/intermediate_files/dbCAN2_Files/$gn_id.dbCAN2.out.dm > $output/intermediate_files/dbCAN2_Files/$gn_id.dbCAN2.out.dm.ps\n";
 }
 close IN;
 close OUT;
@@ -868,13 +804,12 @@ _run_parallel("$output/tmp_run_dbCAN2.sh", $cpu_numbers); `rm $output/tmp_run_db
 
 my %dbCANout = (); #genome => hmmid => number
 my %dbCANout2 = (); #genome => hmmid => hits
-#my %Genome_id_new = (); # genome id => Gn001 like new id 
 my %Hmm_dbCAN2_id = (); # hmm => 1 
-open IN, "ls $output/intermediate_files/*.dbCAN2.out.dm.ps |";
+open IN, "ls $output/intermediate_files/dbCAN2_Files/*.dbCAN2.out.dm.ps |";
 while (<IN>)
 {
 	my $file = $_;
-	my ($gn_id) = $file =~ /^$output\/intermediate_files\/(.+?)\.dbCAN2\.out\.dm\.ps/;
+	my ($gn_id) = $file =~ /^$output\/intermediate_files\/dbCAN2_Files\/(.+?)\.dbCAN2\.out\.dm\.ps/;
     open INN, "$file";
 	while (<INN>){
 	   if (/^GH|^PL/){
@@ -901,48 +836,56 @@ close IN;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] dbCAN2 searching is done\n";
 
-#pre-set the coordinates
-my $col6 = 0; my $row6 = 0; # for worksheet6
+#print worksheet5
+#write the head of hmm result to worksheet5
+open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet5.tsv";
+#print head
+my @Worksheet5_head = ();
+push @Worksheet5_head, "CAZyme ID";
 
-#write the head of hmm result to worksheet6
-$worksheet6->write(0, 0, "CAZyme ID", $format_head);
-$col6 = 1;
-foreach my $gn_id (sort keys %Genome_id_new){
-	$worksheet6->write($row6, ($col6++), "$Genome_id_new{$gn_id} Hit numbers", $format_head);
-	$worksheet6->write($row6, ($col6++), "$Genome_id_new{$gn_id} Hit", $format_head);
+foreach my $gn_id (sort keys %Genome_id){
+	push @Worksheet5_head, "$gn_id Hit numbers";
+	push @Worksheet5_head, "$gn_id Hits";
 }
+print OUT join("\t",@Worksheet5_head)."\n";
 
-#write the body of worksheet6
-$col6 = 0; $row6 = 1; # for worksheet6
+#print the worksheet5 result
 foreach my $hmmid (sort keys %Hmm_dbCAN2_id){
-	$worksheet6->write($row6, ($col6++), $hmmid , $format_mainbody);
-	foreach my $gn_id (sort keys %Genome_id_new){
-		$worksheet6->write($row6, ($col6++), $dbCANout{$gn_id}{$hmmid}, $format_mainbody);	
-		my $hits;
+	my @Worksheet5_body = ();
+	push @Worksheet5_body,$hmmid;	
+	foreach my $gn_id (sort keys %Genome_id){
+		my $hit_num = 0;
+		if ($dbCANout{$gn_id}{$hmmid}){
+			$hit_num = $dbCANout{$gn_id}{$hmmid};	
+		}
+		push @Worksheet5_body,$hit_num;	
+		my $hits = "None";
 		if ($dbCANout2{$gn_id}{$hmmid}){
 			$hits = $dbCANout2{$gn_id}{$hmmid}; 
 		}
-		$worksheet6->write($row6, ($col6++), $hits, $format_mainbody);
+		push @Worksheet5_body,$hits;	
 	}
-	$col6 = 0; $row6++;
+	print OUT join("\t",@Worksheet5_body)."\n";
 }
+close OUT;
 
 #run the MEROPS
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Searching MEROPS peptidase...\n";
 
+`mkdir $output/intermediate_files/MEROPS_Files`;
 open OUT, ">$output/tmp_run_MEROPS.sh";
 open IN,"ls $input_protein_folder/*.faa |";
 while (<IN>){
 	chomp;
 	my $file = $_;
 	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/;
-	print OUT "diamond blastp -d $METABOLIC_dir/MEROPS/pepunit.db -q $file -o $output/intermediate_files/$gn_id.MEROPSout.m8 -k 1 -e 1e-10 --query-cover 80 --id 50 --quiet -p 1 > /dev/null\n";
+	print OUT "diamond blastp -d $METABOLIC_dir/MEROPS/pepunit.db -q $file -o $output/intermediate_files/MEROPS_Files/$gn_id.MEROPSout.m8 -k 1 -e 1e-10 --query-cover 80 --id 50 --quiet -p 1 > /dev/null\n";
 }
 close IN;
 close OUT;
 
-#parallel run dbCAN2
+#parallel run the MEROPS
 _run_parallel("$output/tmp_run_MEROPS.sh", $cpu_numbers); `rm $output/tmp_run_MEROPS.sh`;
 
 my %MEROPS_map; #MER id => all line
@@ -960,11 +903,11 @@ close IN;
 my %MEROPSout = (); #genome => hmmid => number
 my %MEROPSout2 = (); #genome => hmmid => hits
 my %MEROPSid = (); # merops_id => 1 
-open IN, "ls $output/intermediate_files/*.MEROPSout.m8 |";
+open IN, "ls $output/intermediate_files/MEROPS_Files/*.MEROPSout.m8 |";
 while (<IN>)
 {
 	my $file = $_;
-	my ($gn_id) = $file =~ /^$output\/intermediate_files\/(.+?)\.MEROPSout\.m8/;
+	my ($gn_id) = $file =~ /^$output\/intermediate_files\/MEROPS_Files\/(.+?)\.MEROPSout\.m8/;
     open INN, "$file";
 	while (<INN>){
 	   my @tmp = split(/\t/,$_); 
@@ -984,33 +927,41 @@ close IN;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] MEROPS peptidase searching is done\n";
 
-#pre-set the coordinates
-my $col7 = 0; my $row7 = 0; # for worksheet7
+#print worksheet6
+#write the head of hmm result to worksheet6
+open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet6.tsv";
+#print head
+my @Worksheet6_head = ();
+push @Worksheet6_head, "MEROPS peptidase ID";
 
-#write the head of hmm result to worksheet7
-$worksheet7->write(0, 0, "MEROPS peptidase ID", $format_head);
-$col7 = 1;
-foreach my $gn_id (sort keys %Genome_id_new){
-	$worksheet7->write($row7, ($col7++), "$Genome_id_new{$gn_id} Hit numbers", $format_head);
-	$worksheet7->write($row7, ($col7++), "$Genome_id_new{$gn_id} Hit", $format_head);
+foreach my $gn_id (sort keys %Genome_id){
+	push @Worksheet6_head, "$gn_id Hit numbers";
+	push @Worksheet6_head, "$gn_id Hits";
 }
+print OUT join("\t",@Worksheet6_head)."\n";
 
-#write the body of worksheet7
-$col7 = 0; $row7 = 1; # for worksheet7
+#print the worksheet6 result
 foreach my $hmmid (sort keys %MEROPSid){
-	$worksheet7->write($row7, ($col7++), $hmmid , $format_mainbody);
-	foreach my $gn_id (sort keys %Genome_id_new){
-		$worksheet7->write($row7, ($col7++), $MEROPSout{$gn_id}{$hmmid}, $format_mainbody);	
-		my $hits;
+	my @Worksheet6_body = ();
+	push @Worksheet6_body, $hmmid;
+	foreach my $gn_id (sort keys %Genome_id){
+		my $hit_num = 0;
+		if ($MEROPSout{$gn_id}{$hmmid}){
+			$hit_num = $MEROPSout{$gn_id}{$hmmid};	
+		}
+		push @Worksheet6_body, $hit_num;	
+		my $hits = "None";
 		if ($MEROPSout2{$gn_id}{$hmmid}){
 			$hits = $MEROPSout2{$gn_id}{$hmmid}; 
 		}
-		$worksheet7->write($row7, ($col7++), $hits, $format_mainbody);
+		push @Worksheet6_body, $hits;	
 	}
-	$col7 = 0; $row7++;
+	print OUT join("\t",@Worksheet6_body)."\n";
 }
+close OUT;
 
-$hmm_result->close();
+`Rscript $METABOLIC_dir/create_excel_spreadsheet.R $output/METABOLIC_result_each_spreadsheet/ > /dev/null`;
+`mv METABOLIC_result.xlsx $output/METABOLIC_result.xlsx`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] METABOLIC table has been generated\n";
@@ -1046,7 +997,10 @@ while (<IN>){
 }
 close IN;
 
-`mkdir $output/R_input`;
+`mkdir $output/METABOLIC_Figures_Input`;
+`mkdir $output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input`;
+`mkdir $output/METABOLIC_Figures`;
+
 #Get each R pathway input files
 my %Total_R_input = (); #pathway => gn => 1 or 0
 foreach my $gn (sort keys %Hmmscan_result){
@@ -1092,7 +1046,7 @@ foreach my $gn (sort keys %Hmmscan_result){
 		}
 	}
 	
-	open OUT, ">$output/R_input/$gn.R_input.txt";
+	open OUT, ">$output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input/$gn.R_input.txt";
 	foreach my $key (sort keys %R_input){
 		print OUT "$key\t$R_input{$key}\n";
 	}	
@@ -1119,16 +1073,15 @@ if ($omic_reads_parameters){
 		$Total_R_input_2{$pth} = "$gn_no\t$gn_cov_percentage";
 	}
 	
-	open OUT, ">$output/R_input/Total.R_input.txt"; 
+	open OUT, ">$output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input/Total.R_input.txt"; 
 	foreach my $key (sort keys %Total_R_input_2){
 		print OUT "$key\t$Total_R_input_2{$key}\n";
 	}
 	close OUT;
 }
 
-`Rscript $METABOLIC_dir/draw_biogeochemical_cycles.R $output/R_input $output/Output TRUE > /dev/null`;
-
-`mv $output/Output/draw_biogeochem_cycles $output/R_output; rm -r $output/Output`;
+`Rscript $METABOLIC_dir/draw_biogeochemical_cycles.R $output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input $output/Output FALSE > /dev/null`;
+`mv $output/Output/draw_biogeochem_cycles $output/METABOLIC_Figures/Nutrient_Cycling_Diagrams; rm -r $output/Output`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing element cycling diagrams finished\n";
@@ -1214,7 +1167,7 @@ if ($omic_reads_parameters){
 		$Total_R_hm_input_1{$step} = "$gn_no\t$gn_cov_percentage";
 	}
 
-	open OUT, ">$output/R_hm_input_1.txt"; 
+	open OUT, ">$output/METABOLIC_Figures_Input/Sequential_Transofrmation_input_1.txt"; 
 	foreach my $key (sort keys %Total_R_hm_input_1){
 		print OUT "$key\t$Total_R_hm_input_1{$key}\n";
 	}
@@ -1321,7 +1274,7 @@ if ($omic_reads_parameters){
 		$Total_R_hm_input_2{$step} = "$gn_no\t$gn_cov_percentage";
 	}
 
-	open OUT, ">$output/R_hm_input_2.txt"; 
+	open OUT, ">$output/METABOLIC_Figures_Input/Sequential_Transofrmation_input_2.txt"; 
 	foreach my $key (sort keys %Total_R_hm_input_2){
 		print OUT "$key\t$Total_R_hm_input_2{$key}\n";
 	}
@@ -1329,9 +1282,9 @@ if ($omic_reads_parameters){
 }
 
 `mkdir $output/newdir`;
-`Rscript $METABOLIC_dir/draw_sequential_reaction.R $output/R_hm_input_1.txt $output/R_hm_input_2.txt $R_mh_tsv $R_order_of_input_01 $R_order_of_input_02 $output/newdir > /dev/null 2>/dev/null`;
-`mv $output/newdir/Bar_plot/bar_plot_input_1.pdf $output/Sequential_transformation_01.pdf`;
-`mv $output/newdir/Bar_plot/bar_plot_input_2.pdf $output/Sequential_transformation_02.pdf`;
+`Rscript $METABOLIC_dir/draw_sequential_reaction.R $output/METABOLIC_Figures_Input/Sequential_Transofrmation_input_1.txt $output/METABOLIC_Figures_Input/Sequential_Transofrmation_input_2.txt $R_mh_tsv $R_order_of_input_01 $R_order_of_input_02 $output/newdir > /dev/null 2>/dev/null`;
+`mv $output/newdir/Bar_plot/bar_plot_input_1.pdf $output/METABOLIC_Figures/Sequential_transformation_01.pdf`;
+`mv $output/newdir/Bar_plot/bar_plot_input_2.pdf $output/METABOLIC_Figures/Sequential_transformation_02.pdf`;
 `rm -r $output/newdir`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
@@ -1415,24 +1368,24 @@ foreach my $gn (sort keys %Hmmscan_result){
 	}
 }
 
-open OUT, ">$output/Metabolic_energy_flow_input.txt";
+open OUT, ">$output/METABOLIC_Figures_Input/Metabolic_energy_flow_input.txt";
 foreach my $gn_n_pth (sort keys %Hash_gn_n_pth){
 	print OUT "$Total_R_community_coverage{$gn_n_pth}\n";
 }
 close OUT;
 
-open OUT, ">$output/Metabolic_network_input.txt";
+open OUT, ">$output/METABOLIC_Figures_Input/Metabolic_network_input.txt";
 print OUT "#Genome\tStep1\tStep2\tTaxonomic Group\tCoverage value\(average\)\n";
 foreach my $gn_n_pair (sort keys %Total_R_community_coverage2){
 	print OUT "$gn_n_pair\t$Total_R_community_coverage2{$gn_n_pair}\n";
 }
 close OUT;
 
-`Rscript $METABOLIC_dir/draw_metabolic_energy_flow.R $output/Metabolic_energy_flow_input.txt $output/Output_energy_flow > /dev/null`;
-`mv $output/Output_energy_flow/Energy_plot/network.plot.pdf   $output/Metabolic_energy_flow.pdf; rm -r $output/Output_energy_flow`;
+`Rscript $METABOLIC_dir/draw_metabolic_energy_flow.R $output/METABOLIC_Figures_Input/Metabolic_energy_flow_input.txt $output/Output_energy_flow > /dev/null`;
+`mv $output/Output_energy_flow/Energy_plot/network.plot.pdf   $output/METABOLIC_Figures/Metabolic_energy_flow.pdf; rm -r $output/Output_energy_flow`;
 
-`Rscript $METABOLIC_dir/draw_metabolic_network.R $output/Metabolic_network_input.txt $output/OutputFolder_Energy > /dev/null`;
-`mv $output/OutputFolder_Energy/network_plot $output/Metabolic_network; rm -r $output/OutputFolder_Energy`;
+`Rscript $METABOLIC_dir/draw_metabolic_network.R $output/METABOLIC_Figures_Input/Metabolic_network_input.txt $output/OutputFolder_Energy > /dev/null`;
+`mv $output/OutputFolder_Energy/network_plot $output/METABOLIC_Figures/Metabolic_network_figures; rm -r $output/OutputFolder_Energy`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing energy flow chart finished\n";
@@ -1574,7 +1527,12 @@ sub _get_Genome_coverge{
 		chomp;
 		if (!/^#/){
 			my @tmp = split (/\,/,$_);
-			my $tmp_link = $tmp[0]."\t".$tmp[1];
+			my $tmp_link = "";
+			if ($test ne "true"){
+				$tmp_link = $tmp[0]."\t".$tmp[1];
+			}else{
+				$tmp_link = "$METABOLIC_dir/METABOLIC-C_test_files/METABOLIC_test_reads/".$tmp[0]."\t"."$METABOLIC_dir/METABOLIC-C_test_files/METABOLIC_test_reads/".$tmp[1];
+			}
 			$Reads{$tmp_link} = $i;
 			$i++;
 		}
@@ -1590,7 +1548,7 @@ sub _get_Genome_coverge{
 		print OUT__ "mkdir $output/sambamba_tmpfiles; sambamba sort  $output/All_gene_collections_mapped.$j.bam --tmpdir $output/sambamba_tmpfiles -o $output/All_gene_collections_mapped.$j.sorted.bam 2> /dev/null;";
 		print OUT__ "samtools index $output/All_gene_collections_mapped.$j.sorted.bam > /dev/null;";
 		print OUT__ "samtools flagstat $output/All_gene_collections_mapped.$j.sorted.bam > $output/All_gene_collections_mapped.$j.sorted.stat 2> /dev/null\n";
-		print OUT__ "rm $output/All_gene_collections_mapped.$j.sam $output/All_gene_collections_mapped.$j.bam; rm -r $output/sambamba_tmpfiles\n";
+		print OUT__ "rm $output/All_gene_collections_mapped.$j.sam $output/All_gene_collections_mapped.$j.bam;rm -r $output/sambamba_tmpfiles\n";
 	}
 	close OUT__;
 	
@@ -1615,6 +1573,7 @@ sub _get_Genome_coverge{
 	}
 	
 	system ("coverm contig --methods metabat --bam-files  $output/All_gene_collections_mapped.*.sorted.bam > $output/All_gene_collections_mapped.depth.txt 2> /dev/null");
+	`rm $output/*.bt2;rm $output/All_gene_collections.gene; rm $output/*.bam; rm $output/*.sorted.stat;rm $output/*.bai`;
 	
 	my %h = (); # average => bin => all gene coverage values
 	my @h_head = ();  
