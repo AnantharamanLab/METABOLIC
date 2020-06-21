@@ -26,5 +26,5 @@ perl ../Accessory_scripts/make_pepunit_db.pl
 cd ../
 tar zxvf 5_genomes_test.tgz
 gdown https://drive.google.com/uc?id=1FvkZ8bugwMRcam02iGIIWxXAHs1Lka9b
-tar zxvf METABOLIC-C_test_files.tgz
+tar zxvf METABOLIC_test_files.tgz
 rm *.tgz
