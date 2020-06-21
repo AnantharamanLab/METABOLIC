@@ -25,6 +25,6 @@ wget ftp://ftp.ebi.ac.uk/pub/databases/merops/current_release/pepunit.lib
 perl ../Accessory_scripts/make_pepunit_db.pl
 cd ../
 tar zxvf 5_genomes_test.tgz
-gdown https://drive.google.com/uc?id=1FvkZ8bugwMRcam02iGIIWxXAHs1Lka9b
+gdown https://drive.google.com/uc?id=1JQJpw_elM4IyGo_BIfioy8XnmqgoN-Iw
 tar zxvf METABOLIC_test_files.tgz
 rm *.tgz
