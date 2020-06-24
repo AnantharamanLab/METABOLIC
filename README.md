@@ -63,7 +63,7 @@ v1.1 -- Sep 4, 2019 --
 
 If you are planning to use only METABOLIC-G, you don't need to install GTDB-tk.
 
-|Necessary Databases|Approximaate System Storage Required|
+|Necessary Databases|Approximate System Storage Required|
 |---|---|
 |METABOLIC program with unzipped files|7.69 Gb|
 |GTDB-Tk Reference Data|28 Gb|
