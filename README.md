@@ -212,30 +212,20 @@ The main scripts that should be used to run the program are METABOLIC-G.pl or ME
 
 In order to run METABOLIC-G starting from **nucleotide** sequences, **AT LEAST** the following flags should be used for METABOLIC-G:
 ```
-perl METABOLIC-G.pl -in-gn [path_to_genome_files]-o [output_directory_to_be_created]
+perl METABOLIC-G.pl -in-gn [path_to_genome_files] -o [output_directory_to_be_created]
 ```
 
 In order to run METABOLIC-G starting from **amino acid** sequences, **AT LEAST** the following flags should be used for METABOLIC-G:
 ```
-perl METABOLIC-G.pl -in [path_to_genome_files]-o [output_directory_to_be_created]
+perl METABOLIC-G.pl -in [path_to_genome_files] -o [output_directory_to_be_created]
 ```
 
 In order to run METABOLIC-C, **AT LEAST** the following flags should be used for METABOLIC-C:
 ```
-perl METABOLIC-C.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads]-o [output_directory_to_be_created]
+perl METABOLIC-C.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -o [output_directory_to_be_created]
 ```
 
 <br />
-
-We also offer a supplementary script titled “METABOLIC-C-jump.pl,” which allows for the running of METABOLIC-C.pl with a reduced runtime. The script does this by bypassing the use of Prodigal in annotating ORFs and the identification of proteins through `hmmsearch`. You can use this script if you have previously run METABOLIC to generate the `intermediate_files/` directory (See “METABOLIC Output Files:” below) has been generated.
-
-To run this script, make sure that the `intermediate_files/` directory is within a directory which will serve as the output directory [-o option] for METABOLIC-C-jump.pl. The output directory that you specify with the `-o` option must be created prior to running this script and must contain the aforementioned `intermediate_files/` directory. To run this script, **AT LEAST** the following flags should be used:
-
-```
-METABOLIC-C-jump.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -m [path_to_METABOLIC_directory] -o [premade_output_directory]
-```
-
-*Note: METABOLIC-C-jump.pl can be used to re-run METABOLIC only if errors arose **AFTER** the initial Prodigal and hmmsearch programs have completed running.*
 
 
 ## <a name="metabolic_output"></a> METABOLIC Output Files:
@@ -303,19 +293,20 @@ If you run METABOLIC-C.pl, the software will also calculate relative gene abunda
 ```
 *Note the the width of the arrows does not have any significance.*
 
-&emsp;&emsp;Generated only by METABOLIC-C.pl are a set of figures representing metabolic handoffs within the community:  
+&emsp;&emsp;> Generated only by METABOLIC-C.pl are a set of figures representing metabolic handoffs within the community:  
 
 For Sequential transformation diagram, we have summarized and visualized the genome number and genome coverage (relative abundance of microorganism) of the microorganisms that were putatively involved in the sequential transformation of both important inorganic elements and organic compounds. 
 
 The resulting files are `Sequential_transformation_01.pdf` and `Sequential_transformation_02.pdf`.        
 
-&emsp;&emsp;Generated only METABOLIC-C.pl is a figure reprsenting energy flow by the community:  
+&emsp;&emsp;> Generated only METABOLIC-C.pl is a figure reprsenting energy flow by the community:  
 
 For Metabolic energy flow diagram, a Sankey diagram is generated, representing the function fractions that are contributed by various microbial groups in a given community.   
 
 The resulting file is `Metabolic_energy_flow.pdf`.
 
-&emsp;&emsp;METABOLIC-C.pl generates a figure reprsenting metabolic connections between different reactions that are found within the community:  
+&emsp;&emsp;> METABOLIC-C.pl generates a figure reprsenting metabolic connections between different reactions that are  
+&emsp;&emsp;  found within the community:  
 
 For Metabolic network diagrams, diagrams representing metabolic connections of biogeochemical cycling steps at both phylum level and the whole community level will be generated.    
 
