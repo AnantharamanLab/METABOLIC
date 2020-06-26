@@ -33,9 +33,9 @@ Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman K. "METABOLIC: A scalable high-thro
 8. [Copyright](#copyright)
 
 ## <a name="version_history"></a> Version History:
-v4.0 -- Jun 20, 2020 --     
-* Fix the resulted excel corrupt issue    
-* Re-organize the result folders<br />
+v4.0 -- Jun 22, 2020 --  
+* METABOLIC now uses an R script to generate METABOLIC_result.xlsx, which fixes issues with the generation of a corrupt METABOLIC_result.xlsx file
+* Test input data now includes both five nucleotide fasta files and one set of paired sequencing reads, allowing all capabilities of both METABOLIC-G.pl and METABOLIC-C.pl to be tested
 
 v3.0 -- Feb 18, 2020 --     
 * Provide an option to let the user reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
@@ -63,7 +63,7 @@ v1.1 -- Sep 4, 2019 --
 
 If you are planning to use only METABOLIC-G, you don't need to install GTDB-tk.
 
-|Necessary Databases|Approximaate System Storage Required|
+|Necessary Databases|Approximate System Storage Required|
 |---|---|
 |METABOLIC program with unzipped files|7.69 Gb|
 |GTDB-Tk Reference Data|28 Gb|
@@ -115,31 +115,32 @@ cpanm Data::Dumper
 &emsp;&emsp;To install, open the R command line interface by entering "R" into the command line, and then enter<br />
 &emsp;&emsp;"install.packages("[Package Name]")".<br />
 
-Type:
-
 ```
+Example:
 R
 install.packages("diagram")
-install.packages("forcats")
-install.packages("digest")
-install.packages("htmltools")
-install.packages("rmarkdown")
-install.packages("reprex")
-install.packages("tidyverse")
-install.packages("ggthemes")
-install.packages("ggalluvial")
-install.packages("reshape2")
-install.packages("ggraph")
-install.packages("pdftools")
-install.packages("igraph")
-install.packages("ggraph")
-install.packages("tidygraph")
-install.packages("stringr")
-install.packages("plyr")
-install.packages("dplyr")
-install.packages("openxlsx")
 q()
 ```
+
+&emsp;&emsp;&emsp;&emsp;1. *diagram* **(v1.6.4)**<br />
+&emsp;&emsp;&emsp;&emsp;2. *forcats* **(v0.5.0)**<br />
+&emsp;&emsp;&emsp;&emsp;3. *digest* **(v0.6.25)**<br />
+&emsp;&emsp;&emsp;&emsp;4. *htmltools* **(v0.4.0)**<br />
+&emsp;&emsp;&emsp;&emsp;5. *rmarkdown* **(v2.1)**<br />
+&emsp;&emsp;&emsp;&emsp;6. *reprex* **(v0.3.0)**<br />
+&emsp;&emsp;&emsp;&emsp;7. *tidyverse* **(v1.3.0)**<br />
+&emsp;&emsp;&emsp;&emsp;8. *ggthemes* **(v4.2.0)**<br />
+&emsp;&emsp;&emsp;&emsp;9. *ggalluvial* **(v0.11.3)**<br />
+&emsp;&emsp;&emsp;&emsp;10. *reshape2* **(v1.4.3)**<br />
+&emsp;&emsp;&emsp;&emsp;11. *ggraph* **(v2.0.2)**<br />
+&emsp;&emsp;&emsp;&emsp;12. *pdftools* **(v2.3)**<br />
+&emsp;&emsp;&emsp;&emsp;13. *igraph* **(v1.2.5)**<br />
+&emsp;&emsp;&emsp;&emsp;14. *ggraph* **(v2.0.2)**<br />
+&emsp;&emsp;&emsp;&emsp;15. *tidygraph* **(v1.1.2)**<br />
+&emsp;&emsp;&emsp;&emsp;16. *stringr* **(v1.4.0)**<br />
+&emsp;&emsp;&emsp;&emsp;17. *plyr* **(v1.8.6)**<br />
+&emsp;&emsp;&emsp;&emsp;18. *dplyr* **(v0.8.5)**<br />
+&emsp;&emsp;&emsp;&emsp;19. *openxlsx* **(v4.1.4)**<br />
 
 **To ensure efficient and successful installation of METABOLIC, make sure that all dependencies are properly installed prior to download of the METABOLIC software.**
 
@@ -175,9 +176,8 @@ perl METABOLIC-G.pl -help
 perl METABOLIC-C.pl -help
 ```
 
-* **-in-gn [required if you are starting from nucleotide fasta files]** Defines the location of the genome fasta files ending with ".fasta" to be run by this program
+* **-in-gn [required if you are starting from nucleotide fasta files]** Defines the location of the genome nucleotide fasta files ending with ".fasta" to be run by this program
 * **-in [required if you are starting from faa files]** Defines the location of the genome amino acid files ending with ".faa" to be run by this program
-* **-m [required]** Defines the location of the all dependent databases and scripts, which are downloaded with the program or installed above (Default './')
 * **-r [required]** Defines the path to a text file containing the location of paried reads
 * **-t [optional]** Defines the number of threads to run the program with (Default: 20)
 * **-m-cutoff [optional]** Defines the fraction of KEGG module steps present to designate a KEGG module as present (Default: 0.75)
@@ -197,7 +197,14 @@ SRR3577362_sub2_1.fastq,SRR3577362_sub2_2.fastq
 
 #### Running Test Data:
 
-The main METABOLIC directory also contains a set of 5 genomes, which can be used to test that the program was installed correctly. Currently, test runs can only be done with METABOLIC-G, because the only supplied test files of genomes in fasta format. These genomes can be found within the directory `5_genomes_test/`, which is contained within the METABOLIC program directory.
+The main METABOLIC directory also contains a set of 5 genomes and one set of paired metagenomic reads, which can be used to test that METABOLIC-G and METABOLIC-C were installed correctly. These genomes and reads can be found within the directory `METABOLIC_test_files/`, which is contained within the METABOLIC program directory.
+
+METABOLIC-C.pl and METABOLIC-G.pl can be run with the test data by using the `-test true` function of METABOLIC:
+```
+perl METABOLIC-G.pl -test true
+
+perl METABOLIC-C.pl -test true
+```
 
 #### <a name="running"></a> How To Run METABOLIC:
 
@@ -205,30 +212,20 @@ The main scripts that should be used to run the program are METABOLIC-G.pl or ME
 
 In order to run METABOLIC-G starting from **nucleotide** sequences, **AT LEAST** the following flags should be used for METABOLIC-G:
 ```
-METABOLIC-G.pl -in-gn [path_to_genome_files] -m [path_to_METABOLIC_directory] -o [output_directory_to_be_created]
+perl METABOLIC-G.pl -in-gn [path_to_genome_files] -o [output_directory_to_be_created]
 ```
 
 In order to run METABOLIC-G starting from **amino acid** sequences, **AT LEAST** the following flags should be used for METABOLIC-G:
 ```
-METABOLIC-G.pl -in [path_to_genome_files] -m [path_to_METABOLIC_directory] -o [output_directory_to_be_created]
+perl METABOLIC-G.pl -in [path_to_genome_files] -o [output_directory_to_be_created]
 ```
 
 In order to run METABOLIC-C, **AT LEAST** the following flags should be used for METABOLIC-C:
 ```
-METABOLIC-C.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -m [path_to_METABOLIC_directory] -o [output_directory_to_be_created]
+perl METABOLIC-C.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -o [output_directory_to_be_created]
 ```
 
 <br />
-
-We also offer a supplementary script titled “METABOLIC-C-jump.pl,” which allows for the running of METABOLIC-C.pl with a reduced runtime. The script does this by bypassing the use of Prodigal in annotating ORFs and the identification of proteins through `hmmsearch`. You can use this script if you have previously run METABOLIC to generate the `intermediate_files/` directory (See “METABOLIC Output Files:” below) has been generated.
-
-To run this script, make sure that the `intermediate_files/` directory is within a directory which will serve as the output directory [-o option] for METABOLIC-C-jump.pl. The output directory that you specify with the `-o` option must be created prior to running this script and must contain the aforementioned `intermediate_files/` directory. To run this script, **AT LEAST** the following flags should be used:
-
-```
-METABOLIC-C-jump.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -m [path_to_METABOLIC_directory] -o [premade_output_directory]
-```
-
-*Note: METABOLIC-C-jump.pl can be used to re-run METABOLIC only if errors arose **AFTER** the initial Prodigal and hmmsearch programs have completed running.*
 
 
 ## <a name="metabolic_output"></a> METABOLIC Output Files:
@@ -237,31 +234,14 @@ METABOLIC-C-jump.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_rea
 
 |  Output File  |   File Description   |  Generated by METABOLIC-C |   Generated by METABOLIC-G   |
 |-------|---------|:---------:|:---------:|
-|All_gene_collections.gene|All genes combined as the mapping reference|X||
-|All_gene_collections.gene.scaffold.1.bt2|Mapping reference bowtie2 files |X||
-|All_gene_collections.gene.scaffold.2.bt2|Mapping reference bowtie2 files |X||
-|All_gene_collections.gene.scaffold.3.bt2|Mapping reference bowtie2 files |X||
-|All_gene_collections.gene.scaffold.4.bt2|Mapping reference bowtie2 files |X||
-|All_gene_collections.gene.scaffold.rev.1.bt2|Mapping reference bowtie2 files |X||
-|All_gene_collections.gene.scaffold.rev.2.bt2|Mapping reference bowtie2 files |X||
-|All_gene_collections_mapped.1.sorted.bam|Mapping result - sorted bam file |X||
-|All_gene_collections_mapped.1.sorted.bam.bai|Mapping result - sorted bam index file |X||
-|All_gene_collections_mapped.1.sorted.stat|Mapping result - mapping statistics |X||
 |All_gene_collections_mapped.depth.txt|The gene depth of all input genes |X||
-|[Each_hmm_faa/](#faa_collection)|The faa collection for each hmm file |X|X|
+|[Each_HMM_Amino_Acid_Sequence/](#faa_collection)|The faa collection for each hmm file |X|X|
 |intermediate_files/|The hmmsearch, peptides (MEROPS), and CAZymes (dbCAN2) running intermediate files |X|X|
 |[KEGG_identifier_result/](#kegg_ident_result)|The hit and result of each genome by Kofam database |X|X|
-|Metabolic_energy_flow_input.txt|The input file for metabolic energy flow network |X||
-|[Metabolic_energy_flow.pdf](#energy_flow)|The resulted diagram for metabolic energy flow network |X||
-|[Metabolic_network/](#metabolic_networks)|Metabolic network result (metabolic connections, including those for each taxon and for the whole community) |X||
-|Metabolic_network_input.txt|The input file for drawing metabolic network diagrams |X||
-|[METABOLIC_result.xlsx](#metabolic_result_table)|The resulted excel file of METABOLIC |X|X|
-|R_hm_input_1.txt|The input file 1 of sequential transformation result |X||
-|R_hm_input_2.txt|The input file 2 of sequential transformation result |X||
-|R_input/|The input file of element cycling pathways (for each genome and the whole community) |X|X|
-|[R_output/](#r_output)|The output diagrams of element cycling pathways (for each genome and the whole community) |X|X|
-|[Sequential_transformation_01.pdf](#seq_diagram)|The output diagram 1 of sequential transformation result |X||
-|[Sequential_transformation_02.pdf](#seq_diagram)|The output diagram 2 of sequential transformation result |X||
+|[METABOLIC_Figures/](#metabolic_figures_out)|All figures output from the running of METABOLIC |X|X|
+|METABOLIC_Figures_Input/|All input files for R-generated diagrams |X|X|
+|METABOLIC_result_each_spreadsheet/|TSV files representing each sheet of the created METABOLIC_result.xlsx file |X|X|
+|[METABOLIC_result.xlsx](#metabolic_result_table)|The resulting excel file of METABOLIC |X|X|
 <br />
 
 #### <a name="output_detailed"></a> Output Files Detailed:
@@ -281,7 +261,7 @@ This spreadsheet has 6 sheets:
 *In all cases if you scroll down you will see what "Gn00X" colnames refer to (they are based on your fasta file names for the genomes you gave.* 
 
 
-- **<a name="faa_collection"></a> Each HMM Profile Hit Amino Acid Sequence Collection (`Each_hmm_faa/`)** 
+- **<a name="faa_collection"></a> Each HMM Profile Hit Amino Acid Sequence Collection (`Each_HMM_Amino_Acid_Sequence/`)** 
 
 A collection of all amino acid sequences extracted from the input genome .faa files that were identified as matches to the custom HMM profiles provided by METABOLIC.
 
@@ -289,18 +269,20 @@ A collection of all amino acid sequences extracted from the input genome .faa fi
 
 The KEGG identifier searching result - KEGG identifier numbers and hits of each genome that could be used to visualize the pathways in KEGG Mapper
 
-- **<a name="r_output"></a> Elemental/Biogeochemical cycling pathways for each genome and a summary scheme (`R_output/`)**
+- **<a name="metabolic_figures_out"></a> All figures generated by METABOLIC-G.pl and METABOLIC-C.pl (`METABOLIC_Figures/`)**
 
-*Although the `R_output/` directory is generated by both METABOLIC-G.pl and METABOLIC-C.pl, the files contained within the directory will be dependent on which script is used.*
+Both METABOLIC-G.pl and METABOLIC-C.pl will generate a folder titled `Nutrient_Cycling_Diagrams/` within the `METABOLIC_Figures/` directory, which will contain figures that represent nutrient cycling pathways for Sulfur, Nitrogen, Carbon, and other select pathways found within each genome. METABOLIC-C.pl also has the ability to generate overall community nutrient cycling pathways.
 
-For both programs, METABOLIC-G.pl and METABOLIC-C.pl, the `R_output/` directory will contain the following files:
+*Although the `Nutrient_Cycling_Diagrams/` directory is generated by both METABOLIC-G.pl and METABOLIC-C.pl, the files contained within the directory will be dependent on which script is used.*
+
+For both programs, METABOLIC-G.pl and METABOLIC-C.pl, the `Nutrient_Cycling_Diagrams/` directory will contain the following files:
 ```
   [GenomeName].draw_sulfur_cycle_single.PDF
   [GenomeName].draw_nitrogen_cycle_single.PDF
   [GenomeName].draw_other_cycle_single.PDF
   [GenomeName].draw_carbon_cycle_single.PDF
 ```
-A red arrow designates presence of a pathway step and a black arrow means absence. Note the the with of the arrows does not have any significance.
+*A red arrow designates presence of a pathway step and a black arrow means absence. Note the the width of the arrows does not have any significance.*
 
 If you run METABOLIC-C.pl, the software will also calculate relative gene abundances, which will allow for generation of summary diagrams for pathways at a community scale:
 ```
@@ -309,21 +291,22 @@ If you run METABOLIC-C.pl, the software will also calculate relative gene abunda
   draw_nitrogen_cycle_total.PDF
   draw_carbon_cycle_total.PDF
 ```
-Note the the with of the arrows does not have any significance.
+*Note the the width of the arrows does not have any significance.*
 
-- **<a name="seq_diagram"></a> Sequential transformation Diagrams (`Sequential_transformation_01.pdf`, `Sequential_transformation_02.pdf`)**   
+&emsp;&emsp;> Generated only by METABOLIC-C.pl are a set of figures representing metabolic handoffs within the community:  
 
 For Sequential transformation diagram, we have summarized and visualized the genome number and genome coverage (relative abundance of microorganism) of the microorganisms that were putatively involved in the sequential transformation of both important inorganic elements and organic compounds. 
 
 The resulting files are `Sequential_transformation_01.pdf` and `Sequential_transformation_02.pdf`.        
 
-- **<a name="energy_flow"></a> Metabolic Energy Flow (`Metabolic_energy_flow.pdf`)**
+&emsp;&emsp;> Generated only METABOLIC-C.pl is a figure reprsenting energy flow by the community:  
 
 For Metabolic energy flow diagram, a Sankey diagram is generated, representing the function fractions that are contributed by various microbial groups in a given community.   
 
 The resulting file is `Metabolic_energy_flow.pdf`.
 
-- **<a name="metabolic_networks"></a> Metabolic Network Diagrams (`Metabolic_network/`)**
+&emsp;&emsp;> METABOLIC-C.pl generates a figure reprsenting metabolic connections between different reactions that are  
+&emsp;&emsp;  found within the community:  
 
 For Metabolic network diagrams, diagrams representing metabolic connections of biogeochemical cycling steps at both phylum level and the whole community level will be generated.    
 
