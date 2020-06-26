@@ -1080,7 +1080,7 @@ if ($omic_reads_parameters){
 	close OUT;
 }
 
-`Rscript $METABOLIC_dir/draw_biogeochemical_cycles.R $output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input $output/Output FALSE > /dev/null`;
+`Rscript $METABOLIC_dir/draw_biogeochemical_cycles.R $output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input $output/Output TRUE > /dev/null`;
 `mv $output/Output/draw_biogeochem_cycles $output/METABOLIC_Figures/Nutrient_Cycling_Diagrams; rm -r $output/Output`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
