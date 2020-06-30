@@ -82,6 +82,7 @@ use File::Basename;
 =head1 COPYRIGHT
 
 	Zhichao Zhou, zczhou2017@gmail.com
+	Patricia Tran, ptran5@wisc.edu
 	Karthik Anantharaman, karthik@bact.wisc.edu
 	Anantharaman Microbiome Laboratory
 	Department of Bacteriology, University of Wisconsin, Madison
@@ -1167,7 +1168,7 @@ if ($omic_reads_parameters){
 		$Total_R_hm_input_1{$step} = "$gn_no\t$gn_cov_percentage";
 	}
 
-	open OUT, ">$output/METABOLIC_Figures_Input/Sequential_Transofrmation_input_1.txt"; 
+	open OUT, ">$output/METABOLIC_Figures_Input/Sequential_Transformation_input_1.txt"; 
 	foreach my $key (sort keys %Total_R_hm_input_1){
 		print OUT "$key\t$Total_R_hm_input_1{$key}\n";
 	}
@@ -1274,7 +1275,7 @@ if ($omic_reads_parameters){
 		$Total_R_hm_input_2{$step} = "$gn_no\t$gn_cov_percentage";
 	}
 
-	open OUT, ">$output/METABOLIC_Figures_Input/Sequential_Transofrmation_input_2.txt"; 
+	open OUT, ">$output/METABOLIC_Figures_Input/Sequential_Transformation_input_2.txt"; 
 	foreach my $key (sort keys %Total_R_hm_input_2){
 		print OUT "$key\t$Total_R_hm_input_2{$key}\n";
 	}

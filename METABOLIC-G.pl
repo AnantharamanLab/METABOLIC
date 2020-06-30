@@ -84,6 +84,7 @@ use File::Basename;
 =head1 COPYRIGHT
 
 	Zhichao Zhou, zczhou2017@gmail.com
+	Patricia Tran, ptran5@wisc.edu
 	Karthik Anantharaman, karthik@bact.wisc.edu
 	Anantharaman Microbiome Laboratory
 	Department of Bacteriology, University of Wisconsin, Madison
