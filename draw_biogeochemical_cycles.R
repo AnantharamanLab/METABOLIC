@@ -552,7 +552,7 @@ file.total <- list.files(path=R_input, pattern="Total.R_input.txt", full.names=T
 # Remove the total file from the "files" list of individual genome:
 files <- setdiff(files, file.total)
 
-print(files[1])
+#print(files[1])
 
 # files are path to files not the actual files!
 
