@@ -33,8 +33,10 @@ dir.create(network.plots.folder)
 
 plot.folder <- network.plots.folder
 
-#R_input_table <- "/Users/patriciatran/Downloads/Energy_flow_input.2.txt"
+#R_input_table <- "/Users/patriciatran/Downloads/Metabolic_network_input.txt"
 table <- read.csv(R_input_table, header=T, sep="\t")
+
+#Change the column names
 
 #install.packages("ggraph")
 library(ggraph)
