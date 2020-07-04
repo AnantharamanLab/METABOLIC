@@ -172,7 +172,7 @@ sh run_to_setup.sh
 
 #### <a name="flags"></a> All Required and Optional Flags:
 
-To view the options that METABOLIC-C.pl and METABOLIC-G.pl have type:
+To view the options that METABOLIC-C.pl and METABOLIC-G.pl have, please type:
 
 ```
 perl METABOLIC-G.pl -help
@@ -196,7 +196,7 @@ perl METABOLIC-C.pl -help
 SRR3577362_sub_1.fastq,SRR3577362_sub_2.fastq
 SRR3577362_sub2_1.fastq,SRR3577362_sub2_2.fastq
 ```
-&emsp;&emsp;*Note that the two different sets of paired reads are separated by a line return (new line)*
+&emsp;&emsp;*Note that the two different sets of paired reads are separated by a line return (new line), and please avoid empty lines in this text file otherwise software will take blank read files as inputs.*
 
 #### Running Test Data:
 
