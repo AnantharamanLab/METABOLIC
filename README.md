@@ -164,7 +164,7 @@ We provide a "run_to_setup.sh" script along with the data downloaded from the Gi
 ```
 sh run_to_setup.sh
 ```
-**Notice**: The last three lines in "run_to_setup.sh" were used to download "METABOLIC_test_files.tgz" from google drive. It requires gdown. gdown can be simply installed by calling "pip install gdown". Please also refer to **gdown (https://github.com/wkentaro/gdown)**  
+**Notice**: The last three lines in "run_to_setup.sh" were used to download "METABOLIC_test_files.tgz" from google drive. It requires gdown. gdown can be simply installed by calling "pip install gdown". Please also refer to **[gdown](https://github.com/wkentaro/gdown)**.  
 
 ## <a name="running_metabolic"></a> Running METABOLIC: 
 
