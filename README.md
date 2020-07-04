@@ -167,11 +167,11 @@ sh run_to_setup.sh
 
 ## <a name="running_metabolic"></a> Running METABOLIC: 
 
-<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLICWorkflow.png" width="90%">
+<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLICWorkflow.jpg" width="90%">
 
 #### <a name="flags"></a> All Required and Optional Flags:
 
-To view the options that METABOLIC-c.pl and METABOLIC-g.pl have type:
+To view the options that METABOLIC-C.pl and METABOLIC-G.pl have type:
 
 ```
 perl METABOLIC-G.pl -help
