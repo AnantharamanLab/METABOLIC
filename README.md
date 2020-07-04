@@ -37,6 +37,7 @@ Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman K. "METABOLIC: A scalable high-thro
 v4.0 -- Jun 22, 2020 --  
 * METABOLIC now uses an R script to generate METABOLIC_result.xlsx, which fixes issues with the generation of a corrupt METABOLIC_result.xlsx file
 * Test input data now includes both five nucleotide fasta files and one set of paired sequencing reads, allowing all capabilities of both METABOLIC-G.pl and METABOLIC-C.pl to be tested
+* The MN-score table has been provided as one of the result by METABOLIC-C
 
 v3.0 -- Feb 18, 2020 --     
 * Provide an option to let the user reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
@@ -242,6 +243,7 @@ perl METABOLIC-C.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_rea
 |[METABOLIC_Figures/](#metabolic_figures_out)|All figures output from the running of METABOLIC |X|X|
 |METABOLIC_Figures_Input/|All input files for R-generated diagrams |X|X|
 |METABOLIC_result_each_spreadsheet/|TSV files representing each sheet of the created METABOLIC_result.xlsx file |X|X|
+|MN-score_result/|The resulted table for MN-score |X||
 |[METABOLIC_result.xlsx](#metabolic_result_table)|The resulting excel file of METABOLIC |X|X|
 <br />
 
