@@ -159,7 +159,8 @@ git clone https://github.com/AnantharamanLab/METABOLIC.git
 
 #### <a name="quick_install"></a> Quick Installation:
 
-We provide a "run_to_setup.sh" script along with the data downloaded from the GitHub for easy setup of dependent databases. This can be run by using the following command:
+We provide a "run_to_setup.sh" script along with the data downloaded from the GitHub for easy setup of dependent databases. This can be run by using the following command  
+**Notice**: The last three lines in "run_to_setup.sh" were used to download "METABOLIC_test_files.tgz" from google drive. It requires gdown. gdown can be simply installed by calling "pip install gdown". Please also refer to **[gdown] (https://github.com/wkentaro/gdown)**
 ```
 sh run_to_setup.sh
 ```
