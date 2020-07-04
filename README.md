@@ -37,7 +37,7 @@ Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman K. "METABOLIC: A scalable high-thro
 v4.0 -- Jun 22, 2020 --  
 * METABOLIC now uses an R script to generate METABOLIC_result.xlsx, which fixes issues with the generation of a corrupt METABOLIC_result.xlsx file
 * Test input data now includes both five nucleotide fasta files and one set of paired sequencing reads, allowing all capabilities of both METABOLIC-G.pl and METABOLIC-C.pl to be tested
-* The MN-score table has been provided as one of the result by METABOLIC-C
+* The MN-score table has been provided as one of the results by METABOLIC-C
 
 v3.0 -- Feb 18, 2020 --     
 * Provide an option to let the user reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
@@ -314,6 +314,12 @@ The resulting file is `Metabolic_energy_flow.pdf`.
 For Metabolic network diagrams, diagrams representing metabolic connections of biogeochemical cycling steps at both phylum level and the whole community level will be generated.    
 
 The resulted files are placed in the directory `Metabolic_network/`.
+
+For MN-score result, the table showing the MN-score (Metabolic Networking score) will be generated ("MN-score_result.txt"). The first column indicates the MN-score for each function. The rest part of the table indicates the contribution percentage of each phylum to the corresponding function. An example was given: 
+
+<img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/MN-score_table_example.jpg" width="75%">
+
+The resulted files are placed in the directory `MN-score result/`.
 
 
 ## <a name="copyright"></a> Copyright
