@@ -146,6 +146,9 @@ GetOptions(
  my $R_order_of_input_02 = "$METABOLIC_dir/METABOLIC_template_and_database/order_of_input_02.txt";
  my $CAZy_map_address = "$METABOLIC_dir/METABOLIC_template_and_database/CAZy_map.txt";
  
+ #the MN-score reaction table template
+ my $MN_score_reaction_table = "$METABOLIC_dir/METABOLIC_template_and_database/MN-score_reaction_table.txt";
+ 
  #the motif files to validate specific protein hits
  my $motif_file = "$METABOLIC_dir/METABOLIC_template_and_database/motif.txt";
  my $motif_pair_file = "$METABOLIC_dir/METABOLIC_template_and_database/motif.pair.txt";
@@ -1283,7 +1286,7 @@ if ($omic_reads_parameters){
 }
 
 `mkdir $output/newdir`;
-`Rscript $METABOLIC_dir/draw_sequential_reaction.R $output/METABOLIC_Figures_Input/Sequential_Transofrmation_input_1.txt $output/METABOLIC_Figures_Input/Sequential_Transofrmation_input_2.txt $R_mh_tsv $R_order_of_input_01 $R_order_of_input_02 $output/newdir > /dev/null 2>/dev/null`;
+`Rscript $METABOLIC_dir/draw_sequential_reaction.R $output/METABOLIC_Figures_Input/Sequential_Transformation_input_1.txt $output/METABOLIC_Figures_Input/Sequential_Transformation_input_2.txt $R_mh_tsv $R_order_of_input_01 $R_order_of_input_02 $output/newdir > /dev/null 2>/dev/null`;
 `mv $output/newdir/Bar_plot/bar_plot_input_1.pdf $output/METABOLIC_Figures/Sequential_transformation_01.pdf`;
 `mv $output/newdir/Bar_plot/bar_plot_input_2.pdf $output/METABOLIC_Figures/Sequential_transformation_02.pdf`;
 `rm -r $output/newdir`;
@@ -1390,6 +1393,209 @@ close OUT;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing energy flow chart finished\n";
+
+
+$datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
+print "\[$datestring\] Calculating MN-score ...\n";
+
+###To calculate MN-score
+#Store MN_score_reaction_table
+my %MN_functions = (); #func => hmms
+my %MN_function_hmm_ids = ();
+open IN, "$MN_score_reaction_table"; # read the MN_score_reaction table
+while (<IN>){
+	chomp;
+	if (!/^#/){
+		my @tmp = split (/\t/);
+		$MN_functions{$tmp[0]} = $tmp[2];
+		if ($tmp[2] !~ /\;/){
+			my @tmp2 = split (/\,/,$tmp[2]);
+			foreach my $key (@tmp2){
+				$MN_function_hmm_ids{$key} = 1;
+			}
+		}elsif ($tmp[2] =~ /\;/){
+			my @tmp2 = split (/\;/,$tmp[2]);
+			foreach my $key (@tmp2){
+				my @tmp3 = split (/\,/,$key);
+				foreach my $key2 (@tmp3){
+					if ($key2 !~ /NO/){
+						$MN_function_hmm_ids{$key2} = 1;
+					}
+				}
+			}
+		}
+	}
+}
+close IN;
+
+#Get MN_score_reaction_table result
+my %MN_score_hash = (); #pathway => gn => 1 or 0
+foreach my $gn (sort keys %Hmmscan_result){
+	foreach my $key (sort keys %MN_functions){
+		$MN_score_hash{$key}{$gn} = 0;
+		my $hmms = $MN_functions{$key};
+		if ($hmms !~ /\;/){
+			foreach my $hmm_id (sort keys %MN_function_hmm_ids){
+				if ($hmms =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
+					$MN_score_hash{$key}{$gn} = 1; 
+				}
+			}
+		}elsif ($hmms =~ /\;/){
+			my ($hmms_1,$hmms_2) = $hmms =~ /^(.+?)\;(.+?)$/;
+			if ($hmms_2 !~ /NO/){
+				my $logic1 = 0; my $logic2 = 0;  #print "$gn\n";
+				foreach my $hmm_id (sort keys %MN_function_hmm_ids){
+					if ($hmms_1 =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
+						$logic1 = 1;	
+					}
+					if ($hmms_2 =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
+						$logic2 = 1;	
+					}
+				}
+				if ($logic1 and $logic2){
+					$MN_score_hash{$key}{$gn} = 1;
+				}
+			}elsif ($hmms_2 =~ /NO/){
+				my $logic1 = 0; my $logic2 = 0;
+				foreach my $hmm_id (sort keys %MN_function_hmm_ids){
+					if ($hmms_1 =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
+						$logic1 = 1;	
+					}			
+					if ($hmms_2 !~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
+						$logic2 = 1;	
+					}		
+				}
+				if ($logic1 and $logic2){
+					$MN_score_hash{$key}{$gn} = 1;
+				}
+			}
+		}
+	}
+}
+
+my %MN_score_community_coverage = (); # genome\tpathway => category \t pathway \t genome coverage percentage
+if ($omic_reads_parameters){
+	my %Genome_cov = %Genome_cov_constant;
+	foreach my $pth (sort keys %MN_score_hash){
+		my $gn_cov_percentage = 0; 
+		foreach my $gn (sort keys %Hmmscan_result){
+			if ($Genome_cov{$gn} and $MN_score_hash{$pth}{$gn}){
+				$gn_cov_percentage = $Genome_cov{$gn}; 
+				my $cat = $Bin2Cat{$gn};
+				my $gn_n_pth = "$gn\t$pth"; 
+				$MN_score_community_coverage{$gn_n_pth} = "$cat\t$pth\t$gn_cov_percentage";
+				
+			}
+		}
+	}		
+}
+
+my %MN_score_community_coverage2 = (); #$genome\tpath pair => cat \t  coverage percentage average
+foreach my $gn (sort keys %Hmmscan_result){
+	my %Path = (); # path => 1
+	foreach my $gn_n_pth (sort keys %MN_score_community_coverage){
+		if ($gn_n_pth =~ /$gn\t/){
+			my @tmp = split (/\t/,$gn_n_pth);
+			$Path{$tmp[1]} = 1;
+		}
+	}
+	my @Path_keys = sort keys %Path;
+	for(my $i=0; $i<=$#Path_keys; $i++){
+		for(my $j = $i+1; $j<=$#Path_keys; $j++){
+			my $pair = "$Path_keys[$i]\t$Path_keys[$j]";
+			my $coverage = 0;
+			my @tmp1 = split (/\t/, $MN_score_community_coverage{"$gn\t$Path_keys[$i]"});
+			my @tmp2 = split (/\t/, $MN_score_community_coverage{"$gn\t$Path_keys[$j]"});
+			$coverage = ($tmp1[2] + $tmp2[2]) / 2;
+			$MN_score_community_coverage2{"$gn\t$pair"} = $Bin2Cat{$gn}."\t".$coverage;
+		}
+	}
+}
+
+`mkdir $output/MN-score_result`;
+open OUT, ">$output/MN-score_result/MN-score_result_table_input.txt";
+print OUT "#Genome\tFunc1\tFunc2\tTaxonomic Group\tCoverage value\(average\)\n";
+foreach my $gn_n_pair (sort keys %MN_score_community_coverage2){
+	print OUT "$gn_n_pair\t$MN_score_community_coverage2{$gn_n_pair}\n";
+}
+close OUT;
+
+#read the "MN-score_result_table_input.txt" and make the "MN-score_result.txt", which is the final result of MN-score
+my %Input = (); # whole line => [0]  Acidimicrobiia_bacterium_UWMA-0264	[1]  C-S-01:Organic carbon oxidation	[2] C-S-04:Acetate oxidation	[3] Actinobacteriota	[4] 0.038328883
+open IN, "$output/MN-score_result/MN-score_result_table_input.txt";
+while (<IN>){
+	chomp;
+	if (!/\#/){
+		my @tmp = split (/\t/,$_);
+		$Input{$_}[0] = $tmp[0];
+		$Input{$_}[1] = $tmp[1];
+		$Input{$_}[2] = $tmp[2];
+		$Input{$_}[3] = $tmp[3];
+		$Input{$_}[4] = $tmp[4];
+	}
+}
+close IN;
+
+my %Output1 = (); # func. => category => summed coverage
+my %Output2 = (); # func. =>  summed coverage
+my %Cat2 =();
+foreach my $key (sort keys %Input){
+	$Output1{$Input{$key}[1]}{$Input{$key}[3]} += $Input{$key}[4];
+	$Output1{$Input{$key}[2]}{$Input{$key}[3]} += $Input{$key}[4];
+	$Cat2{$Input{$key}[3]} = 1;
+	$Output2{$Input{$key}[1]} += $Input{$key}[4];
+	$Output2{$Input{$key}[2]} += $Input{$key}[4];
+}
+
+my %Output3 = (); # the contribution percentage for each function
+my $sum_cov_for_output2 = 0;
+foreach my $func (sort keys %Output2){
+	$sum_cov_for_output2 += $Output2{$func};
+}
+
+foreach my $func (sort keys %Output2){
+	my $var = ($Output2{$func} / $sum_cov_for_output2) * 100;
+	$Output3{$func} = sprintf "%.1f",$var;
+}
+
+my %Output4 = (); # func. => category => percentage  
+#The func. and each category contribution percentage table
+foreach my $func (sort keys %Output1){
+	foreach my $cat (sort keys %Cat2){
+		my $var = 0;
+		if ($Output2{$func} and $Output1{$func}{$cat}){
+			$var = ($Output1{$func}{$cat} / $Output2{$func}) * 100;
+		}
+		$Output4{$func}{$cat} = sprintf "%.1f",$var;
+	}
+}
+
+open OUT, ">$output/MN-score_result/MN-score_result.txt";
+my $row=join("\t", sort keys %Cat2);
+print OUT "Function\tMN-score for each function\t$row\n";
+foreach my $tmp1 (sort keys %Output4)
+{
+        print OUT $tmp1."\t";
+		print OUT $Output3{$tmp1}."\t";
+        my @tmp = ();
+        foreach my $tmp2 (sort keys %Cat2)
+        {
+                if (exists $Output4{$tmp1}{$tmp2})
+                {
+                        push @tmp, $Output4{$tmp1}{$tmp2};
+                }
+                else
+                {
+                        push @tmp,"0"
+                }
+        }
+        print OUT join("\t",@tmp)."\n";
+}
+close OUT;
+
+$datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
+print "\[$datestring\] Calculating MN-score is done\n";
+
 }
 
 ##subroutines
