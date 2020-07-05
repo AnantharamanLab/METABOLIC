@@ -1302,35 +1302,39 @@ system ("gtdbtk classify_wf --cpus $cpu_numbers -x fasta --genome_dir $input_gen
 
 my %Bin2Cat = (); # bin => category, for instance, Acidimicrobiia_bacterium_UWMA-0264 => Actinobacteriota
 my %Cat = ();
-open IN, "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv";
-while (<IN>){
-	chomp;
-	if (!/^user_genome/){
-		my @tmp = split (/\t/);
-		if ($tmp[1] =~ /p\_\_Proteobacteria/){
-			my ($cat) = $tmp[1] =~ /\;c\_\_(.+?)\;/;
-			$Bin2Cat{$tmp[0]} = $cat;
-			$Cat{$cat} = 1;
-		}else{
+if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv"){
+	open IN, "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv";
+	while (<IN>){
+		chomp;
+		if (!/^user_genome/){
+			my @tmp = split (/\t/);
+			if ($tmp[1] =~ /p\_\_Proteobacteria/){
+				my ($cat) = $tmp[1] =~ /\;c\_\_(.+?)\;/;
+				$Bin2Cat{$tmp[0]} = $cat;
+				$Cat{$cat} = 1;
+			}else{
+				my ($cat) = $tmp[1] =~ /\;p\_\_(.+?)\;/;
+				$Bin2Cat{$tmp[0]} = $cat;
+				$Cat{$cat} = 1;
+			}
+		}
+	}
+	close IN;
+}
+
+if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar122.summary.tsv"){
+	open IN, "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar122.summary.tsv";
+	while (<IN>){
+		chomp;
+		if (!/^user_genome/){
+			my @tmp = split (/\t/);
 			my ($cat) = $tmp[1] =~ /\;p\_\_(.+?)\;/;
 			$Bin2Cat{$tmp[0]} = $cat;
 			$Cat{$cat} = 1;
 		}
 	}
+	close IN;
 }
-close IN;
-
-open IN, "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar122.summary.tsv";
-while (<IN>){
-	chomp;
-	if (!/^user_genome/){
-		my @tmp = split (/\t/);
-		my ($cat) = $tmp[1] =~ /\;p\_\_(.+?)\;/;
-		$Bin2Cat{$tmp[0]} = $cat;
-		$Cat{$cat} = 1;
-	}
-}
-close IN;
 
 my %Hash_gn_n_pth = (); 
 my %Total_R_community_coverage = (); # genome\tpathway => category \t pathway \t genome coverage percentage
