@@ -38,6 +38,7 @@ v4.0 -- Jun 22, 2020 --
 * METABOLIC now uses an R script to generate METABOLIC_result.xlsx, which fixes issues with the generation of a corrupt METABOLIC_result.xlsx file
 * Test input data now includes both five nucleotide fasta files and one set of paired sequencing reads, allowing all capabilities of both METABOLIC-G.pl and METABOLIC-C.pl to be tested
 * The MN-score table has been provided as one of the results by METABOLIC-C
+* Updated the motif checking step for pmo/amo, dsrE/tusD, dsrH/tusB, and dsrF/tusC
 
 v3.0 -- Feb 18, 2020 --     
 * Provide an option to let the user reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
