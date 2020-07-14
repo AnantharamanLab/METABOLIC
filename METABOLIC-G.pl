@@ -150,6 +150,7 @@ GetOptions(
  #the motif files to validate specific protein hits
  my $motif_file = "$METABOLIC_dir/METABOLIC_template_and_database/motif.txt";
  my $motif_pair_file = "$METABOLIC_dir/METABOLIC_template_and_database/motif.pair.txt";
+ my $motif_freq_folder = "$METABOLIC_dir/METABOLIC_template_and_database/motif_frequency";
 
 # the test option:
 if ($test eq "true"){
@@ -281,7 +282,7 @@ $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime;
 print "\[$datestring\] The hmmsearch is finished\n";
 
 #Store motif validation files
-my %Motif = _get_motif($motif_file); #protein id => motif sequences (DsrC => GPXKXXCXXXGXPXPXXCX)
+my %Motif = _get_motif($motif_file); #protein id => motif sequences (dsrC => GPXKXXCXXXGXPXPXXCX)
 my %Motif_pair = _get_motif_pair($motif_pair_file); # dsrC => tusE
 
 #summarize hmmsearch result and print table
@@ -307,28 +308,36 @@ while (<IN>){
 							if ($tmp[8] >= $threshold){
 								my ($hmm_basename) = $hmm =~ /^(.+?)\.hmm/; 
 								if (exists $Motif{$hmm_basename}){
-									#print "$hmm_basename in $gn_id motif validation is effective\n";
-									my $seq; # the protein seq
-									my $motif = $Motif{$hmm_basename};
-									my $motif_anti = "111"; # the meaningless numbers that serve as the anti motif
-									if (exists $Motif_pair{$hmm_basename}){
-										$motif_anti = $Motif{$Motif_pair{$hmm_basename}};
-									}
-									$motif =~ s/X/\[ARNDCQEGHILKMFPSTWYV\]/g; $motif_anti =~ s/X/\[ARNDCQEGHILKMFPSTWYV\]/g;
+									my $seq; 
+									my $motif = $Motif{$hmm_basename}; $motif =~ s/X/\[ARNDCQEGHILKMFPSTWYV\]/g; 									
 									my %Seq_gn = _store_seq("$input_protein_folder/$gn_id.faa"); # get the genome sequences
 									$seq = $Seq_gn{">$tmp[0]"};
-									if ($seq =~ /$motif/ and $seq !~ /$motif_anti/){
+									if ($seq =~ /$motif/){
 										if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
 											$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
 										}else{
 											$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
 										}
-										$Hmmscan_result{$gn_id}{$hmm}++; 
-										#print "$hmm_basename in $gn_id has been tested, and it has passed\n";
-									}else{
-										#print "$hmm_basename in $gn_id has been tested, and it has failed\n";
+										$Hmmscan_result{$gn_id}{$hmm}++;
 									}
-								}else{
+								}elsif(exists $Motif_pair{$hmm_basename}){
+									my $motif_hmm = "$METABOLIC_hmm_db_address/$hmm_basename.check.hmm";
+									my $motif_anti_hmm = "$METABOLIC_hmm_db_address/$Motif_pair{$hmm_basename}.check.hmm";
+									_get_1_from_input_faa("$input_protein_folder/$gn_id.faa",">$tmp[0]","$output/tmp.$hmm_basename.check.faa");								
+									`hmmsearch --cpu 1 --tblout $output/tmp.$hmm_basename.check.hmmsearch_result.txt $motif_hmm $output/tmp.$hmm_basename.check.faa`;
+									`hmmsearch --cpu 1 --tblout $output/tmp.$Motif_pair{$hmm_basename}.check.hmmsearch_result.txt $motif_anti_hmm $output/tmp.$hmm_basename.check.faa`;
+									my $motif_check_score = _get_check_score("$output/tmp.$hmm_basename.check.hmmsearch_result.txt"); 
+									my $motif_anti_check_score = _get_check_score("$output/tmp.$Motif_pair{$hmm_basename}.check.hmmsearch_result.txt");
+									if ($motif_check_score >= $motif_anti_check_score and $motif_check_score != 0){
+										if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
+											$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
+										}else{
+											$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
+										}
+										$Hmmscan_result{$gn_id}{$hmm}++;
+									}
+									`rm $output/tmp.$hmm_basename.check.faa $output/tmp.$hmm_basename.check.hmmsearch_result.txt $output/tmp.$Motif_pair{$hmm_basename}.check.hmmsearch_result.txt`;									
+								}else{ # do not have motif check step
 									if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
 										$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
 									}else{
@@ -340,27 +349,35 @@ while (<IN>){
 						}else{
 							my ($hmm_basename) = $hmm =~ /^(.+?)\.hmm/; 
 							if (exists $Motif{$hmm_basename}){
-								#print "$hmm_basename in $gn_id motif validation is effective\n";
 								my $seq; # the protein seq
-								my $motif = $Motif{$hmm_basename};
-								my $motif_anti = "111"; # the meaningless numbers that serve as the anti motif
-								if (exists $Motif_pair{$hmm_basename}){
-									$motif_anti = $Motif{$Motif_pair{$hmm_basename}};
-								}
-								$motif =~ s/X/\[ARNDCQEGHILKMFPSTWYV\]/g; $motif_anti =~ s/X/\[ARNDCQEGHILKMFPSTWYV\]/g;
+								my $motif = $Motif{$hmm_basename};  $motif =~ s/X/\[ARNDCQEGHILKMFPSTWYV\]/g; 		
 								my %Seq_gn = _store_seq("$input_protein_folder/$gn_id.faa"); # get the genome sequences
 								$seq = $Seq_gn{">$tmp[0]"};
-								if ($seq =~ /$motif/ and $seq !~ /$motif_anti/){
+								if ($seq =~ /$motif/){
 									if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
 										$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
 									}else{
 										$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
 									}
-									$Hmmscan_result{$gn_id}{$hmm}++; 
-									#print "$hmm_basename in $gn_id has been tested, and it has passed\n";
-								}else{
-									#print "$hmm_basename in $gn_id has been tested, and it has failed\n";
+									$Hmmscan_result{$gn_id}{$hmm}++;
 								}
+							}elsif(exists $Motif_pair{$hmm_basename}){
+								my $motif_hmm = "$METABOLIC_hmm_db_address/$hmm_basename.check.hmm";
+								my $motif_anti_hmm = "$METABOLIC_hmm_db_address/$Motif_pair{$hmm_basename}.check.hmm";
+								_get_1_from_input_faa("$input_protein_folder/$gn_id.faa",">$tmp[0]","$output/tmp.$hmm_basename.check.faa");
+								`hmmsearch --cpu 1 --tblout $output/tmp.$hmm_basename.check.hmmsearch_result.txt $motif_hmm $output/tmp.$hmm_basename.check.faa`;
+								`hmmsearch --cpu 1 --tblout $output/tmp.$Motif_pair{$hmm_basename}.check.hmmsearch_result.txt $motif_anti_hmm $output/tmp.$hmm_basename.check.faa`;
+								my $motif_check_score = _get_check_score("$output/tmp.$hmm_basename.check.hmmsearch_result.txt"); 
+								my $motif_anti_check_score = _get_check_score("$output/tmp.$Motif_pair{$hmm_basename}.check.hmmsearch_result.txt");
+								if ($motif_check_score >= $motif_anti_check_score and $motif_check_score != 0){
+									if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
+										$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
+									}else{
+										$Hmmscan_hits{$gn_id}{$hmm} .= "\,".$tmp[0];
+									}
+									$Hmmscan_result{$gn_id}{$hmm}++;
+								}
+								`rm $output/tmp.$hmm_basename.check.faa $output/tmp.$hmm_basename.check.hmmsearch_result.txt $output/tmp.$Motif_pair{$hmm_basename}.check.hmmsearch_result.txt`;
 							}else{
 								if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
 									$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
@@ -1299,6 +1316,47 @@ sub _store_seq{
 	}
 	close _IN;
 	return %Seq;
+}
+
+sub _get_1_from_input_faa{
+	my $input_file = $_[0];
+	my $seq = $_[1];
+	my $output_file = $_[2];
+	my %Seq = (); my $head = "";	
+	open _IN, "$input_file";
+	while (<_IN>){
+		chomp;
+		if (/>/){
+			($head) = $_ =~ /^(>.+?)\s/;
+			$Seq{$head} = "";
+		}else{
+			$Seq{$head} .= $_;
+		}
+	}
+	close _IN;
+	
+	open OUT, ">$output_file";
+	print OUT "$seq\n$Seq{$seq}\n";
+	close OUT;	
+}
+
+sub _get_check_score{
+	my $input_file = $_[0];
+	my $score = 0;
+	open _IN, "$input_file";
+	while (<_IN>){
+		chomp;
+		if (!/^#/){
+			my $line = $_;
+			$line =~ s/ +/ /g;
+			my @tmp = split (/ /,$line);
+			if ($tmp[5] >= $score){
+				$score = $tmp[5];
+			}
+		}
+	}
+	close _IN;
+	return $score;
 }
 
 sub _get_motif{
