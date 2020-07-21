@@ -99,7 +99,7 @@ drawNcycle.single <- function(R_input, OutputFolder){
 
 # Nitrogen Cycle Summary Figure: no coloured arrows, but have the Nb. of Genome annd the coverage next to the arrows:
 drawNcycle.total <- function(R_input, OutputFolder){
-  input <- R_input
+  input.total <- R_input
   plot.folder <- OutputFolder
   
   # Open file connection
@@ -240,7 +240,7 @@ drawScycle.single <- function(R_input, OutputFolder){
 
 
 drawScycle.total <- function(R_input, OutputFolder){
-  input <- R_input
+  input.total <- R_input
   plot.folder <- OutputFolder
   
   #Open file connection
@@ -374,7 +374,7 @@ drawCcycle.single <- function(R_input, OutputFolder){
 
 drawCcycle.total <- function(R_input, OutputFolder){
   
-  input <- R_input
+  input.total <- R_input
   plot.folder <- OutputFolder
   
   #Open file connection:
@@ -483,7 +483,7 @@ drawOthercycles.single<- function(R_input, OutputFolder){
 }  
 
 drawOthercycles.total<- function(R_input, OutputFolder){
-  input <- R_input
+  input.total <- R_input
   plot.folder <- OutputFolder
   
   #Open file connection:
