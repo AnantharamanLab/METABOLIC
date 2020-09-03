@@ -180,8 +180,8 @@ perl METABOLIC-G.pl -help
 perl METABOLIC-C.pl -help
 ```
 
-* **-in-gn [required if you are starting from nucleotide fasta files]** Defines the location of the genome nucleotide fasta files ending with ".fasta" to be run by this program
-* **-in [required if you are starting from faa files]** Defines the location of the genome amino acid files ending with ".faa" to be run by this program
+* **-in-gn [required if you are starting from nucleotide fasta files]** Defines the location of the FOLDER containing the genome nucleotide fasta files ending with ".fasta" to be run by this program
+* **-in [required if you are starting from faa files]** Defines the location of the FOLDER containing the genome amino acid files ending with ".faa" to be run by this program
 * **-r [required]** Defines the path to a text file containing the location of paried reads
 * **-t [optional]** Defines the number of threads to run the program with (Default: 20)
 * **-m-cutoff [optional]** Defines the fraction of KEGG module steps present to designate a KEGG module as present (Default: 0.75)
@@ -216,17 +216,17 @@ The main scripts that should be used to run the program are METABOLIC-G.pl or ME
 
 In order to run METABOLIC-G starting from **nucleotide** sequences, **AT LEAST** the following flags should be used for METABOLIC-G:
 ```
-perl METABOLIC-G.pl -in-gn [path_to_genome_files] -o [output_directory_to_be_created]
+perl METABOLIC-G.pl -in-gn [path_to_folder_with_genome_files] -o [output_directory_to_be_created]
 ```
 
 In order to run METABOLIC-G starting from **amino acid** sequences, **AT LEAST** the following flags should be used for METABOLIC-G:
 ```
-perl METABOLIC-G.pl -in [path_to_genome_files] -o [output_directory_to_be_created]
+perl METABOLIC-G.pl -in [path_to_folder_with_genome_files] -o [output_directory_to_be_created]
 ```
 
 In order to run METABOLIC-C, **AT LEAST** the following flags should be used for METABOLIC-C:
 ```
-perl METABOLIC-C.pl -in-gn [path_to_genome_files] -r [path_to_list_of_paired_reads] -o [output_directory_to_be_created]
+perl METABOLIC-C.pl -in-gn [path_to_folder_with_genome_files] -r [path_to_list_of_paired_reads] -o [output_directory_to_be_created]
 ```
 
 <br />
