@@ -427,7 +427,7 @@ print OUT join("\t",@Hmm_table_head_worksheet1)."\n";
 foreach my $line_no (sort keys %Hmm_table_temp){
 	my $row = $line_no;
 	my @Hmm_table_body_worksheet1 = ();
-	if ($row != 205){
+		
 		my @tmp = split(/\t/,$Hmm_table_temp{$line_no});
 		my $hmm = $tmp[5];
 		for(my $i=0; $i<=9; $i++){
@@ -468,9 +468,7 @@ foreach my $line_no (sort keys %Hmm_table_temp){
 			push @Hmm_table_body_worksheet1,join("\,",@Hits);
 		}
 		print OUT join("\t",@Hmm_table_body_worksheet1)."\n";
-	}else{
-		print OUT "\n";
-	}
+
 }
 close OUT;
 
@@ -1697,8 +1695,13 @@ sub _get_faa_seq{
 	while(<_IN>){
 		chomp;
 		if (/>/){
-			my ($head_old) = $_ =~ /^>(.+?)\s/; 
-			$head = ">".$file_name."~~".$head_old;
+			if (/\s/){
+				my ($head_old) = $_ =~ /^>(.+?)\s/; 
+				$head = ">".$file_name."~~".$head_old;
+			}else{
+				my ($head_old) = $_ =~ /^>(.+?)$/; 
+				$head = ">".$file_name."~~".$head_old;
+			}	
 			$result{$head} = "";
 		}else{
 			$result{$head} .= $_; 
@@ -1861,8 +1864,13 @@ sub _store_seq{
 	while (<_IN>){
 		chomp;
 		if (/>/){
-			($head) = $_ =~ /^(>.+?)\s/;
-			$Seq{$head} = "";
+			if (/\s/){
+				($head) = $_ =~ /^(>.+?)\s/;
+				$Seq{$head} = "";
+			}else{
+				($head) = $_ =~ /^(>.+?)$/;
+				$Seq{$head} = "";
+			}
 		}else{
 			$Seq{$head} .= $_;
 		}
