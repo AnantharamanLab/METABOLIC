@@ -39,6 +39,7 @@ v4.0 -- Jun 22, 2020 --
 * Test input data now includes both five nucleotide fasta files and one set of paired sequencing reads, allowing all capabilities of both METABOLIC-G.pl and METABOLIC-C.pl to be tested
 * The MN-score table has been provided as one of the results by METABOLIC-C
 * Updated the motif checking step for pmo/amo, dsrE/tusD, dsrH/tusB, and dsrF/tusC
+* Updated the "reads-type" option allowing the use of metatranscriptomic reads to conduct community analysis
 
 v3.0 -- Feb 18, 2020 --     
 * Provide an option to let the user reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
@@ -152,7 +153,7 @@ q()
 1. Go to where you want the program to be and clone the github repository by using the following command:  
 ```
 git clone https://github.com/AnantharamanLab/METABOLIC.git
-```    
+```
 &emsp;&emsp;or click the green button "download ZIP" folder at the top of the github and unzip the downloaded file.   
 &emsp;&emsp;The perl and R scripts and dependent databases should be kept in the same directory.  
 
@@ -183,15 +184,16 @@ perl METABOLIC-C.pl -help
 * **-in-gn [required if you are starting from nucleotide fasta files]** Defines the location of the FOLDER containing the genome nucleotide fasta files ending with ".fasta" to be run by this program
 * **-in [required if you are starting from faa files]** Defines the location of the FOLDER containing the genome amino acid files ending with ".faa" to be run by this program
 * **-r [required]** Defines the path to a text file containing the location of paried reads
+* **-rt [optional]** Defines the option to use "metaG" or "metaT" to indicate whether you use the metagenomic reads or metatranscriptomic reads (default: 'metaG')
 * **-t [optional]** Defines the number of threads to run the program with (Default: 20)
 * **-m-cutoff [optional]** Defines the fraction of KEGG module steps present to designate a KEGG module as present (Default: 0.75)
 * **-kofam-db [optional]** Defines the use of the full ("full") or reduced ("small") KOfam database by the program (Default: 'full')
 * **-p [optional]** Defines the prodigal method used to annotate ORFs ("meta" or "single")
 * **-o [optional]** Defines the output directory to be created by the program (Default: current directory)
 
-1. The directory specified by the "-in-gn" flag should contain nucleotide sequences for your genomes with the file extension ".fasta". If you are supplying amino acid fasta files for each genome, these should be contained within a directory and have the file extension ".faa", and you will be using the "-in" option instead. Ensure that the fasta headers of each .fasta or .faa file is unique, and that your file names do not contains spaces.
+1. The directory specified by the "-in-gn" flag should contain nucleotide sequences for your genomes with the file extension ".fasta". If you are supplying amino acid fasta files for each genome, these should be contained within a directory and have the file extension ".faa", and you will be using the "-in" option instead. Ensure that the fasta headers of each .fasta or .faa file is unique, and that your file names do not contains spaces. If you want to use METABOLIC-C, only "fasta" files are allowed to perform the good analysis.
 
-2. The "-r" flag allows input of a text file defining the path of metagenomic reads (if running METABOLIC-C). The metagenomic reads refer to the metagenomic read datasets that you used to generate the MAGs. Sets of paired reads are entered in one line, separated by a ",". A sample for this text file is as follows:     
+2. The "-r" flag allows input of a text file defining the path of metagenomic reads (if running METABOLIC-C). The metagenomic reads refer to the metagenomic read datasets that you used to generate the MAGs. Try to confirm that you are using unzipped fastq files instead of zipped files before you run METABOLIC-C. Sets of paired reads are entered in one line, separated by a ",". A sample for this text file is as follows:     
 ```
 #Read pairs: 
 SRR3577362_sub_1.fastq,SRR3577362_sub_2.fastq
@@ -322,6 +324,12 @@ For MN-score result, the table showing the MN-score (Metabolic Networking score)
 <img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/MN-score_table_example.jpg" width="75%">
 
 The resulted files are placed in the directory `MN-score result/`.
+
+
+
+***Notice:***
+
+If you use metatranscriptomic reads instead of metagenomic reads in METABOLIC-C, gene coverage result will be replaced by transcript coverage [normalized into Reads Per Kilobase of transcript, per Million mapped reads (RPKM)] and all the community analyses were performed based on the transcript coverage instead.  A result file of "All_gene_collections_transcript_coverage.txt" will be generated in the output directory in addition.
 
 
 ## <a name="copyright"></a> Copyright

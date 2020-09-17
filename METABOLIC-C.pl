@@ -66,6 +66,7 @@ use File::Basename;
         -kofam-db                     [string]  to use the "small" size or "full" size of KOfam database in METABOLIC (default: 'full')
 	-p         or prodigal-method [string]  "meta" or "single" for prodigal to annotate the orf
         -r         or omic-reads      [string]  The file which indicates the address of omic reads
+	    -rt        or reads-type      [string]  to use "metaG" or "metaT" to indicate whether you use the metagenomic reads or metatranscriptomic reads (default: 'metaG')
 	-o         or output          [string]  The METABOLIC output folder (default: current address)
 		
 	
@@ -100,6 +101,7 @@ my $input_genome_folder; #input microbial genome fasta files
 my $omic_reads_parameters; #The address of omic reads
 my $prodigal_method = "meta"; #the prodigal method to annotate orfs
 my $kofam_db_size = "full"; #the full kofam size
+my $omic_reads_type = "metaG"; # metagenomic reads
 my $output = `pwd`; # the output folder 
 my $version="METABOLIC-C.pl v4.0";
 my $test = "false";
@@ -111,6 +113,7 @@ GetOptions(
 	'in-gn=s' => \$input_genome_folder,
 	'prodigal-method|p=s' => \$prodigal_method,
 	'omic-reads|r=s' => \$omic_reads_parameters,
+	'reads-type|rt=s' => \$omic_reads_type,
 	'kofam-db=s' => \$kofam_db_size,
 	'output|o=s' => \$output,
 	'help|h' => sub{system('perldoc', $0); exit;},
@@ -1768,10 +1771,13 @@ sub _get_Genome_coverge{
 	}
 	close __IN;
 	
+	my %Read_seq_numbers = (); # read pair => read seq number
+	my $average_read_seq_number = 0; # The average read
 	open OUT__,">$output/tmp_calculate_depth.sh";
 	foreach my $key (sort keys %Reads){
 		my $j = $Reads{$key};
-		my @tmp = split (/\t/,$key);
+		my @tmp = split (/\t/,$key); 
+		my $seq_number = `cat $tmp[0] | wc -l`; chomp $seq_number; $Read_seq_numbers{$key} = $seq_number;
 		print OUT__ "bowtie2 -x $output/All_gene_collections.gene.scaffold -1 $tmp[0] -2 $tmp[1] -S $output/All_gene_collections_mapped.$j.sam -p $cpu_numbers --quiet;";
 		print OUT__ "samtools view -bS $output/All_gene_collections_mapped.$j.sam > $output/All_gene_collections_mapped.$j.bam -@ $cpu_numbers 2> /dev/null;";
 		print OUT__ "mkdir $output/sambamba_tmpfiles; sambamba sort  $output/All_gene_collections_mapped.$j.bam --tmpdir $output/sambamba_tmpfiles -o $output/All_gene_collections_mapped.$j.sorted.bam 2> /dev/null;";
@@ -1780,6 +1786,13 @@ sub _get_Genome_coverge{
 		print OUT__ "rm $output/All_gene_collections_mapped.$j.sam $output/All_gene_collections_mapped.$j.bam;rm -r $output/sambamba_tmpfiles\n";
 	}
 	close OUT__;
+	
+	foreach my $key (sort keys %Read_seq_numbers){
+		$average_read_seq_number += $Read_seq_numbers{$key};
+	}	
+	
+	my @Read_seq_numbers = keys %Read_seq_numbers;
+	$average_read_seq_number = $average_read_seq_number / (scalar @Read_seq_numbers) ;
 	
 	#parallel run calculate coverage
 	my @Runs5; 
@@ -1808,31 +1821,64 @@ sub _get_Genome_coverge{
 	my @h_head = ();  
 	my @h_head_num = (); 
 	my %Bin = ();
-	open __IN, "$output/All_gene_collections_mapped.depth.txt";
-	while (<__IN>){
-        chomp;
-        if (/^contigName/){
-                my @tmp = split (/\t/);@h_head = @tmp;
-                for(my $i=0; $i<=$#h_head; $i++){
-                        if ($h_head[$i] =~ /^totalAvgDepth$/){
-                                        push @h_head_num, $i;
-                        }
-                }
-        }else{
-                my @tmp = split (/\t/);
-                my ($bin) = $tmp[0] =~ /^(.+?)\~\~/;
-                $Bin{$bin} = 1;
-                foreach my $i (@h_head_num){
+	
+	if ($omic_reads_type eq "metaG"){
+		open __IN, "$output/All_gene_collections_mapped.depth.txt";
+		while (<__IN>){
+			chomp;
+			if (/^contigName/){
+					my @tmp = split (/\t/);@h_head = @tmp;
+					for(my $i=0; $i<=$#h_head; $i++){
+							if ($h_head[$i] =~ /^totalAvgDepth$/){
+								push @h_head_num, $i;
+							}
+					}
+			}else{
+					my @tmp = split (/\t/);
+					my ($bin) = $tmp[0] =~ /^(.+?)\~\~/;
+					$Bin{$bin} = 1;
+					foreach my $i (@h_head_num){
                         if (!exists $h{$h_head[$i]}{$bin}){
                                 $h{$h_head[$i]}{$bin} = $tmp[$i];
                         }else{
                                 $h{$h_head[$i]}{$bin} .= "\t".$tmp[$i];
                         }
-                }
-        }
+					}
+			}
+		}
+		close __IN;
+	}elsif ($omic_reads_type eq "metaT"){
+		open __IN, "$output/All_gene_collections_mapped.depth.txt";
+		open __OUT, ">$output/All_gene_collections_transcript_coverage.txt"; # contigName => transcript coverage in RPKM
+		while (<__IN>){
+			chomp;
+			if (/^contigName/){
+				my @tmp = split (/\t/);@h_head = @tmp;
+				for(my $i=0; $i<=$#h_head; $i++){
+					if ($h_head[$i] =~ /^totalAvgDepth$/){
+						push @h_head_num, $i;
+					}	
+				}
+				print __OUT "contigName\tTranscript coverage in RPKM\n";
+			}else{
+					my @tmp = split (/\t/);
+					my ($bin) = $tmp[0] =~ /^(.+?)\~\~/;
+					my $geneLength = $tmp[1] / 1000; # gene length in kb
+					$Bin{$bin} = 1;
+					foreach my $i (@h_head_num){
+                        my $transcript_coverage = $tmp[$i] * (1000000  / $average_read_seq_number) / $geneLength;
+						print __OUT "$tmp[0]\t$transcript_coverage\n";
+						if (!exists $h{$h_head[$i]}{$bin}){
+                                $h{$h_head[$i]}{$bin} = $transcript_coverage;
+                        }else{
+                                $h{$h_head[$i]}{$bin} .= "\t".$transcript_coverage;
+                        }
+					}
+			}
+		}
+		close __IN;
+		close __OUT;
 	}
-	close __IN;
-	#system ("rm $output/All_gene_collections_mapped.depth.txt");
 	
 	my %Bin2Cov = (); #bin => cov value
 	my $total_cov = 0;
