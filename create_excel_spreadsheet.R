@@ -90,7 +90,7 @@ conditionalFormatting(
   wb,
   sheet = "HMMHitNum",
   cols=1:ncol(page1),
-  rows=1:nrow(page1),
+  rows=1:nrow(page1)+1,
   style = AbsStyle,
   type = "contains",
   rule = "Absent"
@@ -100,7 +100,7 @@ conditionalFormatting(
   wb,
   sheet = "HMMHitNum",
   cols=1:ncol(page1),
-  rows=1:nrow(page1),
+  rows=1:nrow(page1)+1,
   style = PresStyle,
   type = "contains",
   rule = "Present"
@@ -108,29 +108,29 @@ conditionalFormatting(
 
 # Repeat for next sheets:
 conditionalFormatting(
-  wb, sheet = "FunctionHit", cols=1:ncol(page2),rows=1:nrow(page2),style = AbsStyle,type = "contains",rule = "Absent")
+  wb, sheet = "FunctionHit", cols=1:ncol(page2),rows=1:nrow(page2)+1,style = AbsStyle,type = "contains",rule = "Absent")
 conditionalFormatting(
-  wb, sheet = "FunctionHit", cols=1:ncol(page2),rows=1:nrow(page2),style = PresStyle,type = "contains",rule = "Present")
+  wb, sheet = "FunctionHit", cols=1:ncol(page2),rows=1:nrow(page2)+1,style = PresStyle,type = "contains",rule = "Present")
 
 conditionalFormatting(
-  wb, sheet = "KEGGModuleHit", cols=1:ncol(page3),rows=1:nrow(page3),style = AbsStyle,type = "contains",rule = "Absent")
+  wb, sheet = "KEGGModuleHit", cols=1:ncol(page3),rows=1:nrow(page3)+1,style = AbsStyle,type = "contains",rule = "Absent")
 conditionalFormatting(
-  wb, sheet = "KEGGModuleHit", cols=1:ncol(page3),rows=1:nrow(page3),style = PresStyle,type = "contains",rule = "Present")
+  wb, sheet = "KEGGModuleHit", cols=1:ncol(page3),rows=1:nrow(page3)+1,style = PresStyle,type = "contains",rule = "Present")
 
 conditionalFormatting(
-  wb, sheet = "KEGGModuleStepHit", cols=1:ncol(page4),rows=1:nrow(page4),style = AbsStyle,type = "contains",rule = "Absent")
+  wb, sheet = "KEGGModuleStepHit", cols=1:ncol(page4),rows=1:nrow(page4)+1,style = AbsStyle,type = "contains",rule = "Absent")
 conditionalFormatting(
-  wb, sheet = "KEGGModuleStepHit", cols=1:ncol(page4),rows=1:nrow(page4),style = PresStyle,type = "contains",rule = "Present")
+  wb, sheet = "KEGGModuleStepHit", cols=1:ncol(page4),rows=1:nrow(page4)+1,style = PresStyle,type = "contains",rule = "Present")
 
 conditionalFormatting(
-  wb, sheet = "dbCAN2Hit", cols=1:ncol(page5),rows=1:nrow(page5),style = AbsStyle,type = "contains",rule = "Absent")
+  wb, sheet = "dbCAN2Hit", cols=1:ncol(page5),rows=1:nrow(page5)+1,style = AbsStyle,type = "contains",rule = "Absent")
 conditionalFormatting(
-  wb, sheet = "dbCAN2Hit", cols=1:ncol(page5),rows=1:nrow(page5),style = PresStyle,type = "contains",rule = "Present")
+  wb, sheet = "dbCAN2Hit", cols=1:ncol(page5),rows=1:nrow(page5)+1,style = PresStyle,type = "contains",rule = "Present")
 
 conditionalFormatting(
-  wb, sheet = "MEROPSHit", cols=1:ncol(page6),rows=1:nrow(page6),style = AbsStyle,type = "contains",rule = "Absent")
+  wb, sheet = "MEROPSHit", cols=1:ncol(page6),rows=1:nrow(page6)+1,style = AbsStyle,type = "contains",rule = "Absent")
 conditionalFormatting(
-  wb, sheet = "MEROPSHit", cols=1:ncol(page6),rows=1:nrow(page6),style = PresStyle,type = "contains",rule = "Present")
+  wb, sheet = "MEROPSHit", cols=1:ncol(page6),rows=1:nrow(page6)+1,style = PresStyle,type = "contains",rule = "Present")
 
 # Make the font to be Arial, bold and size 11.
 modifyBaseFont(wb, fontSize = 11, fontColour = "black", fontName = "Arial")
