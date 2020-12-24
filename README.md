@@ -106,14 +106,18 @@ cpanm Data::Dumper
 ```
 &emsp;&emsp;&emsp;&emsp;1. *Data::Dumper*<br />
 &emsp;&emsp;&emsp;&emsp;2. *POSIX*<br />
-&emsp;&emsp;&emsp;&emsp;3. *Excel::Writer::XLSX*<br />
-&emsp;&emsp;&emsp;&emsp;4. *Getopt::Long*<br />
-&emsp;&emsp;&emsp;&emsp;5. *Statistics::Descriptive*<br />
-&emsp;&emsp;&emsp;&emsp;6. *Array::Split*<br />
-&emsp;&emsp;&emsp;&emsp;7. *Bio::SeqIO*<br />
-&emsp;&emsp;&emsp;&emsp;8. *Bio::Perl*<br />
-&emsp;&emsp;&emsp;&emsp;9. *Bio::Tools::CodonTable*<br />
-&emsp;&emsp;&emsp;&emsp;10. *Carp*<br />
+&emsp;&emsp;&emsp;&emsp;3. *Getopt::Long*<br />
+&emsp;&emsp;&emsp;&emsp;4. *Statistics::Descriptive*<br />
+&emsp;&emsp;&emsp;&emsp;5. *Array::Split*<br />
+&emsp;&emsp;&emsp;&emsp;6. *Bio::SeqIO*<br />
+&emsp;&emsp;&emsp;&emsp;7. *Bio::Perl*<br />
+&emsp;&emsp;&emsp;&emsp;8. *Bio::Tools::CodonTable*<br />
+&emsp;&emsp;&emsp;&emsp;9. *Carp*<br />
+&emsp;&emsp;&emsp;&emsp;10. *File::Spec*<br />
+&emsp;&emsp;&emsp;&emsp;11. *File::Basename*<br />
+&emsp;&emsp;&emsp;&emsp;12. *Parallel::ForkManager*<br />
+
+Note for later: The last three lines in "run_to_setup.sh" are used to download "METABOLIC_test_files.tgz" from a  Google Drive. It requires gdown. gdown can be simply installed by calling "pip install gdown".
 
 **R Packages**  
 &emsp;&emsp;To install, open the R command line interface by entering "R" into the command line, and then enter<br />
