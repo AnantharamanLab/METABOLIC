@@ -119,6 +119,8 @@ cpanm Data::Dumper
 
 Note for later: The last three lines in "run_to_setup.sh" are used to download "METABOLIC_test_files.tgz" from a  Google Drive. It requires gdown. gdown can be simply installed by calling "pip install gdown".
 
+Note for later: The last three lines in "run_to_setup.sh" are used to download "METABOLIC_test_files.tgz" from a  Google Drive. It requires gdown. gdown can be simply installed by calling "pip install gdown".
+
 **R Packages**  
 &emsp;&emsp;To install, open the R command line interface by entering "R" into the command line, and then enter<br />
 &emsp;&emsp;"install.packages("[Package Name]")".<br />
