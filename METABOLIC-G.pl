@@ -63,7 +63,6 @@ use File::Basename;
 
 	-t         or -cpu            [integer] The cpu numbers to run the hmmsearch (default: 20)
         -m-cutoff  or -module-cutoff  [float]   The cutoff value to assign the presence of a specific KEGG module (KEGG module step present numbers / KEGG module step total number) (default: 0.75) 
-        -m         or METABOLIC-dir   [string]  The directory that you store your METABOLIC database folers and scripts (default: '.') 
         -in                           [string]  The folder pf given genome faa files [should also give the genome fasta files and genone gene files if the (meta)genome/(meta)transciptome datasets are included]
         -in-gn                        [string]  The folder of given genome fasta files (Prodigal will be used to annotate your genomes)
         -kofam-db                     [string]  to use the "small" size or "full" size of KOfam database in METABOLIC (default: 'full')
@@ -165,6 +164,18 @@ if ($test eq "true"){
 `mkdir $output`;
 
 my $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
+
+#print information about this run:
+print "$version
+Run Start: $datestring
+Input Reads: N/A
+Input Genome directory (nucleotides): $input_genome_folder
+Input Genome directory (amino acids): $input_protein_folder
+Number of Threads: $cpu_numbers
+Prodigal Method: $prodigal_method
+KOfam DB: $kofam_db_size
+Module Cutoff Value: $module_cutoff
+Output directory: $output\n";
 
 #Store the hmm table template
 my %Hmm_table_temp = (); # line no. => each line 

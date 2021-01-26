@@ -171,6 +171,19 @@ if ($test eq "true"){
 
 my $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 
+#print information about this run:
+print "$version
+Run Start: $datestring
+Input Reads: $omic_reads_parameters
+Reads type: $omic_reads_type
+Input Genome directory (nucleotides): $input_genome_folder
+Input Genome directory (amino acids): N/A
+Number of Threads: $cpu_numbers
+Prodigal Method: $prodigal_method
+KOfam DB: $kofam_db_size
+Module Cutoff Value: $module_cutoff
+Output directory: $output\n";
+
 #Store the hmm table template
 my %Hmm_table_temp = (); # line no. => each line 
 my @Hmm_table_head = (); # the head of the hmm table template
