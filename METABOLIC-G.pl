@@ -164,18 +164,7 @@ if ($test eq "true"){
 `mkdir $output`;
 
 my $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
-
-#print information about this run:
-print "$version
-Run Start: $datestring
-Input Reads: N/A
-Input Genome directory (nucleotides): $input_genome_folder
-Input Genome directory (amino acids): $input_protein_folder
-Number of Threads: $cpu_numbers
-Prodigal Method: $prodigal_method
-KOfam DB: $kofam_db_size
-Module Cutoff Value: $module_cutoff
-Output directory: $output\n";
+my $statetime = $datestring;
 
 #Store the hmm table template
 my %Hmm_table_temp = (); # line no. => each line 
@@ -1076,7 +1065,34 @@ foreach my $gn (sort keys %Hmmscan_result){
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing element cycling diagrams finished\n";
+my $endtime = $datestring;
 
+#print information about this run:
+open OUT, ">$output/METABOLIC_run.log";
+if ($input_genome_folder){
+print OUT "$version
+Run Start: $statetime
+Run End: $endtime
+Input Reads: N/A
+Input Genome directory (nucleotides): $input_genome_folder
+Number of Threads: $cpu_numbers
+Prodigal Method: $prodigal_method
+KOfam DB: $kofam_db_size
+Module Cutoff Value: $module_cutoff
+Output directory: $output\n";
+}else{
+print OUT "$version
+Run Start: $statetime
+Run End: $endtime
+Input Reads: N/A
+Input Genome directory (amino acids): $input_protein_folder
+Number of Threads: $cpu_numbers
+Prodigal Method: $prodigal_method
+KOfam DB: $kofam_db_size
+Module Cutoff Value: $module_cutoff
+Output directory: $output\n";	
+}
+close OUT;
 
 ##subroutines
 #input ko_list, return a result hash of threshold and score_type

@@ -170,19 +170,7 @@ if ($test eq "true"){
 `mkdir $output`;
 
 my $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
-
-#print information about this run:
-print "$version
-Run Start: $datestring
-Input Reads: $omic_reads_parameters
-Reads type: $omic_reads_type
-Input Genome directory (nucleotides): $input_genome_folder
-Input Genome directory (amino acids): N/A
-Number of Threads: $cpu_numbers
-Prodigal Method: $prodigal_method
-KOfam DB: $kofam_db_size
-Module Cutoff Value: $module_cutoff
-Output directory: $output\n";
+my $starttime = $datestring;
 
 #Store the hmm table template
 my %Hmm_table_temp = (); # line no. => each line 
@@ -1119,6 +1107,7 @@ if ($omic_reads_parameters){
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing element cycling diagrams finished\n";
 
+my $endtime = "";
 if ($omic_reads_parameters){
 
 #Draw metabolic handoff diagrams
@@ -1628,8 +1617,24 @@ close OUT;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Calculating MN-score is done\n";
-
+$endtime = $datestring;
 }
+
+#print information about this run:
+open OUT, ">$output/METABOLIC_run.log";
+#print information about this run:
+print OUT "$version
+Run Start: $starttime
+Run End: $endtime
+Input Reads: $omic_reads_parameters
+Reads type: $omic_reads_type
+Input Genome directory (nucleotides): $input_genome_folder
+Number of Threads: $cpu_numbers
+Prodigal Method: $prodigal_method
+KOfam DB: $kofam_db_size
+Module Cutoff Value: $module_cutoff
+Output directory: $output\n";
+close OUT;
 
 ##subroutines
 #input ko_list, return a result hash of threshold and score_type
