@@ -145,7 +145,6 @@ q()
 &emsp;&emsp;&emsp;&emsp;11. *ggraph* **(v2.0.2)**<br />
 &emsp;&emsp;&emsp;&emsp;12. *pdftools* **(v2.3)**<br />
 &emsp;&emsp;&emsp;&emsp;13. *igraph* **(v1.2.5)**<br />
-&emsp;&emsp;&emsp;&emsp;14. *ggraph* **(v2.0.2)**<br />
 &emsp;&emsp;&emsp;&emsp;15. *tidygraph* **(v1.1.2)**<br />
 &emsp;&emsp;&emsp;&emsp;16. *stringr* **(v1.4.0)**<br />
 &emsp;&emsp;&emsp;&emsp;17. *plyr* **(v1.8.6)**<br />
