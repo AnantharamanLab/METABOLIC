@@ -15,7 +15,8 @@ This software enables the prediction of metabolic and biogeochemical functional 
 
 If you are using this program, please consider citing our preprint, available on [BioRxiv](https://www.biorxiv.org/content/10.1101/761643v1):
 ```
-Zhou Z, Tran P, Liu Y, Kieft K, Anantharaman K. "METABOLIC: A scalable high-throughput metabolic and biogeochemical functional trait profiler based on microbial genomes" (2019). BioRxiv doi: https://doi.org/10.1101/761643
+Zhichao Zhou, Patricia Q. Tran, Adam M. Breister, Yang Liu, Kristopher Kieft, Elise S. Cowley, Ulas Karaoz, Karthik Anantharaman."METABOLIC: High-throughput profiling of microbial genomes for functional traits, biogeochemistry, and community-scale metabolic networks"
+bioRxiv 761643; doi: https://doi.org/10.1101/761643
 ```
 
 ## Table of Contents:
