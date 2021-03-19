@@ -234,6 +234,8 @@ if ($input_genome_folder){
 	$input_protein_folder = $input_genome_folder;
 	$datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 	print "\[$datestring\] The Prodigal annotation is finished\n";
+} else {
+	$input_genome_folder = $input_protein_folder;
 }
 
 my %Genome_id = (); # genome id => 1
