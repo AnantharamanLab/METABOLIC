@@ -635,10 +635,10 @@ close IN;
 my %Hmm2ko = _get_hmm_2_KO_hash(%Hmm_table_temp); # like: TIGR02694.hmm => K08355.hmm
 
 #to see whether a module step exists for a given genome
-my %Module_step_result = (); # M00804+01 => genome id => 1 / 0
+my %Module_step_result = (); # M00804+01 => genome id => Present / Absent
 foreach my $m_step (sort keys %KEGG_module){
 	foreach my $gn_id (sort keys %Genome_id){
-		$Module_step_result{$m_step}{$gn_id} = 0; 
+		$Module_step_result{$m_step}{$gn_id} = "Absent"; 
 		foreach my $hmm (sort keys %Hmm_id){
 			my $hmm_new = ""; # transfer all the hmm id to ko id
 			if (exists $Hmm2ko{$hmm}){
@@ -651,7 +651,7 @@ foreach my $m_step (sort keys %KEGG_module){
 				($hmm_new_wo_ext) = $hmm_new =~ /^(.+?)\.hmm/;		
 			}
 			if ($Hmmscan_result{$gn_id}{$hmm} and $KEGG_module{$m_step}[0] =~ /$hmm_new_wo_ext/ and $hmm_new_wo_ext){
-				$Module_step_result{$m_step}{$gn_id} = 1; 
+				$Module_step_result{$m_step}{$gn_id} = "Present"; 
 			}
 		}
 	}
@@ -663,7 +663,10 @@ foreach my $module (sort keys  %KEGG_module2step_number){
 		my $present_no = 0; 		
 		foreach my $module_step (sort keys %Module_step_result){
 			if ($module_step =~ /$module/){
-				$present_no += $Module_step_result{$module_step}{$gn_id};
+				if($Module_step_result{$module_step}{$gn_id} eq "Present"){
+					$present_no += 1;
+				}
+				
 			}
 		}
 		
@@ -742,7 +745,7 @@ foreach my $module_step (sort keys %Module_step_result){
 	}
 	push @Worksheet4_body, $cat_4_module; 
 	foreach my $gn_id (sort keys %Genome_id){
-		push @Worksheet4_body, $Module_result{$module}{$gn_id};
+		push @Worksheet4_body, $Module_step_result{$module_step}{$gn_id};
 	}
 	print OUT join("\t",@Worksheet4_body)."\n";
 	
