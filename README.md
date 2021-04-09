@@ -41,6 +41,7 @@ v4.0 -- Jun 22, 2020 --
 * The MN-score table has been provided as one of the results by METABOLIC-C
 * Updated the motif checking step for pmo/amo, dsrE/tusD, dsrH/tusB, and dsrF/tusC
 * Updated the "reads-type" option allowing the use of metatranscriptomic reads to conduct community analysis
+* Updated the script error of assigning module step presence to be the same with module step presence
 
 v3.0 -- Feb 18, 2020 --     
 * Provide an option to let the user reduce the size of Kofam Hmm profiles (only use KOs that can be found in Modules) to speed up the calculation    
