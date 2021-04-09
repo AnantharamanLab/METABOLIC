@@ -728,7 +728,11 @@ foreach my $module_step (sort keys %Module_step_result){
 	}
 	push @Worksheet4_body, $cat_4_module; 
 	foreach my $gn_id (sort keys %Genome_id){
-		push @Worksheet4_body, $Module_step_result{$module_step}{$gn_id};
+		my $module_step_presence = "Absent";
+		if ($Module_step_result{$module_step}{$gn_id}){
+			$module_step_presence = "Present"; 
+		}
+		push @Worksheet4_body, $module_step_presence;
 	}
 	print OUT join("\t",@Worksheet4_body)."\n";
 	
