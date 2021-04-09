@@ -277,9 +277,10 @@ while (<IN>){
 			}
 		}else{
 			if ($hmm !~ /K\d\d\d\d\d/){
-				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
+				# here, I change "--domT" to "-T" due to that "--domT" option does not function well in hmmsearch (v.3.3, Nov 2019). It just give all hits without any cutoff by pre-set threshold
+				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
 			}else{
-				print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
+				print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
 			}
 		}
 	}
@@ -742,7 +743,7 @@ foreach my $module_step (sort keys %Module_step_result){
 	}
 	push @Worksheet4_body, $cat_4_module; 
 	foreach my $gn_id (sort keys %Genome_id){
-		push @Worksheet4_body, $Module_result{$module}{$gn_id};
+		push @Worksheet4_body, $Module_step_result{$module_step}{$gn_id};
 	}
 	print OUT join("\t",@Worksheet4_body)."\n";
 	
