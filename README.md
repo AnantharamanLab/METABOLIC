@@ -30,9 +30,7 @@ bioRxiv 761643; doi: https://doi.org/10.1101/761643
 
 5. [Installation Instructions](#install_instructions)  
   &emsp;a. [Quick Installation](#quick_install)  
-
   &emsp;b. [Docker or Singularity container Installation](#docker_and_singularity_container_install)  
-
   &emsp;c. [Making conda environment](#making_conda_environment)  
 
 6. [Running METABOLIC](#running_metabolic)  
