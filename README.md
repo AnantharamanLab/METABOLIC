@@ -21,17 +21,28 @@ bioRxiv 761643; doi: https://doi.org/10.1101/761643
 
 ## Table of Contents:
 1. [Version History](#version_history)
+
 2. [System Requirements](#system_requirements)
+
 3. [Dependencies Overview](#dependencies_overview)
+
 4. [Detailed Dependencies](#dependencies_detailed)
+
 5. [Installation Instructions](#install_instructions)  
-&emsp;a. [Quick Installation](#quick_install)  
+  &emsp;a. [Quick Installation](#quick_install)  
+
+  ​    b. [Docker or Singularity container Installation](#docker_and_singularity_container_install)  
+
+  ​    c. [Making conda environment](#making_conda_environment)  
+
 6. [Running METABOLIC](#running_metabolic)  
-&emsp;a. [Required and Optional Flags](#flags)  
-&emsp;b. [How to Run](#running)  
+  &emsp;a. [Required and Optional Flags](#flags)  
+  &emsp;b. [How to Run](#running)  
+
 7. [METABOLIC Output Descriptions](#metabolic_output)  
-&emsp;a. [Outputs Overview](#output_overview)  
-&emsp;b. [Outputs Detailed](#output_detailed)  
+  &emsp;a. [Outputs Overview](#output_overview)  
+  &emsp;b. [Outputs Detailed](#output_detailed)  
+
 8. [Copyright](#copyright)
 
 ## <a name="version_history"></a> Version History:
@@ -174,6 +185,18 @@ We provide a "run_to_setup.sh" script along with the data downloaded from the Gi
 sh run_to_setup.sh
 ```
 **Notice**: The last three lines in "run_to_setup.sh" were used to download "METABOLIC_test_files.tgz" from google drive. It requires gdown. gdown can be simply installed by calling "pip install gdown". Please also refer to **[gdown](https://github.com/wkentaro/gdown)**.  
+
+#### <a name="docker_and_singularity_container_install"></a> Docker or Singularity container Installation:
+
+Mr. Tin Ho has initiated a project to help intalling METABOLIC in Docker or Singularity container. Here is the link **[https://github.com/tin6150/metabolic](https://github.com/tin6150/metabolic)**. 
+
+**Notice**:  There can be discrepancies between his version of METABOLIC and our version due to upgrading from time to time.
+
+#### <a name="making_conda_environment"></a> Making conda environment:
+
+Dr. Daan Speth has opened an issue teaching how to successfully install conda environment for METABOLIC-G/-C. Here is the link **[https://github.com/AnantharamanLab/METABOLIC/issues/27](https://github.com/AnantharamanLab/METABOLIC/issues/27)**. 
+
+**Notice**:  According to Dr. Michal Strejcek, conda has issues with Perl; and if you are using R 4.x, some small changes need to be done in the script. Here is the link to his solutions to these issues **[https://github.com/AnantharamanLab/METABOLIC/issues/41](https://github.com/AnantharamanLab/METABOLIC/issues/41)**.
 
 ## <a name="running_metabolic"></a> Running METABOLIC: 
 
