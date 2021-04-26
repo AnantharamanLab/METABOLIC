@@ -29,10 +29,13 @@ bioRxiv 761643; doi: https://doi.org/10.1101/761643
 4. [Detailed Dependencies](#dependencies_detailed)
 
 5. [Installation Instructions](#install_instructions)  
+<<<<<<< HEAD
     &emsp;a. [Quick Installation](#quick_install)  
 
+=======
+  &emsp;a. [Quick Installation](#quick_install)  
+>>>>>>> d28762a5155807fd3020988ce8a926323e5b6ef3
   &emsp;b. [Docker or Singularity container Installation](#docker_and_singularity_container_install)  
-
   &emsp;c. [Making conda environment](#making_conda_environment)  
 
 6. [Running METABOLIC](#running_metabolic)  
