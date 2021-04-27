@@ -29,17 +29,22 @@ bioRxiv 761643; doi: https://doi.org/10.1101/761643
 4. [Detailed Dependencies](#dependencies_detailed)
 
 5. [Installation Instructions](#install_instructions)  
+<<<<<<< HEAD
+    &emsp;a. [Quick Installation](#quick_install)  
+
+=======
   &emsp;a. [Quick Installation](#quick_install)  
+>>>>>>> d28762a5155807fd3020988ce8a926323e5b6ef3
   &emsp;b. [Docker or Singularity container Installation](#docker_and_singularity_container_install)  
   &emsp;c. [Making conda environment](#making_conda_environment)  
 
 6. [Running METABOLIC](#running_metabolic)  
-  &emsp;a. [Required and Optional Flags](#flags)  
-  &emsp;b. [How to Run](#running)  
+    &emsp;a. [Required and Optional Flags](#flags)  
+    &emsp;b. [How to Run](#running)  
 
 7. [METABOLIC Output Descriptions](#metabolic_output)  
-  &emsp;a. [Outputs Overview](#output_overview)  
-  &emsp;b. [Outputs Detailed](#output_detailed)  
+    &emsp;a. [Outputs Overview](#output_overview)  
+    &emsp;b. [Outputs Detailed](#output_detailed)  
 
 8. [Copyright](#copyright)
 
@@ -227,7 +232,7 @@ perl METABOLIC-C.pl -help
 SRR3577362_sub_1.fastq,SRR3577362_sub_2.fastq
 SRR3577362_sub2_1.fastq,SRR3577362_sub2_2.fastq
 ```
-&emsp;&emsp;*Note that the two different sets of paired reads are separated by a line return (new line), and please avoid empty lines in this text file otherwise software will take blank read files as inputs.*
+&emsp;&emsp;***Note that the two different sets of paired reads are separated by a line return (new line), and two reads in each line are separated by a "," but not " ," or " , ".***
 
 #### Running Test Data:
 

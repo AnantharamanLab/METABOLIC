@@ -1780,17 +1780,17 @@ sub _get_Genome_coverge{
 	open __IN, "$reads";
 	while (<__IN>){
 		chomp;
-		if (!/^#/){
-			my @tmp = split (/\,/,$_);
-			my $tmp_link = "";
-			if ($test ne "true"){
-				$tmp_link = $tmp[0]."\t".$tmp[1];
-			}else{
-				$tmp_link = "$METABOLIC_dir/METABOLIC_test_files/METABOLIC_test_reads/".$tmp[0]."\t"."$METABOLIC_dir/METABOLIC_test_files/METABOLIC_test_reads/".$tmp[1];
-			}
-			$Reads{$tmp_link} = $i;
-			$i++;
+		next if /^#/ or /^\s*$/; # Skip comments and blank lines
+		
+		my @tmp = split (/\,/,$_);
+		my $tmp_link = "";
+		if ($test ne "true"){
+			$tmp_link = $tmp[0]."\t".$tmp[1];
+		}else{
+			$tmp_link = "$METABOLIC_dir/METABOLIC_test_files/METABOLIC_test_reads/".$tmp[0]."\t"."$METABOLIC_dir/METABOLIC_test_files/METABOLIC_test_reads/".$tmp[1];
 		}
+		$Reads{$tmp_link} = $i;
+		$i++;
 	}
 	close __IN;
 	
