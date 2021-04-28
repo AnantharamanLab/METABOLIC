@@ -1,11 +1,11 @@
 
-Starting the Metabolic v4.0 container via Docker
-================================================
+Starting the Metabolic container via Docker
+===========================================
 
 Interactive run (note that content in container are ephemeral.  saving kinda work if you use ``docker commit ...``::
 
 	cd METABOLIC; mkdir temp; tar xfz ~/Downloads/5_genomes_test.tgz
-	docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v "$PWD":/tmp/home --user=$(id -u):$(id -g)  tin6150/metabolic:4.0
+	docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v "$PWD":/tmp/home --user=$(id -u):$(id -g)  tin6150/metabolic
 	cd /opt/METABOLIC
 	perl METABOLIC-G.pl -help
 	perl /opt/METABOLIC/METABOLIC-G.pl -in-gn /tmp/home/5_genomes_test/Genome_files -o /tmp/home/metabolic_out 
@@ -13,8 +13,8 @@ Interactive run (note that content in container are ephemeral.  saving kinda wor
 Non interactive, scriptable run::
 
  
-	docker pull tin6150/metabolic:4.0 
-	docker run  -v "$(pwd)":/tmp/home --entrypoint "perl" tin6150/metabolic:4.0 /opt/METABOLIC/METABOLIC-G.pl -t 34 -in-gn /tmp/home/5_genomes_test/Genome_files -o /tmp/home/metabolic_out 
+	docker pull tin6150/metabolic 
+	docker run  -v "$(pwd)":/tmp/home --entrypoint "perl" tin6150/metabolic /opt/METABOLIC/METABOLIC-G.pl -t 34 -in-gn /tmp/home/5_genomes_test/Genome_files -o /tmp/home/metabolic_out 
 	# Output will be in ./metabolic_out
 
 
@@ -45,9 +45,8 @@ Build Commands
 		docker build -t tin6150/base4metabolic  -f Dockerfile.base       .  | tee Dockerfile.base.log 
 		docker build -t tin6150/perl4metabolic  -f Dockerfile.perl       .  | tee Dockerfile.perl.log 
 		docker build -t tin6150/metabolic       -f Dockerfile.metabolic  .  | tee Dockerfile.log 
-		docker build -t tin6150/metabolic:4.0   -f Dockerfile.metabolic  .  | tee Dockerfile.log 
 		docker login --username tin6150
-		docker image push tin6150/metabolic:4.0  
+		docker image push tin6150/metabolic
 
 
 Debug runs/tests
@@ -80,7 +79,7 @@ gtdbtk maybe optional.  when running it, may need a DB.  setup as::
 	tar xzf gtdbtk_r89_data.tar.gz
 	# See https://github.com/Ecogenomics/GTDBTk for links to newer db
 
-	docker run  -v /tmp:/tmp --entrypoint "perl" tin6150/metabolic:4.0 /opt/METABOLIC/METABOLIC-G.pl -t 34 -in-gn /tmp//5_genomes_test/Genome_files -o /tmp/metabolic_out 
+	docker run  -v /tmp:/tmp --entrypoint "perl" tin6150/metabolic /opt/METABOLIC/METABOLIC-G.pl -t 34 -in-gn /tmp//5_genomes_test/Genome_files -o /tmp/metabolic_out 
 
 
 
