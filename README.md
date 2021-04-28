@@ -189,7 +189,7 @@ sh run_to_setup.sh
 #### <a name="docker_and_singularity_container_install"></a> Docker or Singularity container Installation:
 
 Tin Ho has initiated a project to help intalling METABOLIC in Docker or Singularity container.
-Instructions to install using the containers will be coming shortly.
+Instructions can be found here: https://github.com/AnantharamanLab/METABOLIC/tree/master/container
 
 #### <a name="making_conda_environment"></a> Making conda environment:
 
