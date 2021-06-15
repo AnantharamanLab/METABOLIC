@@ -208,14 +208,14 @@ perl METABOLIC-C.pl -help
 * **-in-gn [required if you are starting from nucleotide fasta files]** Defines the location of the FOLDER containing the genome nucleotide fasta files ending with ".fasta" to be run by this program
 * **-in [required if you are starting from faa files]** Defines the location of the FOLDER containing the genome amino acid files ending with ".faa" to be run by this program
 * **-r [required]** Defines the path to a text file containing the location of paried reads
-* **-rt [optional]** Defines the option to use "metaG" or "metaT" to indicate whether you use the metagenomic reads or metatranscriptomic reads (default: 'metaG')
+* **-rt [optional]** Defines the option to use "metaG" or "metaT" to indicate whether you use the metagenomic reads or metatranscriptomic reads (default: 'metaG'). Only required when using METABOLIC-C
 * **-t [optional]** Defines the number of threads to run the program with (Default: 20)
 * **-m-cutoff [optional]** Defines the fraction of KEGG module steps present to designate a KEGG module as present (Default: 0.75)
 * **-kofam-db [optional]** Defines the use of the full ("full") or reduced ("small") KOfam database by the program (Default: 'full'). "small" KOfam database only contains KOs present in KEGG module, using this setting will significantly reduce hmmsearch running time.
-* **-p [optional]** Defines the prodigal method used to annotate ORFs ("meta" or "single")
+* **-p [optional]** Defines the prodigal method used to annotate ORFs ("meta" or "single")(Default: "meta")
 * **-o [optional]** Defines the output directory to be created by the program (Default: current directory)
 
-1. The directory specified by the "-in-gn" flag should contain nucleotide sequences for your genomes with the file extension ".fasta". If you are supplying amino acid fasta files for each genome, these should be contained within a directory and have the file extension ".faa", and you will be using the "-in" option instead. Ensure that the fasta headers of each .fasta or .faa file is unique, and that your file names do not contains spaces. If you want to use METABOLIC-C, only "fasta" files are allowed to perform the good analysis.
+1. The directory specified by the "-in-gn" flag should contain nucleotide sequences for your genomes with the file extension ".fasta". If you are supplying amino acid sequences for each genome, these should be contained within a directory and have the file extension ".faa", and you will be using the "-in" option instead. Ensure that the fasta headers of each .fasta or .faa file is unique, and that your file names do not contains spaces (suggest to only use alphanumeric characters and underscores in the file names). If you want to use METABOLIC-C, only "fasta" files are allowed to perform the good analysis.
 
 2. The "-r" flag allows input of a text file defining the path of metagenomic reads (if running METABOLIC-C). The metagenomic reads refer to the metagenomic read datasets that you used to generate the MAGs. Try to confirm that you are using unzipped fastq files instead of zipped files before you run METABOLIC-C. Sets of paired reads are entered in one line, separated by a ",". A sample for this text file is as follows:     
 ```
@@ -223,7 +223,7 @@ perl METABOLIC-C.pl -help
 SRR3577362_sub_1.fastq,SRR3577362_sub_2.fastq
 SRR3577362_sub2_1.fastq,SRR3577362_sub2_2.fastq
 ```
-&emsp;&emsp;***Note that the two different sets of paired reads are separated by a line return (new line), and two reads in each line are separated by a "," but not " ," or " , ".***
+&emsp;&emsp;***Note that the two different sets of paired reads are separated by a line return (new line), and two reads in each line are separated by a "," but not " ," or " , " (no spaces before or after comma).***
 
 #### Running Test Data:
 
