@@ -270,7 +270,7 @@ perl METABOLIC-C.pl -in-gn [path_to_folder_with_genome_files] -r [path_to_list_o
 |-------|---------|:---------:|:---------:|
 |All_gene_collections_mapped.depth.txt|The gene depth of all input genes |X||
 |[Each_HMM_Amino_Acid_Sequence/](#faa_collection)|The faa collection for each hmm file |X|X|
-|intermediate_files/|The hmmsearch, peptides (MEROPS), and CAZymes (dbCAN2) running intermediate files |X|X|
+|intermediate_files/|The hmmsearch, peptides (MEROPS), CAZymes (dbCAN2), and GTDB-Tk (only for METABOLIC-C) running intermediate files |X|X|
 |[KEGG_identifier_result/](#kegg_ident_result)|The hit and result of each genome by Kofam database |X|X|
 |[METABOLIC_Figures/](#metabolic_figures_out)|All figures output from the running of METABOLIC |X|X|
 |METABOLIC_Figures_Input/|All input files for R-generated diagrams |X|X|
