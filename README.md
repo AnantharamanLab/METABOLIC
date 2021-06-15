@@ -246,10 +246,13 @@ perl METABOLIC-G.pl -in-gn [path_to_folder_with_genome_files] -o [output_directo
 ```
 &emsp;&emsp;***Note that you will use "-in-gn" to input your genome files (nucleotide sequences) containing folder***
 
+
 In order to run METABOLIC-G starting from **amino acid** sequences, **AT LEAST** the following flags should be used for METABOLIC-G:
 ```
 perl METABOLIC-G.pl -in [path_to_folder_with_genome_files] -o [output_directory_to_be_created]
 ```
+&emsp;&emsp;***Note that you will use "-in" to input your genome files (amino acid sequences) containing folder***
+
 
 In order to run METABOLIC-C, **AT LEAST** the following flags should be used for METABOLIC-C:
 ```
