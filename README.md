@@ -366,7 +366,7 @@ Zhichao Zhou, zczhou2017@gmail.com
 Patricia Tran, ptran5@wisc.edu  
 Karthik Anantharaman, karthik@bact.wisc.edu  
 [Anantharaman Microbiome Laboratory](https://anantharamanlab.wisc.edu/)  
-[Department of Bacteriology](https://bact.wisc.edu/), University of Wisconsin, Madison  
+[Department of Bacteriology](https://bact.wisc.edu/), University of Wisconsin - Madison  
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
