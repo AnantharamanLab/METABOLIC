@@ -227,7 +227,7 @@ SRR3577362_sub2_1.fastq,SRR3577362_sub2_2.fastq
 
 #### Running Test Data:
 
-The main METABOLIC directory also contains a set of 5 genomes and one set of paired metagenomic reads, which can be used to test that METABOLIC-G and METABOLIC-C were installed correctly. These genomes and reads can be found within the directory `METABOLIC_test_files/`, which is contained within the METABOLIC program directory.
+The main METABOLIC directory also contains a set of 5 genomes and one set of paired metagenomic reads, which can be used to test whether METABOLIC-G and METABOLIC-C were installed correctly. These genomes and reads can be found within the directory `METABOLIC_test_files/`, which is contained within the METABOLIC program directory.
 
 METABOLIC-C.pl and METABOLIC-G.pl can be run with the test data by using the `-test true` function of METABOLIC:
 ```
@@ -244,6 +244,7 @@ In order to run METABOLIC-G starting from **nucleotide** sequences, **AT LEAST**
 ```
 perl METABOLIC-G.pl -in-gn [path_to_folder_with_genome_files] -o [output_directory_to_be_created]
 ```
+&emsp;&emsp;***Note that you will use "-in-gn" to input your genome files (nucleotide sequences) containing folder***
 
 In order to run METABOLIC-G starting from **amino acid** sequences, **AT LEAST** the following flags should be used for METABOLIC-G:
 ```
