@@ -81,7 +81,7 @@ If you are planning to use only METABOLIC-G, you don't need to install GTDB-tk.
 
 |Necessary Databases|Approximate System Storage Required|
 |---|---|
-|METABOLIC program with unzipped files|7.69 Gb|
+|METABOLIC program with unzipped files|7.69 Gb (including HMM database)|
 |GTDB-Tk Reference Data|28 Gb|
 
 ## <a name="dependencies_overview"></a> Dependencies Overview:
@@ -94,8 +94,8 @@ If you are planning to use only METABOLIC-G, you don't need to install GTDB-tk.
 7. **[R](https://www.r-project.org/) (>= 3.6.0)**
 8. **[Diamond](https://github.com/bbuchfink/diamond)**
 9. **[Samtools](https://www.htslib.org)** (only for METABOLIG-C)
-10. **[Bowtie2](https://github.com/BenLangmead/bowtie2)** (only for METABOLIG-C)
-11. **[Gtdb-Tk](https://ecogenomics.github.io/GTDBTk/)** (only for METABOLIG-C)
+10. **[Bowtie 2](https://github.com/BenLangmead/bowtie2)** (only for METABOLIG-C)
+11. **[GTDB-Tk](https://ecogenomics.github.io/GTDBTk/)** (only for METABOLIG-C)
 
 Each of these programs should be in the PATH so that they can be accessed regardless of location.
 
