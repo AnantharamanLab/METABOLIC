@@ -293,12 +293,12 @@ This spreadsheet has 6 sheets:
 5. "**dbCAN2Hit**" = The dbCAN2 annotation results against all genomes (CAZy numbers and hits). For each genome, there are two distinct columns, which show the number of times a CAZy was identified and what ORF(s) represent the protein.
 6. "**MEROPSHit**" = The MEROPS peptidase searching result (MEROPS peptidase numbers and hits). For each genome, there are two distinct columns, which show the number of times a peptidase was identified and what ORF(s) represent the protein.
 
-*In all cases if you scroll down spreadsheet #1 (HMMHitNum) you will see what "Gn00X" colnames refer to (they are based on your fasta file names for the genomes you gave).* 
+*In all cases if you scroll down spreadsheet #1 ("HMMHitNum") you will see what "Gn00X" colnames refer to (they are based on your fasta file names for the genomes you gave).* 
 
 
 - **<a name="faa_collection"></a> Each HMM Profile Hit Amino Acid Sequence Collection (`Each_HMM_Amino_Acid_Sequence/`)** 
 
-A collection of all amino acid sequences extracted from the input genome .faa files that were identified as matches to the custom HMM profiles provided by METABOLIC.
+A collection of all amino acid sequences extracted from the input genome ".faa" files that were identified as matches to the HMM profiles provided by METABOLIC.
 
 - **<a name="kegg_ident_result"></a> KEGG identifier results (`KEGG_identifier_result/`)**  
 
@@ -334,13 +334,13 @@ For Sequential transformation diagram, we have summarized and visualized the gen
 
 The resulting files are `Sequential_transformation_01.pdf` and `Sequential_transformation_02.pdf`.        
 
-&emsp;&emsp;> Generated only METABOLIC-C.pl is a figure reprsenting energy flow by the community:  
+&emsp;&emsp;> Generated only by METABOLIC-C.pl is a figure representing energy flow by the community:  
 
-For Metabolic energy flow diagram, a Sankey diagram is generated, representing the function fractions that are contributed by various microbial groups in a given community.   
+For metabolic energy flow diagram, a Sankey diagram is generated, representing the function fractions that are contributed by various microbial groups in a given community.   
 
 The resulting file is `Metabolic_energy_flow.pdf`.
 
-&emsp;&emsp;> METABOLIC-C.pl generates a figure reprsenting metabolic connections between different reactions that are  
+&emsp;&emsp;> METABOLIC-C.pl generates a figure representing metabolic connections between different reactions that are  
 &emsp;&emsp;  found within the community:  
 
 For Metabolic network diagrams, diagrams representing metabolic connections of biogeochemical cycling steps at both phylum level and the whole community level will be generated.    
@@ -351,13 +351,13 @@ For MN-score result, the table showing the MN-score (Metabolic Networking score)
 
 <img src="https://github.com/AnantharamanLab/METABOLIC/blob/master/MN-score_table_example.jpg" width="75%">
 
-The resulted files are placed in the directory `MN-score result/`.
+The resulted files are placed in the directory `MN-score_result/`.
 
 
 
 ***Notice:***
 
-If you use metatranscriptomic reads instead of metagenomic reads in METABOLIC-C, gene coverage result will be replaced by transcript coverage [normalized into Reads Per Kilobase of transcript, per Million mapped reads (RPKM)] and all the community analyses were performed based on the transcript coverage instead.  A result file of "All_gene_collections_transcript_coverage.txt" will be generated in the output directory in addition.
+If you use metatranscriptomic reads instead of metagenomic reads in METABOLIC-C, gene coverage result will be replaced by transcript coverage [normalized into Reads Per Kilobase of transcript, per Million mapped reads (RPKM)] and all the community analyses were performed based on the transcript coverage instead.  A result file of "All_gene_collections_transcript_coverage.txt" will be generated in the output directory in lieu of "All_gene_collections_gene_coverage.txt".
 
 
 ## <a name="copyright"></a> Copyright
@@ -365,8 +365,8 @@ METABOLIC: **MET**abolic **A**nd **B**ioge**O**chemistry ana**L**yses **I**n mi*
 Zhichao Zhou, zczhou2017@gmail.com  
 Patricia Tran, ptran5@wisc.edu  
 Karthik Anantharaman, karthik@bact.wisc.edu  
-Anantharaman Microbiome Laboratory  
-Department of Bacteriology, University of Wisconsin, Madison 
+**[Anantharaman Microbiome Laboratory](https://anantharamanlab.wisc.edu/)
+**[Department of Bacteriology](https://bact.wisc.edu/), University of Wisconsin, Madison 
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
