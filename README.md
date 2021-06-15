@@ -129,7 +129,7 @@ cpanm Data::Dumper
 &emsp;&emsp;&emsp;&emsp;11. *File::Basename*<br />
 &emsp;&emsp;&emsp;&emsp;12. *Parallel::ForkManager*<br />
 
-**R Packages**  
+**R Packages:**  
 &emsp;&emsp;To install, open the R command line interface by entering "R" into the command line, and then enter<br />
 &emsp;&emsp;"install.packages("[Package Name]")".<br />
 
@@ -188,9 +188,9 @@ Instructions can be found here: https://github.com/AnantharamanLab/METABOLIC/tre
 
 #### <a name="making_conda_environment"></a> Making conda environment:
 
-Dr. Daan Speth has opened an issue teaching how to successfully install conda environment for METABOLIC-G/-C. Here is the link **[https://github.com/AnantharamanLab/METABOLIC/issues/27](https://github.com/AnantharamanLab/METABOLIC/issues/27)**. 
+Dr. Daan Speth has opened an issue teaching how to successfully install conda environment for METABOLIC-G/-C. Here is the link: **[https://github.com/AnantharamanLab/METABOLIC/issues/27](https://github.com/AnantharamanLab/METABOLIC/issues/27)**. 
 
-**Notice**:  According to Dr. Michal Strejcek, conda has issues with Perl; and if you are using R 4.x, some small changes need to be done in the script. Here is the link to his solutions to these issues **[https://github.com/AnantharamanLab/METABOLIC/issues/41](https://github.com/AnantharamanLab/METABOLIC/issues/41)**.
+**Notice**:  According to Dr. Michal Strejcek, conda has issues with Perl; and if you are using R 4.x, some small changes need to be done in the script. Here is the link to his solutions to these issues: **[https://github.com/AnantharamanLab/METABOLIC/issues/41](https://github.com/AnantharamanLab/METABOLIC/issues/41)**.
 
 ## <a name="running_metabolic"></a> Running METABOLIC: 
 
@@ -211,7 +211,7 @@ perl METABOLIC-C.pl -help
 * **-rt [optional]** Defines the option to use "metaG" or "metaT" to indicate whether you use the metagenomic reads or metatranscriptomic reads (default: 'metaG')
 * **-t [optional]** Defines the number of threads to run the program with (Default: 20)
 * **-m-cutoff [optional]** Defines the fraction of KEGG module steps present to designate a KEGG module as present (Default: 0.75)
-* **-kofam-db [optional]** Defines the use of the full ("full") or reduced ("small") KOfam database by the program (Default: 'full')
+* **-kofam-db [optional]** Defines the use of the full ("full") or reduced ("small") KOfam database by the program (Default: 'full'). "small" KOfam database only contains KOs present in KEGG module, using this setting will significantly reduce hmmsearch running time.
 * **-p [optional]** Defines the prodigal method used to annotate ORFs ("meta" or "single")
 * **-o [optional]** Defines the output directory to be created by the program (Default: current directory)
 
