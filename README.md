@@ -286,14 +286,14 @@ perl METABOLIC-C.pl -in-gn [path_to_folder_with_genome_files] -r [path_to_list_o
 
 This spreadsheet has 6 sheets: 
 
-1. "**HMMHitNum**" = Presence or absence of custom HMM profiles within each genome, the number of times the HMM profile was identified within a genome, and the scaffold on which the HMM profile was found. The sheet provides a presence/absence indicator, the number of times a protein was identified for a given genome, and the ORF(s) that represent the identified protein.
+1. "**HMMHitNum**" = Presence or absence of custom HMM profiles within each genome, the number of times the HMM profile was identified within a genome, and the ORF(s) that represent the identified protein.
 2. "**FunctionHit**" = Presence or absence of sets of proteins which were identified and displayed as separate proteins in the sheet titled "HMMHitNum". For each genome, the functions are identified as "Present" or "Absence".
 3. "**KEGGModuleHit**" = Annotation of each genome with modules from the KEGG database organized by metabolic category. For each genome, the functions are identified as "Present" or "Absence".
 4. "**KEGGModuleStepHit**" = Presence or absence of modules from the KEGG database within each genome separated into the steps that make up the module. For each genome, the functions are identified as "Present" or "Absence".
 5. "**dbCAN2Hit**" = The dbCAN2 annotation results against all genomes (CAZy numbers and hits). For each genome, there are two distinct columns, which show the number of times a CAZy was identified and what ORF(s) represent the protein.
 6. "**MEROPSHit**" = The MEROPS peptidase searching result (MEROPS peptidase numbers and hits). For each genome, there are two distinct columns, which show the number of times a peptidase was identified and what ORF(s) represent the protein.
 
-*In all cases if you scroll down you will see what "Gn00X" colnames refer to (they are based on your fasta file names for the genomes you gave.* 
+*In all cases if you scroll down spreadsheet #1 (HMMHitNum) you will see what "Gn00X" colnames refer to (they are based on your fasta file names for the genomes you gave).* 
 
 
 - **<a name="faa_collection"></a> Each HMM Profile Hit Amino Acid Sequence Collection (`Each_HMM_Amino_Acid_Sequence/`)** 
