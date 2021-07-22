@@ -27,5 +27,5 @@ bioRxiv 761643; doi: https://doi.org/10.1101/761643
 Please see the project home page for usage details and installation instructions: <br>
 https://github.com/AnantharamanLab/METABOLIC/wiki<br>
 
-***Notice:*** There are some problems when using docker image under sudo right (docker version METABOLIC). We are solving the problems. We suggest to not use docker version METABOLIC at the present time until we figure it out (2021-07-21 updated). 
+
 
