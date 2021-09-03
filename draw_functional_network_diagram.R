@@ -92,10 +92,10 @@ for (i in 1:length(unique.taxo.groups)){
     geom_node_point(color = "black", size = 2) +
     geom_node_text(aes(label = name),  color="black", repel = TRUE)+
     theme_graph()+
-    labs(title = paste0('Metabolic connections within ',unique.taxo.groups[i]), 
+    labs(title = paste0('Functional connections within ',unique.taxo.groups[i]), 
          subtitle = 'No scaling')
   
-  plot.name2 <- paste0(network.plots.folder,"/",name.taxo,".Individual.Taxonomic.Groups.Metabolic.Network.PDF")
+  plot.name2 <- paste0(network.plots.folder,"/",name.taxo,".Individual.Taxonomic.Groups.Functional.Network.PDF")
   print(plot.name2)
   
   cairo_pdf(filename = plot.name2, width = 11, height = 8.5, onefile = TRUE)

@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+##!/home/zhichao/miniconda3/envs/METABOLIC_v4.0/bin/perl # This shebang should be changed to the perl in the METABOLIC_v4.0 conda env
 
 ###########################
 
@@ -39,7 +40,6 @@ use POSIX qw(strftime);
 use Excel::Writer::XLSX;
 use Getopt::Long;
 use Statistics::Descriptive;
-use Array::Split qw(split_by split_into);
 use Parallel::ForkManager;
 use File::Spec;
 use File::Basename;
@@ -51,24 +51,24 @@ use File::Basename;
 =head1 USAGE       
 
         perl METABOLIC-G.pl -t 40 -m-cutoff 0.75 -in Genome_proteins -kofam-db full -o METABOLIC_out
-		import genome proteins by users
+		(import genome proteins by users)
         
         perl METABOLIC-G.pl -t 40 -m-cutoff 0.75 -in-gn Genome_files -kofam-db full -o METABOLIC_out
-		import genome sequences by users, we will translate them by prodigal
+		(import genome sequences by users, we will translate  them by prodigal)
 		
-		perl METABOLIC-G.pl -test true
-		use the 5 genomes to test the METABOLIC-G script
+	perl METABOLIC-G.pl -test true
+		(use the 5 genomes to test the METABOLIC-G script)
         
 =head1 OPTIONS
 
-	-t         or -cpu            [integer] The cpu numbers to run the hmmsearch (default: 20)
-        -m-cutoff  or -module-cutoff  [float]   The cutoff value to assign the presence of a specific KEGG module (KEGG module step present numbers / KEGG module step total number) (default: 0.75) 
-        -in                           [string]  The folder pf given genome faa files [should also give the genome fasta files and genone gene files if the (meta)genome/(meta)transciptome datasets are included]
-        -in-gn                        [string]  The folder of given genome fasta files (Prodigal will be used to annotate your genomes)
-        -kofam-db                     [string]  to use the "small" size or "full" size of KOfam database in METABOLIC (default: 'full')
-	-p         or prodigal-method [string]  "meta" or "single" for prodigal to annotate the orf
-	-o         or output          [string]  The METABOLIC output folder (default: current address)
-	-test                  [string]  The option to test the performance of METABOLIC-G by 5 genomes; "true" or "false" to run the test option.	The test option will use 5 CPUs to run the command.
+	-t         or -cpu             [integer] The cpu numbers to run the hmmsearch (default: 20)
+        -m-cutoff  or -module-cutoff   [float]   The cutoff value to assign the presence of a specific KEGG module (KEGG module step present numbers / KEGG module step total number) (default: 0.75) 
+        -in                            [string]  The folder pf given genome faa files [should also give the genome fasta files and genone gene files if the (meta)genome/(meta)transciptome datasets are included]
+        -in-gn                         [string]  The folder of given genome fasta files (Prodigal will be used to annotate your genomes)
+        -kofam-db                      [string]  to use the "small" size or "full" size of KOfam database in METABOLIC (default: 'full')
+	-p         or -prodigal-method [string]  "meta" or "single" for prodigal to annotate the orf
+	-o         or -output          [string]  The METABOLIC output folder (default: current address)
+	-test                          [string]  The option to test the performance of METABOLIC-G by 5 genomes; "true" or "false" to run the test option.	The test option will use 5 CPUs to run the command.
 	
 =head1 INSTRUCTIONS
 
@@ -254,7 +254,6 @@ open OUT, ">$output/tmp_run_hmmsearch.sh";
 `mkdir $output/intermediate_files/Hmmsearch_Outputs`;
 foreach my $hmm (sort keys %Total_hmm2threshold){
 	my ($threshold,$score_type) = $Total_hmm2threshold{$hmm} =~ /^(.+?)\|(.+?)$/;
-	#print "$hmm\t$threshold\t$score_type\n";
 	if ($score_type eq "full"){
 		if ($hmm !~ /K\d\d\d\d\d/){
 			print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
@@ -263,10 +262,9 @@ foreach my $hmm (sort keys %Total_hmm2threshold){
 		}
 	}else{
 		if ($hmm !~ /K\d\d\d\d\d/){
-			# here, I change "--domT" to "-T" due to that "--domT" option does not function well in hmmsearch (v.3.3, Nov 2019). It just give all hits without any cutoff by pre-set threshold
-			print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
+			print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $METABOLIC_hmm_db_address/$hmm $input_protein_folder/total.faa\n";
 		}else{
-			print OUT "hmmsearch -T $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
+			print OUT "hmmsearch --domT $threshold --cpu 1 --tblout $output/intermediate_files/Hmmsearch_Outputs/$hmm.total.hmmsearch_result.txt $kofam_db_address/$hmm $input_protein_folder/total.faa\n";
 		}
 	}
 }
@@ -277,12 +275,11 @@ print "\[$datestring\] The hmmsearch is running with $cpu_numbers cpu threads...
 
 #parallel run hmmsearch
 _run_parallel("$output/tmp_run_hmmsearch.sh", $cpu_numbers); `rm $output/tmp_run_hmmsearch.sh`;
-`rm $input_protein_folder/total.faa`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] The hmmsearch is finished\n";
 
-#Store motif validation files
+#store motif validation files
 my %Motif = _get_motif($motif_file); #protein id => motif sequences (dsrC => GPXKXXCXXXGXPXPXXCX)
 my %Motif_pair = _get_motif_pair($motif_pair_file); # dsrC => tusE
 
@@ -296,7 +293,6 @@ while (<IN>){
         my $file_name = $_;
         my ($hmm) = $file_name =~ /^$output\/intermediate_files\/Hmmsearch_Outputs\/(.+?\.hmm)\./; 
 		$Hmm_id{$hmm} = 1;
-		#my ($gn_id) = $file_name =~ /\.hmm\.(.+?)\.hmmsearch_result/;
 		my $gn_id = "";
         open INN, "$file_name";
         while (<INN>){
@@ -311,7 +307,7 @@ while (<IN>){
 								if (exists $Motif{$hmm_basename}){
 									my $seq; 
 									my $motif = $Motif{$hmm_basename}; $motif =~ s/X/\[ARNDCQEGHILKMFPSTWYV\]/g; 									
-									my %Seq_gn = _store_seq("$input_protein_folder/$gn_id.faa"); # get the genome sequences
+									my %Seq_gn = _store_seq("$input_protein_folder/total.faa"); # get the total genome sequences
 									$seq = $Seq_gn{">$tmp[0]"};
 									if ($seq =~ /$motif/){
 										if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
@@ -324,7 +320,7 @@ while (<IN>){
 								}elsif(exists $Motif_pair{$hmm_basename}){
 									my $motif_hmm = "$METABOLIC_hmm_db_address/$hmm_basename.check.hmm";
 									my $motif_anti_hmm = "$METABOLIC_hmm_db_address/$Motif_pair{$hmm_basename}.check.hmm";
-									_get_1_from_input_faa("$input_protein_folder/$gn_id.faa",">$tmp[0]","$output/tmp.$hmm_basename.check.faa");								
+									_get_1_from_input_faa("$input_protein_folder/total.faa",">$tmp[0]","$output/tmp.$hmm_basename.check.faa");								
 									`hmmsearch --cpu 1 --tblout $output/tmp.$hmm_basename.check.hmmsearch_result.txt $motif_hmm $output/tmp.$hmm_basename.check.faa`;
 									`hmmsearch --cpu 1 --tblout $output/tmp.$Motif_pair{$hmm_basename}.check.hmmsearch_result.txt $motif_anti_hmm $output/tmp.$hmm_basename.check.faa`;
 									my $motif_check_score = _get_check_score("$output/tmp.$hmm_basename.check.hmmsearch_result.txt"); 
@@ -352,7 +348,7 @@ while (<IN>){
 							if (exists $Motif{$hmm_basename}){
 								my $seq; # the protein seq
 								my $motif = $Motif{$hmm_basename};  $motif =~ s/X/\[ARNDCQEGHILKMFPSTWYV\]/g; 		
-								my %Seq_gn = _store_seq("$input_protein_folder/$gn_id.faa"); # get the genome sequences
+								my %Seq_gn = _store_seq("$input_protein_folder/total.faa"); # get the total genome sequences
 								$seq = $Seq_gn{">$tmp[0]"};
 								if ($seq =~ /$motif/){
 									if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
@@ -365,7 +361,7 @@ while (<IN>){
 							}elsif(exists $Motif_pair{$hmm_basename}){
 								my $motif_hmm = "$METABOLIC_hmm_db_address/$hmm_basename.check.hmm";
 								my $motif_anti_hmm = "$METABOLIC_hmm_db_address/$Motif_pair{$hmm_basename}.check.hmm";
-								_get_1_from_input_faa("$input_protein_folder/$gn_id.faa",">$tmp[0]","$output/tmp.$hmm_basename.check.faa");
+								_get_1_from_input_faa("$input_protein_folder/total.faa",">$tmp[0]","$output/tmp.$hmm_basename.check.faa");
 								`hmmsearch --cpu 1 --tblout $output/tmp.$hmm_basename.check.hmmsearch_result.txt $motif_hmm $output/tmp.$hmm_basename.check.faa`;
 								`hmmsearch --cpu 1 --tblout $output/tmp.$Motif_pair{$hmm_basename}.check.hmmsearch_result.txt $motif_anti_hmm $output/tmp.$hmm_basename.check.faa`;
 								my $motif_check_score = _get_check_score("$output/tmp.$hmm_basename.check.hmmsearch_result.txt"); 
@@ -393,6 +389,8 @@ while (<IN>){
         close INN;		
 }
 close IN;
+
+`rm $input_protein_folder/total.faa`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] The hmm hit result is calculating...\n";
@@ -456,7 +454,7 @@ foreach my $line_no (sort keys %Hmm_table_temp){
 			
 			push @Hmm_table_body_worksheet1,$hmm_presence;
 			push @Hmm_table_body_worksheet1,$hit_num;
-			push @Hmm_table_body_worksheet1,join("\,",@Hits);
+			push @Hmm_table_body_worksheet1,join("\;",@Hits);
 		}
 		print OUT join("\t",@Hmm_table_body_worksheet1)."\n";
 }
@@ -466,7 +464,7 @@ close OUT;
 open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet2.tsv";
 #print head
 my @Hmm_table_head_worksheet2 = ();
-for(my $i=0; $i<=3; $i++){
+for(my $i=0; $i<=2; $i++){
 	push @Hmm_table_head_worksheet2, $Hmm_table_head[($i+1)];
 }
 foreach my $gn_id (sort keys %Genome_id){
@@ -478,7 +476,7 @@ print OUT join("\t",@Hmm_table_head_worksheet2)."\n";
 foreach my $line_no (sort keys %Hmm_table_temp_2){
 	my @Hmm_table_body_worksheet2 = ();
 	my @tmp_table_2 = split(/\t/,$Hmm_table_temp_2{$line_no});
-	for(my $i=0; $i<=3; $i++){
+	for(my $i=0; $i<=2; $i++){
 		push @Hmm_table_body_worksheet2, $tmp_table_2[($i+2)];			
 	}
 	my $line_no_4_table_1 = $tmp_table_2[1];
@@ -1196,145 +1194,6 @@ sub _get_faa_seq{
 	return %result;
 }
 
-sub _get_Genome_coverge{
-	my $reads = $_[0];
-	my $folder = $_[1]; # the input_genome_folder
-	#cat all the genes
-	my %Seq = (); my $head = "";
-	open __IN, "ls $folder/*.gene | ";
-	while (<__IN>){
-		chomp;
-		my $file = $_;
-		my ($seq_name) = $file =~ /$folder\/(.+?)\.gene/; 
-		open __INN, $file;
-		while (<__INN>){
-			chomp;
-			if (/>/){
-				my $head_old = $_;
-				my $head_old_2;
-				if ($head_old =~ /\s/){
-					($head_old_2) = $head_old =~ />(.+?)\s/;
-				}else{
-					($head_old_2) = $head_old =~ />(.+?)$/;
-				}
-				$head = ">".$seq_name."~~".$head_old_2;
-				$Seq{$head} = "";
-			}else{
-				$Seq{$head} .= $_;
-			}
-		}
-		close __INN;
-	}
-	close __IN;
-	
-	open __OUT, ">$output/All_gene_collections.gene";
-	foreach my $key (sort keys %Seq){
-		print __OUT "$key\n$Seq{$key}\n";
-	}
-	close __OUT;
-	
-	system ("bowtie2-build $output/All_gene_collections.gene $output/All_gene_collections.gene.scaffold --quiet");
-	my %Reads = (); my $i = 1;
-	open __IN, "$reads";
-	while (<__IN>){
-		chomp;
-		if (!/^#/){
-			my @tmp = split (/\,/,$_);
-			my $tmp_link = $tmp[0]."\t".$tmp[1];
-			$Reads{$tmp_link} = $i;
-			$i++;
-		}
-	}
-	close __IN;
-	
-	open OUT__,">$output/tmp_calculate_depth.sh";
-	foreach my $key (sort keys %Reads){
-		my $j = $Reads{$key};
-		my @tmp = split (/\t/,$key);
-		print OUT__ "bowtie2 -x $output/All_gene_collections.gene.scaffold -1 $tmp[0] -2 $tmp[1] -S $output/All_gene_collections_mapped.$j.sam -p $cpu_numbers --quiet;";
-		print OUT__ "samtools view -bS $output/All_gene_collections_mapped.$j.sam > $output/All_gene_collections_mapped.$j.bam -@ $cpu_numbers 2> /dev/null;";
-		print OUT__ "sambamba sort  $output/All_gene_collections_mapped.$j.bam -o $output/All_gene_collections_mapped.$j.sorted.bam 2> /dev/null;";
-		print OUT__ "samtools index $output/All_gene_collections_mapped.$j.sorted.bam > /dev/null;";
-		print OUT__ "samtools flagstat $output/All_gene_collections_mapped.$j.sorted.bam > $output/All_gene_collections_mapped.$j.sorted.stat 2> /dev/null\n";
-		print OUT__ "rm $output/All_gene_collections_mapped.$j.sam $output/All_gene_collections_mapped.$j.bam\n";
-	}
-	close OUT__;
-	
-	#parallel run calculate coverage
-	my @Runs5; 
-	open IN, "$output/tmp_calculate_depth.sh";
-	while (<IN>){
-		chomp;
-		push @Runs5, $_;
-	}
-	close IN;
-	`rm $output/tmp_calculate_depth.sh`;
-
-	my @arrayrefs5 = split_by($cpu_numbers,@Runs5); 
-
-	foreach my $key (@arrayrefs5){
-		my $cmd; # to store the bash cmd
-		my @tmp_cmd;
-			$cmd = join (" &\n",@$key);
-		$cmd .= "\nwait\n";
-		`$cmd`;
-	}
-	
-	system ("coverm contig --methods metabat --bam-files  $output/All_gene_collections_mapped.*.sorted.bam > $output/All_gene_collections_mapped.depth.txt 2> /dev/null");
-	
-	my %h = (); # average => bin => all gene coverage values
-	my @h_head = ();  
-	my @h_head_num = (); 
-	my %Bin = ();
-	open __IN, "$output/All_gene_collections_mapped.depth.txt";
-	while (<__IN>){
-        chomp;
-        if (/^contigName/){
-                my @tmp = split (/\t/);@h_head = @tmp;
-                for(my $i=0; $i<=$#h_head; $i++){
-                        if ($h_head[$i] =~ /^totalAvgDepth$/){
-                                        push @h_head_num, $i;
-                        }
-                }
-        }else{
-                my @tmp = split (/\t/);
-                my ($bin) = $tmp[0] =~ /^(.+?)\~\~/;
-                $Bin{$bin} = 1;
-                foreach my $i (@h_head_num){
-                        if (!exists $h{$h_head[$i]}{$bin}){
-                                $h{$h_head[$i]}{$bin} = $tmp[$i];
-                        }else{
-                                $h{$h_head[$i]}{$bin} .= "\t".$tmp[$i];
-                        }
-                }
-        }
-	}
-	close __IN;
-	#system ("rm $output/All_gene_collections_mapped.depth.txt");
-	
-	my %Bin2Cov = (); #bin => cov value
-	my $total_cov = 0;
-	foreach my $i (@h_head_num){
-        foreach my $bin (sort keys %Bin){
-                my @tmp = split (/\t/, $h{$h_head[$i]}{$bin});
-                my $stat = Statistics::Descriptive::Full->new();
-                $stat->add_data(\@tmp);
-                my $mean = $stat->mean();
-                $h{$h_head[$i]}{$bin} = $mean;
-				$Bin2Cov{$bin} = $mean;
-				$total_cov += $mean;
-        }
-	}
-	
-	my %Bin2cov_percentage = ();
-	foreach my $bin (sort keys %Bin2Cov){
-		my $percentage = $Bin2Cov{$bin} / $total_cov;
-		$Bin2cov_percentage{$bin} = $percentage;
-	}
-	#system ("rm $output/All_gene_collections*");
-	return %Bin2cov_percentage;
-}
-
 sub _store_seq{
 	my $file = $_[0];
 	my %Seq = (); my $head = "";
@@ -1362,8 +1221,8 @@ sub _get_1_from_input_faa{
 	my $seq = $_[1];
 	my $output_file = $_[2];
 	my %Seq = (); my $head = "";	
-	open _IN, "$input_file";
-	while (<_IN>){
+	open IN_, "$input_file";
+	while (<IN_>){
 		chomp;
 		if (/>/){
 			($head) = $_ =~ /^(>.+?)\s/;
@@ -1372,7 +1231,7 @@ sub _get_1_from_input_faa{
 			$Seq{$head} .= $_;
 		}
 	}
-	close _IN;
+	close IN_;
 	
 	open OUT, ">$output_file";
 	print OUT "$seq\n$Seq{$seq}\n";

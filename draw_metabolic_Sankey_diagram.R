@@ -43,7 +43,7 @@ colnames(energy.flow) <- c("Taxa", "Reaction", "Freq")
 energy.flow$Category <- ifelse(grepl("C-S", energy.flow$Reaction), "Carbon", 
                                ifelse(grepl("N-S", energy.flow$Reaction), "Nitrogen",
                                       ifelse(grepl("S-S", energy.flow$Reaction), "Sulfur",
-                                             ifelse(grepl("O-S", energy.flow$Reaction), "Oxygen",""))))
+                                             ifelse(grepl("O-S", energy.flow$Reaction), "Others",""))))
 
 #str(energy.flow)
 energy.flow$Category <- as.factor(energy.flow$Category)
