@@ -1,5 +1,5 @@
-#!/usr/bin/perl
-##!/home/zhichao/miniconda3/envs/METABOLIC_v4.0/bin/perl # This shebang should be changed to the perl in the METABOLIC_v4.0 conda env
+##!/usr/bin/perl
+#!/home/zhichao/miniconda3/envs/METABOLIC_v4.0/bin/perl # This shebang should be changed to the perl in the METABOLIC_v4.0 conda env
 
 ###########################
 
@@ -1040,13 +1040,13 @@ foreach my $gn (sort keys %Hmmscan_result){
 					$R_input{$key} = 1; $Total_R_input{$key}{$gn} = 1;
 				}
 			}elsif ($hmms_2 =~ /NO/){
-				my $logic1 = 0; my $logic2 = 0;
+				my $logic1 = 0; my $logic2 = 1;
 				foreach my $hmm_id (sort keys %R_hmm_ids){
 					if ($hmms_1 =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
 						$logic1 = 1;	
 					}			
-					if ($hmms_2 !~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
-						$logic2 = 1;	
+					if ($hmms_2 =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){  # if $hmms_2 contains $hmm_id , and the genome has $hmm_id hit(s), then it will be false (0)
+						$logic2 = 0;	
 					}		
 				}
 				if ($logic1 and $logic2){
