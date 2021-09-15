@@ -1,5 +1,5 @@
-##!/usr/bin/perl
-#!/home/zhichao/miniconda3/envs/METABOLIC_v4.0/bin/perl # This shebang should be changed to the perl in the METABOLIC_v4.0 conda env
+#!/usr/bin/perl
+##!/home/zhichao/miniconda3/envs/METABOLIC_v4.0/bin/perl # This shebang should be changed to the perl in the METABOLIC_v4.0 conda env
 
 ###########################
 
