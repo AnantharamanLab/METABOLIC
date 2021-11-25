@@ -164,7 +164,7 @@ if ($test eq "true"){
 `mkdir $output`;
 
 my $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
-my $statetime = $datestring;
+my $statetime = $datestring; my $starttime_raw = time;
 
 #Store the hmm table template
 my %Hmm_table_temp = (); # line no. => each line 
@@ -1069,6 +1069,9 @@ foreach my $gn (sort keys %Hmmscan_result){
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing element cycling diagrams finished\n";
 my $endtime = $datestring;
+my $duration = time - $starttime_raw;
+$duration = parse_duration($duration);
+print "METABOLIC-G was done, the total running time: $duration (hh:mm:ss)\n";
 
 #print information about this run:
 open OUT, ">$output/METABOLIC_run.log";
@@ -1076,6 +1079,7 @@ if ($input_genome_folder){
 print OUT "$version
 Run Start: $statetime
 Run End: $endtime
+Total running time: $duration (hh:mm:ss)
 Input Reads: N/A
 Input Genome directory (nucleotides): $input_genome_folder
 Number of Threads: $cpu_numbers
@@ -1087,6 +1091,7 @@ Output directory: $output\n";
 print OUT "$version
 Run Start: $statetime
 Run End: $endtime
+Total running time: $duration (hh:mm:ss)
 Input Reads: N/A
 Input Genome directory (amino acids): $input_protein_folder
 Number of Threads: $cpu_numbers
@@ -1097,7 +1102,13 @@ Output directory: $output\n";
 }
 close OUT;
 
+
 ##subroutines
+sub parse_duration {
+    use integer;
+    sprintf("%02d:%02d:%02d", $_[0]/3600, $_[0]/60%60, $_[0]%60);
+}
+
 #input ko_list, return a result hash of threshold and score_type
 sub _get_kofam_db_KO_threshold{
 	my $list = $_[0]; 
