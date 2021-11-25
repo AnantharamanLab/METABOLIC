@@ -203,8 +203,6 @@ drawScycle.single <- function(R_input, OutputFolder){
   splitarrow(from = elpos[6, ], to = elpos[c(1,10), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[30,2]) #S-S-08:Thiosulfate disproportionation
   splitarrow(from = elpos[6, ], to = elpos[c(4,11), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[31,2]) #S-S-09:Thiosulfate disproportionation 2
   
-  #https://stackoverflow.com/questions/17083362/colorize-parts-of-the-title-in-a-plot
-  
   textrect (elpos[1, ], 0.07, 0.05, lab = expression(paste(H['2'],S,' ',(-2))), cex = 1.5)
   textrect (elpos[4, ], 0.05, 0.05, lab = expression(paste(S,' ',(0))), cex = 1.5)
   textrect (elpos[5, ], 0.07, 0.05, lab = expression(paste(SO['3'])^'2-'*' '(+4)), cex = 1.5)
@@ -263,8 +261,6 @@ drawScycle.total <- function(R_input, OutputFolder){
   straightarrow(from = elpos[6, ], to = elpos[11, ], lty = 1, lcol = 1) #S-S-07:Thiosulfate oxidation
   splitarrow(from = elpos[6, ], to = elpos[c(1,10), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = 1) #S-S-08:Thiosulfate disproportionation 1
   splitarrow(from = elpos[6, ], to = elpos[c(4,11), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = 1) #S-S-09:Thiosulfate disproportionation 2
-  
-  #https://stackoverflow.com/questions/17083362/colorize-parts-of-the-title-in-a-plot
   
   textrect (elpos[1, ], 0.07, 0.05, lab = expression(paste(H['2'],S,' ',(-2))), cex = 1.5)
   textrect (elpos[4, ], 0.05, 0.05, lab = expression(paste(S,' ',(0))), cex = 1.5)
@@ -603,12 +599,3 @@ if (summary==TRUE){
 
 
 print("Done! :-)")
-
-# Combine four summary figures into 1:
-#install.packages("pdftools")
-#library(pdftools)
-
-#setwd(biogeochemcycles.plots.folder)
-#pdf_combine(c("draw_other_cycle_total.pdf", "draw_carbon_cycle_total.pdf","draw_sulfur_cycle_total.pdf","draw_nitrogen_cycle_total.pdf"), output = "joined.pdf")
-
-#print("Combined all summary figures into 1 PDF :",biogeochemcycles.plots.folder,"/joined.pdf",sep="")

@@ -33,10 +33,7 @@ dir.create(network.plots.folder)
 
 plot.folder <- network.plots.folder
 
-#R_input_table <- "/Users/patriciatran/Downloads/Metabolic_network_input.txt"
 table <- read.csv(R_input_table, header=T, sep="\t")
-
-#Change the column names
 
 #install.packages("ggraph")
 library(ggraph)
@@ -62,8 +59,6 @@ community.plot <- table[,c(2,3,4,5)] %>%
   #theme_graph()+
   labs(title = 'Metabolic connections within dataset', 
        subtitle = 'No scaling')
-
-#community.plot
 
 plot.name <- paste0(network.plots.folder,"/CommunityPlot.PDF")
 print(plot.name)
