@@ -1,7 +1,7 @@
-name: METABOLIC_v4.0
+name: /slowdata/yml_environments/METABOLIC_v4.0
 channels:
-  - conda-forge
   - bioconda
+  - conda-forge
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
@@ -18,10 +18,10 @@ dependencies:
   - bwidget=1.9.14=ha770c72_0
   - bzip2=1.0.8=h7f98852_4
   - c-ares=1.17.1=h36c2ea0_0
-  - ca-certificates=2020.12.5=ha878542_0
+  - ca-certificates=2021.10.8=ha878542_0
   - cairo=1.16.0=h9f066cc_1006
   - capnproto=0.6.1=hfc679d8_1
-  - certifi=2020.12.5=py38h578d9bd_0
+  - certifi=2021.10.8=py38h578d9bd_1
   - cffi=1.14.4=py38ha312104_0
   - chardet=3.0.4=py38h924ce5b_1008
   - coverm=0.5.0=hc216eb9_0
@@ -53,6 +53,7 @@ dependencies:
   - gxx_impl_linux-64=7.5.0=h7ea4de1_17
   - gxx_linux-64=7.5.0=h547f3ba_29
   - harfbuzz=2.7.2=ha5b49bf_1
+  - hmmer=3.1b2=3
   - htslib=1.9=h4da6232_3
   - icu=67.1=he1b5a44_0
   - idna=2.10=pyh9f0ad1d_0
@@ -96,7 +97,7 @@ dependencies:
   - lz4-c=1.9.2=he1b5a44_3
   - make=4.3=hd18ef5c_1
   - mash=2.2.2=ha61e061_2
-  - minimap2=2.17=hed695b0_3
+  - minimap2=2.17=h5bf99c6_4
   - ncurses=6.1=hf484d3e_1002
   - numpy=1.19.4=py38hf0fd68c_1
   - openblas=0.3.12=pthreads_h43bd3aa_1
@@ -488,3 +489,4 @@ dependencies:
   - xz=5.2.5=h516909a_1
   - zlib=1.2.11=h516909a_1010
   - zstd=1.4.5=h6597ccf_2
+prefix: /slowdata/yml_environments/METABOLIC_v4.0
