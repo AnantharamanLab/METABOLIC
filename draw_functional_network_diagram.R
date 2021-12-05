@@ -33,7 +33,10 @@ dir.create(network.plots.folder)
 
 plot.folder <- network.plots.folder
 
+#R_input_table <- "/Users/patriciatran/Downloads/Metabolic_network_input.txt"
 table <- read.csv(R_input_table, header=T, sep="\t")
+
+#Change the column names
 
 #install.packages("ggraph")
 library(ggraph)
@@ -54,11 +57,13 @@ community.plot <- table[,c(2,3,4,5)] %>%
   ggraph(layout = "linear",circular = TRUE) +
   geom_edge_arc(alpha = .25, 
                  aes(width = Coverage.value.average., color=as.factor(Taxonomic.Group))) +
-  geom_node_point(color = "black", size = 0.02*deg, alpha=0.75) +
+  geom_node_point(aes(size = 0.02*deg), color = "black", alpha=0.75) +
   geom_node_text(aes(label = name),  color="black", repel = TRUE)+
   #theme_graph()+
   labs(title = 'Metabolic connections within dataset', 
        subtitle = 'No scaling')
+
+#community.plot
 
 plot.name <- paste0(network.plots.folder,"/CommunityPlot.PDF")
 print(plot.name)

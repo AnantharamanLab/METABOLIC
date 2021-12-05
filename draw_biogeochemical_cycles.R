@@ -203,6 +203,8 @@ drawScycle.single <- function(R_input, OutputFolder){
   splitarrow(from = elpos[6, ], to = elpos[c(1,10), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[30,2]) #S-S-08:Thiosulfate disproportionation
   splitarrow(from = elpos[6, ], to = elpos[c(4,11), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = input[31,2]) #S-S-09:Thiosulfate disproportionation 2
   
+  #https://stackoverflow.com/questions/17083362/colorize-parts-of-the-title-in-a-plot
+  
   textrect (elpos[1, ], 0.07, 0.05, lab = expression(paste(H['2'],S,' ',(-2))), cex = 1.5)
   textrect (elpos[4, ], 0.05, 0.05, lab = expression(paste(S,' ',(0))), cex = 1.5)
   textrect (elpos[5, ], 0.07, 0.05, lab = expression(paste(SO['3'])^'2-'*' '(+4)), cex = 1.5)
@@ -261,6 +263,8 @@ drawScycle.total <- function(R_input, OutputFolder){
   straightarrow(from = elpos[6, ], to = elpos[11, ], lty = 1, lcol = 1) #S-S-07:Thiosulfate oxidation
   splitarrow(from = elpos[6, ], to = elpos[c(1,10), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = 1) #S-S-08:Thiosulfate disproportionation 1
   splitarrow(from = elpos[6, ], to = elpos[c(4,11), ], lty = 1, lwd = 1, dd = 0.7, arr.side = 1:2, lcol = 1) #S-S-09:Thiosulfate disproportionation 2
+  
+  #https://stackoverflow.com/questions/17083362/colorize-parts-of-the-title-in-a-plot
   
   textrect (elpos[1, ], 0.07, 0.05, lab = expression(paste(H['2'],S,' ',(-2))), cex = 1.5)
   textrect (elpos[4, ], 0.05, 0.05, lab = expression(paste(S,' ',(0))), cex = 1.5)
@@ -455,7 +459,7 @@ drawOthercycles.single<- function(R_input, OutputFolder){
   elpos <- coordinates (c(5, 5, 2, 2)) # Put the coordinate
   elpos
   curvedarrow(from = elpos[2, ], to = elpos[7, ], curve = 0.1, lty = 1, lcol = input[19,2]) #O-S-01:Metal reduction
-  curvedarrow(from = elpos[7, ], to = elpos[2, ], curve = 0.1, lty = 1, lcol = input[19,2]) #O-S-01:Metal reduction
+  curvedarrow(from = elpos[7, ], to = elpos[2, ], curve = 0.1, lty = 1, lcol = input[19,2]) #Metal oxidation
   curvedarrow(from = elpos[11, ], to = elpos[13, ], curve = 0.1, lty = 1, lcol = input[20,2]) #O-S-03:Arsenate reduction
   curvedarrow(from = elpos[13, ], to = elpos[11, ], curve = 0.1, lty = 1, lcol = input[21,2]) #O-S-04:Arsenite oxidation
   straightarrow(from = elpos[12, ], to = elpos[14, ], lty = 1, lcol = input[22,2]) #O-S-05:Selenate reduction
@@ -469,10 +473,10 @@ drawOthercycles.single<- function(R_input, OutputFolder){
   
   par(lheight=0.01)
   
-  textplain(mid = c(0.15, 0.75), lab = "Metal reduction")
-  textplain(mid = c(0.12, 0.25), lab ="Arsenate reduction")
-  textplain(mid = c(0.4, 0.25), lab = "Arsenite oxidation")
-  textplain(mid = c(0.88, 0.25), lab = "Selenate reduction")
+  textplain(mid = c(0.15, 0.75), lab = "Step1: Metal reduction")
+  textplain(mid = c(0.12, 0.25), lab ="Step2: Arsenate reduction")
+  textplain(mid = c(0.4, 0.25), lab = "Step3: Arsenite oxidation")
+  textplain(mid = c(0.88, 0.25), lab = "Step4: Selenate reduction")
   dev.off()
   cat("made plot: ", plot.name, "\n")
 
@@ -494,10 +498,10 @@ drawOthercycles.total<- function(R_input, OutputFolder){
   elpos <- coordinates (c(5, 5, 2, 2)) # Put the coordinate
   elpos
   curvedarrow(from = elpos[2, ], to = elpos[7, ], curve = 0.1, lty = 1, lcol = 1) #O-S-01:Metal reduction
-  curvedarrow(from = elpos[7, ], to = elpos[2, ], curve = 0.1, lty = 1, lcol = 1) #O-S-01:Metal reduction
-  curvedarrow(from = elpos[11, ], to = elpos[13, ], curve = 0.1, lty = 1, lcol = 1) #O-S-03:Arsenate reduction
-  curvedarrow(from = elpos[13, ], to = elpos[11, ], curve = 0.1, lty = 1, lcol = 1) #O-S-04:Arsenite oxidation
-  straightarrow(from = elpos[12, ], to = elpos[14, ], lty = 1, lcol = 1) #C-S-05:Selenate reduction
+  curvedarrow(from = elpos[7, ], to = elpos[2, ], curve = 0.1, lty = 1, lcol = 1) #Metal oxidation
+  curvedarrow(from = elpos[11, ], to = elpos[13, ], curve = 0.1, lty = 1, lcol = 1) #O-S-02:Arsenate reduction
+  curvedarrow(from = elpos[13, ], to = elpos[11, ], curve = 0.1, lty = 1, lcol = 1) #O-S-03:Arsenite oxidation
+  straightarrow(from = elpos[12, ], to = elpos[14, ], lty = 1, lcol = 1) #C-S-04:Selenate reduction
   
   textrect (elpos[2, ], 0.07, 0.05, lab = expression(Fe^'3+'), cex = 1.5)
   textrect (elpos[7, ], 0.07, 0.05, lab = expression(Fe^'2+'), cex = 1.5)
@@ -513,17 +517,17 @@ drawOthercycles.total<- function(R_input, OutputFolder){
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[19],"%")))
   
   textplain(mid = c(0.1, 0.25), 
-            lab = c("Step3: Arsenate reduction",
+            lab = c("Step2: Arsenate reduction",
                     paste("Genomes:",input.total$Nb.Genome[20]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[20],"%")))
   
   textplain(mid = c(0.4, 0.25), 
-            lab = c("Step4: Arsenite oxidation",
+            lab = c("Step3: Arsenite oxidation",
                     paste("Genomes:",input.total$Nb.Genome[21]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[21],"%")))
   
   textplain(mid = c(0.90, 0.25), 
-            lab = c("Step5: Selenate reduction",
+            lab = c("Step4: Selenate reduction",
                     paste("Genomes:",input.total$Nb.Genome[22]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[22],"%")))
   
@@ -599,3 +603,12 @@ if (summary==TRUE){
 
 
 print("Done! :-)")
+
+# Combine four summary figures into 1:
+#install.packages("pdftools")
+#library(pdftools)
+
+#setwd(biogeochemcycles.plots.folder)
+#pdf_combine(c("draw_other_cycle_total.pdf", "draw_carbon_cycle_total.pdf","draw_sulfur_cycle_total.pdf","draw_nitrogen_cycle_total.pdf"), output = "joined.pdf")
+
+#print("Combined all summary figures into 1 PDF :",biogeochemcycles.plots.folder,"/joined.pdf",sep="")
