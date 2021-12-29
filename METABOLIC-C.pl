@@ -1757,9 +1757,7 @@ Taxonomic level to calculate MW-score table: $taxonomy
 Output directory: $output\n";
 close OUT;
 
-# Save the stdout and stderr
-close STDOUT;
-close STDERR;
+
 
 ##Subroutines
 sub parse_duration {
