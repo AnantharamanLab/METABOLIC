@@ -1,5 +1,4 @@
-#!/usr/bin/perl
-##!/home/zhichao/miniconda3/envs/METABOLIC_v4.0/bin/perl # This shebang should be changed to the perl in the METABOLIC_v4.0 conda env
+#!/usr/bin/env perl
 
 ###########################
 
@@ -97,22 +96,22 @@ use File::Basename;
 	Department of Bacteriology, University of Wisconsin, Madison
 =cut
 
-#Intake the address of METABOLIC directory:
+# Intake the address of METABOLIC directory:
 my $METABOLIC_dir = dirname(File::Spec->rel2abs(__FILE__));
 
-#The options 
-# option variables with default value
-my $cpu_numbers = 20; #parallel running cpu numbers
+# The options 
+# Option variables with default value
+my $cpu_numbers = 20; # Parallel running cpu numbers
 my $module_cutoff = 0.75; # The cutoff value to assign the existence of a module
-my $input_protein_folder;  #input microbial genome protein files
-my $input_genome_folder; #input microbial genome fasta files
-my $omic_reads_parameters; #The address of omic reads
-my $prodigal_method = "meta"; #the prodigal method to annotate orfs
-my $kofam_db_size = "full"; #the full kofam size
-my $omic_reads_type = "metaG"; # metagenomic reads
-my $sequencing_type = "illumina"; # the sequencing type of input omics reads
-my $output = `pwd`; # the output folder 
-my $taxonomy = "phylum"; # the taxonomy level to calculate MW-score table 
+my $input_protein_folder;  # Input microbial genome protein files
+my $input_genome_folder; # Input microbial genome fasta files
+my $omic_reads_parameters; # The address of omic reads
+my $prodigal_method = "meta"; # The prodigal method to annotate orfs
+my $kofam_db_size = "full"; # The full kofam size
+my $omic_reads_type = "metaG"; # Metagenomic reads
+my $sequencing_type = "illumina"; # The sequencing type of input omics reads
+my $output = `pwd`; # The output folder 
+my $taxonomy = "phylum"; # The taxonomy level to calculate MW-score table 
 my $version="METABOLIC-C.pl v4.0";
 my $test = "false";
 
@@ -133,26 +132,26 @@ GetOptions(
 	'test=s' => \$test
 ) or die("Getting options from the command line failed, please check your options");
 
-##Pre-required files and documents
- #METABOLIC hmm database files
+## Pre-required files and documents
+ # METABOLIC hmm database files
  my $METABOLIC_hmm_db_address = "$METABOLIC_dir/METABOLIC_hmm_db";
  
- #KofamKOALA hmm database files, July, 3 updated 
- #link: ftp://ftp.genome.jp/pub/db/kofam/
+ # KofamKOALA hmm database files
+ # Link: ftp://ftp.genome.jp/pub/db/kofam/
  my $kofam_db_address = "$METABOLIC_dir/kofam_database/profiles";
  my $kofam_db_KO_list = "$METABOLIC_dir/kofam_database/ko_list";
  
- #input hmm information table as a template
+ # Input hmm information table as a template
  my $hmm_table_temp = "$METABOLIC_dir/METABOLIC_template_and_database/hmm_table_template.txt";
  my $hmm_table_temp_2 = "$METABOLIC_dir/METABOLIC_template_and_database/hmm_table_template_2.txt"; 
  
- #the KEGG module information
+ # The KEGG module information
  my $ko_module_table = "$METABOLIC_dir/METABOLIC_template_and_database/ko00002.keg";
  
- #the KEGG module step db 
+ # The KEGG module step db 
  my $ko_module_step_db = "$METABOLIC_dir/METABOLIC_template_and_database/kegg_module_step_db.txt";
  
- #the pathway information to draw element cycling diagrams and metabolic handoff
+ # The pathway information to draw element cycling diagrams and metabolic handoff
  my $R_pathways = "$METABOLIC_dir/METABOLIC_template_and_database/R_pathways.txt";
  my $R_mh_01 = "$METABOLIC_dir/METABOLIC_template_and_database/Sequential_transformations_01.txt";
  my $R_mh_02 = "$METABOLIC_dir/METABOLIC_template_and_database/Sequential_transformations_02.txt";
@@ -161,14 +160,14 @@ GetOptions(
  my $R_order_of_input_02 = "$METABOLIC_dir/METABOLIC_template_and_database/order_of_input_02.txt";
  my $CAZy_map_address = "$METABOLIC_dir/METABOLIC_template_and_database/CAZy_map.txt";
  
- #the MW-score reaction table template
+ # The MW-score reaction table template
  my $MW_score_reaction_table = "$METABOLIC_dir/METABOLIC_template_and_database/MW-score_reaction_table.txt";
  
- #the motif files to validate specific protein hits
+ # The motif files to validate specific protein hits
  my $motif_file = "$METABOLIC_dir/METABOLIC_template_and_database/motif.txt";
  my $motif_pair_file = "$METABOLIC_dir/METABOLIC_template_and_database/motif.pair.txt";
 
-# the test option:
+# The test option:
 if ($test eq "true"){
 	$input_genome_folder = "$METABOLIC_dir/METABOLIC_test_files/Guaymas_Basin_genome_files";
 	$output = "METABOLIC_out";
@@ -176,30 +175,34 @@ if ($test eq "true"){
 	$omic_reads_parameters = "$METABOLIC_dir/METABOLIC_test_files/Reads_address.txt";
 }
 
-# to make sure the input taxonomy is right
-my %Tax2code = (); # store the corresponding map of user-defined taxonomy to taxonomy level code
+# To make sure the input taxonomy is right
+my %Tax2code = (); # Store the corresponding map of user-defined taxonomy to taxonomy level code
 %Tax2code = ('phylum'=> '0', 'class'=> '1', 'order'=> '2', 'family'=> '3', 'genus'=> '4');
 
 if (!exists $Tax2code{$taxonomy}){
 	die "Your input taxonomy is wrong, please check your spelling. It should be one of these taxonomies: phylum, class, order, family, genus\n";
 }
 
-# to make sure the input sequencing type should one of the five following values
+# To make sure the input sequencing type should one of the five following values
 if ($sequencing_type ne "illumina" and $sequencing_type ne "pacbio" and $sequencing_type ne "pacbio_asm20" and $sequencing_type ne "pacbio_hifi" and $sequencing_type ne "nanopore"){
 	die "Your input sequencing type is wrong, please check your spelling. It should be one of these: illumina, pacbio, pacbio_asm20, pacbio_hifi, nanopore\n";
 }
 
-##Main Body
-#The present time
+## Main Body
+# The present time
 
 `mkdir $output`;
 
 my $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 my $starttime = $datestring; my $starttime_raw = time;
 
-#Store the hmm table template
+# Store the stdout and stderr into log  
+open STDOUT, "| tee -ai $output/METABOLIC_log.log";
+open STDERR, "| tee -ai $output/METABOLIC_log.log";
+
+# Store the hmm table template
 my %Hmm_table_temp = (); # line no. => each line 
-my @Hmm_table_head = (); # the head of the hmm table template
+my @Hmm_table_head = (); # The head of the hmm table template
 my %METABOLIC_hmm2threshold = (); #hmm file id => threshold and score_type
 open IN, "$hmm_table_temp";
 while (<IN>){
@@ -216,7 +219,7 @@ while (<IN>){
 }
 close IN;
 
-#Store the hmm table template 2
+# Store the hmm table template 2
 my %Hmm_table_temp_2 = (); # line no. => each line; 
 open IN, "$hmm_table_temp_2";
 while (<IN>){
@@ -228,7 +231,7 @@ while (<IN>){
 }
 close IN;
 
-#the hash of hmm file and corresponding threshold and score_type
+# The hash of hmm file and corresponding threshold and score_type
 my %Total_hmm2threshold = (%METABOLIC_hmm2threshold, _get_kofam_db_KO_threshold($kofam_db_KO_list,$kofam_db_address)); 
 
 `mkdir $output/intermediate_files`;
@@ -259,12 +262,12 @@ if ($input_genome_folder){
 
 my %Genome_id = (); # genome id => 1
 my %Seqid2Genomeid = (); # seq id => genome id 
-my %Total_faa_seq = (); #Store the total faa file into a hash{$line_no}
+my %Total_faa_seq = (); # Store the total faa file into a hash{$line_no}
 open IN,"ls $input_protein_folder/*.faa |";
 while (<IN>){
 	chomp;
 	my $file = $_;
-	#Store faa file into a hash
+	# Store faa file into a hash
 	%Total_faa_seq = (%Total_faa_seq, _get_faa_seq($file));
 	
 	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/; 
@@ -310,18 +313,18 @@ close OUT;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] The hmmsearch is running with $cpu_numbers cpu threads...\n";
 
-#parallel run hmmsearch
+# Parallel run hmmsearch
 
 _run_parallel("$output/tmp_run_hmmsearch.sh", $cpu_numbers); `rm $output/tmp_run_hmmsearch.sh`;
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] The hmmsearch is finished\n";
 
-#store motif validation files
-my %Motif = _get_motif($motif_file); #protein id => motif sequences (DsrC => GPXKXXCXXXGXPXPXXCX)
+# Store motif validation files
+my %Motif = _get_motif($motif_file); # protein id => motif sequences (DsrC => GPXKXXCXXXGXPXPXXCX)
 my %Motif_pair = _get_motif_pair($motif_pair_file); # dsrC => tusE
 
-#summarize hmmsearch result and print table
+# Summarize hmmsearch result and print table
 my %Hmmscan_result = (); # genome_name => hmm => numbers
 my %Hmmscan_hits = (); # genome_name => hmm => hits
 my %Hmm_id = (); # hmm => 1 
@@ -345,7 +348,7 @@ while (<IN>){
 								if (exists $Motif{$hmm_basename}){
 									my $seq; 
 									my $motif = $Motif{$hmm_basename}; $motif =~ s/X/\[ARNDCQEGHILKMFPSTWYV\]/g; 									
-									my %Seq_gn = _store_seq("$input_protein_folder/total.faa"); # get the total genome sequences
+									my %Seq_gn = _store_seq("$input_protein_folder/total.faa"); # Get the total genome sequences
 									$seq = $Seq_gn{">$tmp[0]"};
 									if ($seq =~ /$motif/){
 										if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
@@ -372,7 +375,7 @@ while (<IN>){
 										$Hmmscan_result{$gn_id}{$hmm}++;
 									}
 									`rm $output/tmp.$hmm_basename.check.faa $output/tmp.$hmm_basename.check.hmmsearch_result.txt $output/tmp.$Motif_pair{$hmm_basename}.check.hmmsearch_result.txt`;									
-								}else{ # do not have motif check step
+								}else{ # Do not have motif check step
 									if (! exists $Hmmscan_hits{$gn_id}{$hmm}){
 										$Hmmscan_hits{$gn_id}{$hmm} = $tmp[0];
 									}else{
@@ -384,7 +387,7 @@ while (<IN>){
 						}else{
 							my ($hmm_basename) = $hmm =~ /^(.+?)\.hmm/; 
 							if (exists $Motif{$hmm_basename}){
-								my $seq; # the protein seq
+								my $seq; # The protein seq
 								my $motif = $Motif{$hmm_basename};  $motif =~ s/X/\[ARNDCQEGHILKMFPSTWYV\]/g; 		
 								my %Seq_gn = _store_seq("$input_protein_folder/total.faa"); # get the total genome sequences
 								$seq = $Seq_gn{">$tmp[0]"};
@@ -430,12 +433,12 @@ close IN;
 
 `rm $input_protein_folder/total.faa`;
 
-#print out hmm result each tsv file
+# Print out hmm result each tsv file
 `mkdir $output/METABOLIC_result_each_spreadsheet`;
 
-#print worksheet1
+# Print worksheet1
 open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet1.tsv";
-#print head
+# Print head
 my @Hmm_table_head_worksheet1 = ();
 for(my $i=0; $i<=9; $i++){
 	push @Hmm_table_head_worksheet1, $Hmm_table_head[($i+1)];
@@ -447,7 +450,7 @@ foreach my $gn_id (sort keys %Genome_id){
 }
 print OUT join("\t",@Hmm_table_head_worksheet1)."\n";
 
-#print body
+# Print body
 foreach my $line_no (sort keys %Hmm_table_temp){
 	my $row = $line_no;
 	my @Hmm_table_body_worksheet1 = ();
@@ -496,9 +499,9 @@ foreach my $line_no (sort keys %Hmm_table_temp){
 }
 close OUT;
 
-#print worksheet2
+# Print worksheet2
 open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet2.tsv";
-#print head
+# Print head
 my @Hmm_table_head_worksheet2 = ();
 for(my $i=0; $i<=2; $i++){
 	push @Hmm_table_head_worksheet2, $Hmm_table_head[($i+1)];
@@ -508,7 +511,7 @@ foreach my $gn_id (sort keys %Genome_id){
 }
 print OUT join("\t",@Hmm_table_head_worksheet2)."\n";
 
-#write the main body of hmm result to worksheet2
+# Write the main body of hmm result to worksheet2
 foreach my $line_no (sort keys %Hmm_table_temp_2){
 	my @Hmm_table_body_worksheet2 = ();
 	my @tmp_table_2 = split(/\t/,$Hmm_table_temp_2{$line_no});
@@ -573,7 +576,7 @@ foreach my $line_no (sort keys %Hmm_table_temp_2){
 }
 close OUT;
 
-#print out each hmm faa collection
+# Print out each hmm faa collection
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Generating each hmm faa collection...\n";
 
@@ -605,13 +608,13 @@ foreach my $hmm (sort keys %Hmm_id){
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Each hmm faa collection has been made\n";
 
-#Do the KEGG module calculating
+# Do the KEGG module calculating
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] The KEGG module result is calculating...\n";
 
-#store the KEGG module table
-my %Cat2module = ();  #module category => modules "\t"
-my $head_cat2module = (); #Central carbohydrate metabolism
+# Store the KEGG module table
+my %Cat2module = ();  # module category => modules "\t"
+my $head_cat2module = (); # Central carbohydrate metabolism
 open IN, "$ko_module_table ";
 while (<IN>){
 	chomp;
@@ -631,10 +634,10 @@ while (<IN>){
 }
 close IN;
 
-#Store the KEGG module step database
+# Store the KEGG module step database
 my %KEGG_module = (); # M00804+01 => 0: K13327 "\t" 1: dTDP-D-forosamine biosynthesis 2: ko id
-my %KEGG_module2step_number = (); #M00804 => 3
-my %KEGG_module2name = (); #M00804 => dTDP-D-forosamine biosynthesis
+my %KEGG_module2step_number = (); # M00804 => 3
+my %KEGG_module2name = (); # M00804 => dTDP-D-forosamine biosynthesis
 open IN, "$ko_module_step_db";
 while (<IN>){
 	chomp;
@@ -651,16 +654,16 @@ while (<IN>){
 }
 close IN;
 
-#the hmm to ko id hash
-my %Hmm2ko = _get_hmm_2_KO_hash(%Hmm_table_temp); # like: TIGR02694.hmm => K08355.hmm
+# The hmm to ko id hash
+my %Hmm2ko = _get_hmm_2_KO_hash(%Hmm_table_temp); # Like: TIGR02694.hmm => K08355.hmm
 
-#to see whether a module step exists for a given genome
+# To see whether a module step exists for a given genome
 my %Module_step_result = (); # M00804+01 => genome id => 1 / 0
 foreach my $m_step (sort keys %KEGG_module){
 	foreach my $gn_id (sort keys %Genome_id){
 		$Module_step_result{$m_step}{$gn_id} = 0; 
 		foreach my $hmm (sort keys %Hmm_id){
-			my $hmm_new = ""; # transfer all the hmm id to ko id
+			my $hmm_new = ""; # Transfer all the hmm id to ko id
 			if (exists $Hmm2ko{$hmm}){
 				$hmm_new = $Hmm2ko{$hmm}; 
 			}elsif (!exists $Hmm2ko{$hmm} and $hmm =~ /^K\d\d\d\d\d/){
@@ -698,10 +701,10 @@ foreach my $module (sort keys  %KEGG_module2step_number){
 	}	
 }
 
-#print worksheet3
-#write the head of hmm result to worksheet3
+# Print worksheet3
+# Write the head of hmm result to worksheet3
 open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet3.tsv";
-#print head
+# Print head
 my @Worksheet3_head = ();
 push @Worksheet3_head, "Module ID";
 push @Worksheet3_head, "Module";
@@ -712,12 +715,12 @@ foreach my $gn_id (sort keys %Genome_id){
 }
 print OUT join("\t",@Worksheet3_head)."\n";
 
-#print the worksheet3 result
+# Print the worksheet3 result
 foreach my $module (sort keys %Module_result){
 	my @Worksheet3_body = ();
 	push @Worksheet3_body, $module;
 	push @Worksheet3_body, $KEGG_module2name{$module};
-	my $cat_4_module = ""; # the category name for module
+	my $cat_4_module = ""; # The category name for module
 	foreach my $cat (sort keys %Cat2module){
 		if ($Cat2module{$cat} =~ /$module/){
 			$cat_4_module = $cat;
@@ -731,10 +734,10 @@ foreach my $module (sort keys %Module_result){
 }
 close OUT;
 
-#print worksheet4
-#write the head of hmm result to worksheet4
+# Print worksheet4
+# Write the head of hmm result to worksheet4
 open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet4.tsv";
-#print head
+# Print head
 my @Worksheet4_head = ();
 push @Worksheet4_head, "Module step";
 push @Worksheet4_head, "Module";
@@ -747,14 +750,14 @@ foreach my $gn_id (sort keys %Genome_id){
 }
 print OUT join("\t",@Worksheet4_head)."\n";
 
-#print the worksheet4 result
+# Print the worksheet4 result
 foreach my $module_step (sort keys %Module_step_result){
 	my @Worksheet4_body = ();
 	push @Worksheet4_body, $module_step;
 	my ($module) = $module_step =~ /^(M.+?)\+/;
 	push @Worksheet4_body, $KEGG_module2name{$module};
 	push @Worksheet4_body, $KEGG_module{$module_step}[2];
-	my $cat_4_module = ""; # the category name for module
+	my $cat_4_module = ""; # The category name for module
 	foreach my $cat (sort keys %Cat2module){
 		if ($Cat2module{$cat} =~ /$module/){
 			$cat_4_module = $cat;
@@ -776,17 +779,15 @@ close OUT;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] The KEGG identifier \(KO id\) result is calculating...\n";
 
-#print the KEGG KO hits
-#my %Hmmscan_result = (); # genome_name => hmm => numbers
-#my %Hmmscan_hits = (); # genome_name => hmm => hits
+# Print the KEGG KO hits
 my %Hmmscan_result_for_KO = ();  # new gn id => KO => numbers
 my %Hmmscan_hits_for_KO = (); # new gn id => KO => hits
-my %New_hmmid = (); #KOs (without extension) => 1
+my %New_hmmid = (); # KOs (without extension) => 1
 
 foreach my $genome_name (sort keys %Hmmscan_result){
 	my $gn = $genome_name; 
 	foreach my $hmm (sort keys %Hmm_id){
-		my $hmm_new = ""; # transfer all the hmm id to ko id
+		my $hmm_new = ""; # Transfer all the hmm id to ko id
 		if (exists $Hmm2ko{$hmm}){
 			$hmm_new = $Hmm2ko{$hmm}; 
 		}elsif (!exists $Hmm2ko{$hmm} and $hmm =~ /^K\d\d\d\d\d/){
@@ -827,7 +828,7 @@ $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime;
 print "\[$datestring\] The KEGG identifier \(KO id\) seaching result is finished\n";
 
 
-#run the dbCAN 
+# Run the dbCAN 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Searching CAZymes by dbCAN2...\n";
 
@@ -844,11 +845,11 @@ while (<IN>){
 close IN;
 close OUT;
 
-#parallel run dbCAN2
+# Parallel run dbCAN2
 _run_parallel("$output/tmp_run_dbCAN2.sh", $cpu_numbers); `rm $output/tmp_run_dbCAN2.sh`;
 
-my %dbCANout = (); #genome => hmmid => number
-my %dbCANout2 = (); #genome => hmmid => hits
+my %dbCANout = (); # genome => hmmid => number
+my %dbCANout2 = (); # genome => hmmid => hits
 my %Hmm_dbCAN2_id = (); # hmm => 1 
 open IN, "ls $output/intermediate_files/dbCAN2_Files/*.dbCAN2.out.dm.ps |";
 while (<IN>)
@@ -865,7 +866,6 @@ while (<IN>)
 			   $hmmid = $hmmid_p1.$num;
 			   $Hmm_dbCAN2_id{$hmmid} = 1; 
                my ($name) = $tmp[2];
-               #my @tmp2 = split (/\|/, $name); $Genome_name{$tmp2[0]} = 1;
                $dbCANout{$gn_id}{$hmmid}++;
                if (!exists $dbCANout2{$gn_id}{$hmmid}){
                        $dbCANout2{$gn_id}{$hmmid} = $name;
@@ -881,10 +881,10 @@ close IN;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] dbCAN2 searching is done\n";
 
-#print worksheet5
-#write the head of hmm result to worksheet5
+# Print worksheet5
+# Write the head of hmm result to worksheet5
 open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet5.tsv";
-#print head
+# Print head
 my @Worksheet5_head = ();
 push @Worksheet5_head, "CAZyme ID";
 
@@ -894,7 +894,7 @@ foreach my $gn_id (sort keys %Genome_id){
 }
 print OUT join("\t",@Worksheet5_head)."\n";
 
-#print the worksheet5 result
+# Print the worksheet5 result
 foreach my $hmmid (sort keys %Hmm_dbCAN2_id){
 	my @Worksheet5_body = ();
 	push @Worksheet5_body,$hmmid;	
@@ -914,7 +914,7 @@ foreach my $hmmid (sort keys %Hmm_dbCAN2_id){
 }
 close OUT;
 
-#run the MEROPS
+# Run the MEROPS
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Searching MEROPS peptidase...\n";
 
@@ -930,10 +930,10 @@ while (<IN>){
 close IN;
 close OUT;
 
-#parallel run the MEROPS
+# Parallel run the MEROPS
 _run_parallel("$output/tmp_run_MEROPS.sh", $cpu_numbers); `rm $output/tmp_run_MEROPS.sh`;
 
-my %MEROPS_map; #MER id => all line
+my %MEROPS_map; # MER id => all line
 open IN, "$METABOLIC_dir/MEROPS/pepunit.lib";
 while (<IN>){
 	chomp;
@@ -945,8 +945,8 @@ while (<IN>){
 }
 close IN;
 
-my %MEROPSout = (); #genome => hmmid => number
-my %MEROPSout2 = (); #genome => hmmid => hits
+my %MEROPSout = (); # genome => hmmid => number
+my %MEROPSout2 = (); # genome => hmmid => hits
 my %MEROPSid = (); # merops_id => 1 
 open IN, "ls $output/intermediate_files/MEROPS_Files/*.MEROPSout.m8 |";
 while (<IN>)
@@ -972,10 +972,10 @@ close IN;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] MEROPS peptidase searching is done\n";
 
-#print worksheet6
-#write the head of hmm result to worksheet6
+# Print worksheet6
+# Write the head of hmm result to worksheet6
 open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet6.tsv";
-#print head
+# Print head
 my @Worksheet6_head = ();
 push @Worksheet6_head, "MEROPS peptidase ID";
 
@@ -985,7 +985,7 @@ foreach my $gn_id (sort keys %Genome_id){
 }
 print OUT join("\t",@Worksheet6_head)."\n";
 
-#print the worksheet6 result
+# Print the worksheet6 result
 foreach my $hmmid (sort keys %MEROPSid){
 	my @Worksheet6_body = ();
 	push @Worksheet6_body, $hmmid;
@@ -1011,12 +1011,12 @@ close OUT;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] METABOLIC table has been generated\n";
 
-#Draw element cycling diagrams
+# Draw element cycling diagrams
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing element cycling diagrams...\n";
 
-#Store R pathways
-my %R_pathways = (); #step => hmms
+# Store R pathways
+my %R_pathways = (); # step => hmms
 my %R_hmm_ids = ();
 open IN, "$R_pathways";
 while (<IN>){
@@ -1046,10 +1046,10 @@ close IN;
 `mkdir $output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input`;
 `mkdir $output/METABOLIC_Figures`;
 
-#Get each R pathway input files
-my %Total_R_input = (); #pathway => gn => 1 or 0
+# Get each R pathway input files
+my %Total_R_input = (); # pathway => gn => 1 or 0
 foreach my $gn (sort keys %Hmmscan_result){
-	my %R_input = (); #for each input file
+	my %R_input = (); # for each input file
 	foreach my $key (sort keys %R_pathways){
 		$R_input{$key} = 0; $Total_R_input{$key}{$gn} = 0;
 		my $hmms = $R_pathways{$key};
@@ -1099,7 +1099,7 @@ foreach my $gn (sort keys %Hmmscan_result){
 }
 
 my %Genome_cov_constant = ();
-#The genome coverage: genome id => coverage value
+# The genome coverage: genome id => coverage value
 if ($omic_reads_parameters){
 	my %Genome_cov = ();
 	if ($sequencing_type eq 'illumina'){
@@ -1109,7 +1109,7 @@ if ($omic_reads_parameters){
 	}
 	%Genome_cov_constant = %Genome_cov;
 	
-	my %Total_R_input_2 = (); #pathway => genome numbers \t genome coverage percentage
+	my %Total_R_input_2 = (); # pathway => genome numbers \t genome coverage percentage
 	foreach my $pth (sort keys %Total_R_input){
 		my $gn_no = 0; my $gn_cov_percentage = 0;
 		foreach my $gn (sort keys %Hmmscan_result){
@@ -1139,12 +1139,12 @@ print "\[$datestring\] Drawing element cycling diagrams finished\n";
 my $endtime = "";
 if ($omic_reads_parameters){
 
-#Draw metabolic handoff diagrams
+# Draw metabolic handoff diagrams
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing metabolic handoff diagrams...\n";
 
-#Store metabolic handoff steps 1
-my %R_mh_01 = (); #step => KOs
+# Store metabolic handoff steps 1
+my %R_mh_01 = (); # step => KOs
 my %R_mh_01_hmm_ids = ();
 my %Letter2reaction = (); # D -> S2-=>S0
 open IN, "$R_mh_01";
@@ -1167,7 +1167,7 @@ while (<IN>){
 }
 close IN;
 
-my %R_mh_01_summary = (); #step => gn => 1 or 0
+my %R_mh_01_summary = (); # step => gn => 1 or 0
 foreach my $gn (sort keys %Hmmscan_result){
 	foreach my $key (sort keys %R_mh_01){
 		$R_mh_01_summary{$key}{$gn} = 0;
@@ -1200,11 +1200,11 @@ foreach my $gn (sort keys %Hmmscan_result){
 	}
 }
 
-#The genome coverage: genome id => coverage value
+# The genome coverage: genome id => coverage value
 if ($omic_reads_parameters){
 	my %Genome_cov = %Genome_cov_constant;
 	
-	my %Total_R_hm_input_1 = (); #step => genome numbers \t genome coverage percentage
+	my %Total_R_hm_input_1 = (); # step => genome numbers \t genome coverage percentage
 	foreach my $step (sort keys %R_mh_01){
 		my $gn_no = 0; my $gn_cov_percentage = 0;
 		foreach my $gn (sort keys %Hmmscan_result){
@@ -1225,7 +1225,7 @@ if ($omic_reads_parameters){
 	close OUT;
 }
 
-#Store the CAZy map
+# Store the CAZy map
 my %CAZy_map = (); #GH => enzymes
 open IN, "$CAZy_map_address";
 while (<IN>){
@@ -1237,10 +1237,9 @@ while (<IN>){
 }
 close IN;
 
-#Store metabolic handoff steps 2
-my %R_mh_02 = (); #step => enzymes
+# Store metabolic handoff steps 2
+my %R_mh_02 = (); # step => enzymes
 my %R_mh_02_enzyme_ids = ();
-#my %Letter2reaction = (); # D -> S2-=>S0
 open IN, "$R_mh_02";
 while (<IN>){
 	chomp;
@@ -1261,7 +1260,7 @@ while (<IN>){
 }
 close IN;
 
-my %R_mh_02_summary = (); #step => gn => 1 or 0
+my %R_mh_02_summary = (); # step => gn => 1 or 0
 foreach my $step (sort keys %R_mh_02){
 	foreach my $gn (sort keys %dbCANout){
 		$R_mh_02_summary{$step}{$gn} = 0;
@@ -1307,11 +1306,11 @@ foreach my $step (sort keys %R_mh_02){
 	}
 }
 
-#The genome coverage: genome id => coverage value
+# The genome coverage: genome id => coverage value
 if ($omic_reads_parameters){
 	my %Genome_cov = %Genome_cov_constant;
 	
-	my %Total_R_hm_input_2 = (); #step => genome numbers \t genome coverage percentage
+	my %Total_R_hm_input_2 = (); # step => genome numbers \t genome coverage percentage
 	foreach my $step (sort keys %R_mh_02){
 		my $gn_no = 0; my $gn_cov_percentage = 0;
 		foreach my $gn (sort keys %Hmmscan_result){
@@ -1344,7 +1343,7 @@ print "\[$datestring\] Drawing metabolic handoff diagrams finished\n";
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Drawing energy flow chart...\n";
 
-#store the bin category
+# Store the bin category
 system ("gtdbtk classify_wf --cpus $cpu_numbers -x fasta --genome_dir $input_genome_folder --out_dir $output/intermediate_files/gtdbtk_Genome_files 2> /dev/null");
 
 my %Bin2Cat = (); # bin => category, for instance, Acidimicrobiia_bacterium_UWMA-0264 => [0] Actinobacteriota (phylum) [1] XX (class) [2] XX (order) [3] XX (family) [4] XX (genus)
@@ -1361,31 +1360,31 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv
 				if(!$cat){
 					$cat = "NK_phylum";
 				}
-				$Bin2Cat{$tmp[0]}[0] = $cat;  # store bin to phylum info
+				$Bin2Cat{$tmp[0]}[0] = $cat;  # Store bin to phylum info
 				
 				($cat1) = $tmp[1] =~ /\;c\_\_(.*?)\;/;
 				if(!$cat1){
 					$cat1 = "NK_class";
 				}	
-				$Bin2Cat{$tmp[0]}[1] = $cat1; # store bin to class info	
+				$Bin2Cat{$tmp[0]}[1] = $cat1; # Store bin to class info	
 				
 				($cat2) = $tmp[1] =~ /\;o\_\_(.*?)\;/;
 				if(!$cat2){
 					$cat2 = "NK_order";
 				}	
-				$Bin2Cat{$tmp[0]}[2] = $cat2; # store bin to order info			
+				$Bin2Cat{$tmp[0]}[2] = $cat2; # Store bin to order info			
 
 				($cat3) = $tmp[1] =~ /\;f\_\_(.*?)\;/;
 				if(!$cat3){
 					$cat3 = "NK_family";
 				}	
-				$Bin2Cat{$tmp[0]}[3] = $cat3; # store bin to family info		
+				$Bin2Cat{$tmp[0]}[3] = $cat3; # Store bin to family info		
 
 				($cat4) = $tmp[1] =~ /\;g\_\_(.*?)\;/;
 				if(!$cat4){
 					$cat4 = "NK_genus";
 				}	
-				$Bin2Cat{$tmp[0]}[4] = $cat4; # store bin to genus info				
+				$Bin2Cat{$tmp[0]}[4] = $cat4; # Store bin to genus info				
 				
 			}else{
 				my $cat = ""; my $cat1 = ""; my $cat2 = ""; my $cat3 = ""; my $cat4 = "";
@@ -1393,31 +1392,31 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv
 				if(!$cat){
 					$cat = "NK_phylum";
 				}
-				$Bin2Cat{$tmp[0]}[0] = $cat;  # store bin to phylum info
+				$Bin2Cat{$tmp[0]}[0] = $cat;  # Store bin to phylum info
 				
 				($cat1) = $tmp[1] =~ /\;c\_\_(.*?)\;/;
 				if(!$cat1){
 					$cat1 = "NK_class";
 				}	
-				$Bin2Cat{$tmp[0]}[1] = $cat1; # store bin to class info	
+				$Bin2Cat{$tmp[0]}[1] = $cat1; # Store bin to class info	
 				
 				($cat2) = $tmp[1] =~ /\;o\_\_(.*?)\;/;
 				if(!$cat2){
 					$cat2 = "NK_order";
 				}	
-				$Bin2Cat{$tmp[0]}[2] = $cat2; # store bin to order info		
+				$Bin2Cat{$tmp[0]}[2] = $cat2; # Store bin to order info		
 
 				($cat3) = $tmp[1] =~ /\;f\_\_(.*?)\;/;
 				if(!$cat3){
 					$cat3 = "NK_family";
 				}	
-				$Bin2Cat{$tmp[0]}[3] = $cat3; # store bin to family info	
+				$Bin2Cat{$tmp[0]}[3] = $cat3; # Store bin to family info	
 
 				($cat4) = $tmp[1] =~ /\;g\_\_(.*?)\;/;
 				if(!$cat4){
 					$cat4 = "NK_genus";
 				}	
-				$Bin2Cat{$tmp[0]}[4] = $cat4; # store bin to genus info					
+				$Bin2Cat{$tmp[0]}[4] = $cat4; # Store bin to genus info					
 			}
 		}
 	}
@@ -1435,31 +1434,31 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar122.summary.tsv"
 			if(!$cat){
 				$cat = "NK_phylum";
 			}			
-			$Bin2Cat{$tmp[0]}[0] = $cat;  # store bin to phylum info
+			$Bin2Cat{$tmp[0]}[0] = $cat;  # Store bin to phylum info
 			
 			($cat1) = $tmp[1] =~ /\;c\_\_(.*?)\;/;
 			if(!$cat1){
 				$cat1 = "NK_class";
 			}	
-			$Bin2Cat{$tmp[0]}[1] = $cat1; # store bin to class info	
+			$Bin2Cat{$tmp[0]}[1] = $cat1; # Store bin to class info	
 			
 			($cat2) = $tmp[1] =~ /\;o\_\_(.*?)\;/;
 			if(!$cat2){
 				$cat2 = "NK_order";
 			}	
-			$Bin2Cat{$tmp[0]}[2] = $cat2; # store bin to order info			
+			$Bin2Cat{$tmp[0]}[2] = $cat2; # Store bin to order info			
 
 			($cat3) = $tmp[1] =~ /\;f\_\_(.*?)\;/;
 			if(!$cat3){
 				$cat3 = "NK_family";
 			}	
-			$Bin2Cat{$tmp[0]}[3] = $cat3; # store bin to family info	
+			$Bin2Cat{$tmp[0]}[3] = $cat3; # Store bin to family info	
 
 			($cat4) = $tmp[1] =~ /\;g\_\_(.*?)\;/;
 			if(!$cat4){
 				$cat4 = "NK_genus";
 			}	
-			$Bin2Cat{$tmp[0]}[4] = $cat4; # store bin to genus info				
+			$Bin2Cat{$tmp[0]}[4] = $cat4; # Store bin to genus info				
 		}
 	}
 	close IN;
@@ -1469,7 +1468,6 @@ my %Hash_gn_n_pth = ();
 my %Total_R_community_coverage = (); # genome\tpathway => category \t pathway \t genome coverage percentage
 if ($omic_reads_parameters){
 	my %Genome_cov = %Genome_cov_constant;
-	#%Total_R_input pathway => gn => 1 or 0
 	foreach my $pth (sort keys %Total_R_input){
 		my $gn_cov_percentage = 0;
 		foreach my $gn (sort keys %Hmmscan_result){
@@ -1483,7 +1481,7 @@ if ($omic_reads_parameters){
 	}		
 }
 
-my %Total_R_community_coverage2 = (); #$genome\tpath pair => cat \t  coverage percentage average
+my %Total_R_community_coverage2 = (); # $genome\tpath pair => cat \t  coverage percentage average
 foreach my $gn (sort keys %Hmmscan_result){
 	my %Path = (); # path => 1
 	foreach my $gn_n_pth (sort keys %Total_R_community_coverage){
@@ -1531,9 +1529,9 @@ print "\[$datestring\] Drawing energy flow chart finished\n";
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Calculating MW-score ...\n";
 
-###To calculate MW-score
-#Store MW_score_reaction_table
-my %MW_functions = (); #func => hmms
+### To calculate MW-score
+# Store MW_score_reaction_table
+my %MW_functions = (); # func => hmms
 my %MW_function_hmm_ids = ();
 open IN, "$MW_score_reaction_table"; # read the MW_score_reaction table
 while (<IN>){
@@ -1561,8 +1559,8 @@ while (<IN>){
 }
 close IN;
 
-#Get MW_score_reaction_table result
-my %MW_score_hash = (); #pathway => gn => 1 or 0
+# Get MW_score_reaction_table result
+my %MW_score_hash = (); # pathway => gn => 1 or 0
 foreach my $gn (sort keys %Hmmscan_result){
 	foreach my $key (sort keys %MW_functions){
 		$MW_score_hash{$key}{$gn} = 0;
@@ -1576,7 +1574,7 @@ foreach my $gn (sort keys %Hmmscan_result){
 		}elsif ($hmms =~ /\;/){
 			my ($hmms_1,$hmms_2) = $hmms =~ /^(.+?)\;(.+?)$/;
 			if ($hmms_2 !~ /NO/){
-				my $logic1 = 0; my $logic2 = 0;  #print "$gn\n";
+				my $logic1 = 0; my $logic2 = 0;  # print "$gn\n";
 				foreach my $hmm_id (sort keys %MW_function_hmm_ids){
 					if ($hmms_1 =~ /$hmm_id/ and $Hmmscan_result{$gn}{$hmm_id}){
 						$logic1 = 1;	
@@ -1625,7 +1623,7 @@ if ($omic_reads_parameters){
 	}		
 }
 
-my %MW_score_community_coverage2 = (); #$genome\tpath pair => cat \t  coverage percentage average
+my %MW_score_community_coverage2 = (); # $genome\tpath pair => cat \t  coverage percentage average
 foreach my $gn (sort keys %Hmmscan_result){
 	my %Path = (); # path => 1
 	foreach my $gn_n_pth (sort keys %MW_score_community_coverage){
@@ -1658,7 +1656,7 @@ foreach my $gn_n_pair (sort keys %MW_score_community_coverage2){
 }
 close OUT;
 
-#read the "MW-score_result_table_input.txt" and make the "MW-score_result.txt", which is the final result of MW-score
+# Read the "MW-score_result_table_input.txt" and make the "MW-score_result.txt", which is the final result of MW-score
 my %Input = (); # whole line => [0]  Acidimicrobiia_bacterium_UWMA-0264	[1]  C-S-01:Organic carbon oxidation	[2] C-S-04:Acetate oxidation	[3] Actinobacteriota	[4] 0.038328883
 open IN, "$output/MW-score_result/MW-score_result_table_input.txt";
 while (<IN>){
@@ -1676,7 +1674,7 @@ close IN;
 
 my %Output1 = (); # func. => category => summed coverage
 my %Output2 = (); # func. =>  summed coverage
-my %Cat_2 =(); # this hash of Cat_2 is only used in MW-score calculating
+my %Cat_2 =(); # This hash of Cat_2 is only used in MW-score calculating
 foreach my $key (sort keys %Input){
 	$Output1{$Input{$key}[1]}{$Input{$key}[3]} += $Input{$key}[4];
 	$Output1{$Input{$key}[2]}{$Input{$key}[3]} += $Input{$key}[4];
@@ -1685,7 +1683,7 @@ foreach my $key (sort keys %Input){
 	$Output2{$Input{$key}[2]} += $Input{$key}[4];
 }
 
-my %Output3 = (); # the contribution percentage for each function
+my %Output3 = (); # The contribution percentage for each function
 my $sum_cov_for_output2 = 0;
 foreach my $func (sort keys %Output2){
 	$sum_cov_for_output2 += $Output2{$func};
@@ -1697,7 +1695,7 @@ foreach my $func (sort keys %Output2){
 }
 
 my %Output4 = (); # func. => category => percentage  
-#The func. and each category contribution percentage table
+# The func. and each category contribution percentage table
 foreach my $func (sort keys %Output1){
 	foreach my $cat (sort keys %Cat_2){
 		my $var = 0;
@@ -1740,9 +1738,9 @@ my $duration = time - $starttime_raw;
 $duration = parse_duration($duration);
 print "METABOLIC-C was done, the total running time: $duration (hh:mm:ss)\n";
 
-#print information about this run:
+# Print information about this run:
 open OUT, ">$output/METABOLIC_run.log";
-#print information about this run:
+# Print information about this run:
 print OUT "$version
 Run Start: $starttime
 Run End: $endtime
@@ -1759,14 +1757,17 @@ Taxonomic level to calculate MW-score table: $taxonomy
 Output directory: $output\n";
 close OUT;
 
+# Save the stdout and stderr
+close STDOUT;
+close STDERR;
 
-##subroutines
+##Subroutines
 sub parse_duration {
     use integer;
     sprintf("%02d:%02d:%02d", $_[0]/3600, $_[0]/60%60, $_[0]%60);
 }
 
-#input ko_list, return a result hash of threshold and score_type
+# Input ko_list, return a result hash of threshold and score_type
 sub _get_kofam_db_KO_threshold{
 	my $list = $_[0]; 
 	my $prok_list = "";
@@ -1808,7 +1809,7 @@ sub _get_kofam_db_KO_threshold{
 	return (%result);
 }
 
-#input the hmm_table_temp hash, return a hmm to ko hash (like: TIGR02694.hmm => K08355.hmm)
+# Input the hmm_table_temp hash, return a hmm to ko hash (like: TIGR02694.hmm => K08355.hmm)
 sub _get_hmm_2_KO_hash{
 	my %hash = @_;
 	my %result = ();
@@ -1836,7 +1837,7 @@ sub _get_hmm_2_KO_hash{
 	return %result2;
 }
 
-#input faa file, and output the seq hash
+# Input faa file, and output the seq hash
 sub _get_faa_seq{
 	my $file = $_[0]; 
 	my ($file_name) = $file =~ /^.+\/(.+?)\.faa/;
@@ -1864,8 +1865,8 @@ sub _get_faa_seq{
 
 sub _get_Genome_coverge{
 	my $reads = $_[0];
-	my $folder = $_[1]; # the input_genome_folder
-	#cat all the genes
+	my $folder = $_[1]; # The input_genome_folder
+	#Cat all the genes
 	my %Seq = (); my $head = "";
 	open __IN, "ls $folder/*.gene | ";
 	while (<__IN>){
@@ -1945,7 +1946,7 @@ sub _get_Genome_coverge{
 		$average_read_seq_number = $average_read_seq_number / (scalar @Read_seq_numbers) ;
 	}
 	
-	#parallel run calculate coverage
+	# Parallel run calculate coverage
 	_run_parallel("$output/tmp_calculate_depth.sh", $i); `rm $output/tmp_calculate_depth.sh`;
 	
 	system ("coverm contig --methods metabat --bam-files  $output/All_gene_collections_mapped.*.sorted.bam > $output/All_gene_collections_mapped.depth.txt 2> /dev/null");
@@ -2014,7 +2015,7 @@ sub _get_Genome_coverge{
 		close __OUT;
 	}
 	
-	my %Bin2Cov = (); #bin => cov value
+	my %Bin2Cov = (); # bin => cov value
 	my $total_cov = 0;
 	foreach my $i (@h_head_num){
         foreach my $bin (sort keys %Bin){
@@ -2033,14 +2034,13 @@ sub _get_Genome_coverge{
 		my $percentage = $Bin2Cov{$bin} / $total_cov;
 		$Bin2cov_percentage{$bin} = $percentage;
 	}
-	#system ("rm $output/All_gene_collections*");
 	return %Bin2cov_percentage;
 }
 
 sub _get_Genome_coverge_for_long_reads{
 	my $reads = $_[0];
-	my $folder = $_[1]; # the input_genome_folder
-	#cat all the genes
+	my $folder = $_[1]; # The input_genome_folder
+	# Cat all the genes
 	my %Seq = (); my $head = "";
 	open __IN, "ls $folder/*.gene | ";
 	while (<__IN>){
@@ -2127,7 +2127,7 @@ sub _get_Genome_coverge_for_long_reads{
 		$average_read_seq_number = $average_read_seq_number / (scalar @Read_seq_numbers) ;
 	}
 	
-	#parallel run calculate coverage
+	# Parallel run calculate coverage
 	_run_parallel("$output/tmp_calculate_depth.sh", $i); `rm $output/tmp_calculate_depth.sh`;
 	
 	system ("coverm contig --methods metabat --bam-files  $output/All_gene_collections_mapped.*.sorted.bam > $output/All_gene_collections_mapped.depth.txt 2> /dev/null");
@@ -2179,7 +2179,7 @@ sub _get_Genome_coverge_for_long_reads{
 			}else{
 					my @tmp = split (/\t/);
 					my ($bin) = $tmp[0] =~ /^(.+?)\~\~/;
-					my $geneLength = $tmp[1] / 1000; # gene length in kb
+					my $geneLength = $tmp[1] / 1000; # Gene length in kb
 					$Bin{$bin} = 1;
 					foreach my $i (@h_head_num){
                         my $transcript_coverage = $tmp[$i] * (1000000  / $average_read_seq_number) / $geneLength;
@@ -2196,7 +2196,7 @@ sub _get_Genome_coverge_for_long_reads{
 		close __OUT;
 	}
 	
-	my %Bin2Cov = (); #bin => cov value
+	my %Bin2Cov = (); # bin => cov value
 	my $total_cov = 0;
 	foreach my $i (@h_head_num){
         foreach my $bin (sort keys %Bin){
@@ -2215,7 +2215,6 @@ sub _get_Genome_coverge_for_long_reads{
 		my $percentage = $Bin2Cov{$bin} / $total_cov;
 		$Bin2cov_percentage{$bin} = $percentage;
 	}
-	#system ("rm $output/All_gene_collections*");
 	return %Bin2cov_percentage;
 }
 
