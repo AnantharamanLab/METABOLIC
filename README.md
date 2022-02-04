@@ -14,7 +14,7 @@ This software enables the prediction of metabolic and biogeochemical functional 
 |METABOLIC-C.pl|Allows for classification of the metabolic capabilities of input genomes, <br />calculation of genome coverage, creation of biogeochemical cycling diagrams,<br /> and visualization of community metabolic interactions and contribution to biogeochemical processes by each microbial group. |
 <br>
 
-Slides of introducing METABOLIC were provided here: ()
+Slides of introducing METABOLIC were provided here: (https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC_C-DEBI_slides.pdf) (A C-DEBI series meeting talk)
 
 If you are using this program, please consider citing our preprint, available at [BioRxiv](https://www.biorxiv.org/content/10.1101/761643v2):
 ```
