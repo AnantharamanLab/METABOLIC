@@ -16,7 +16,7 @@ This software enables the prediction of metabolic and biogeochemical functional 
 
 Slides of introducing METABOLIC (for a C-DEBI series meeting presentation) were provided here: (https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC_C-DEBI_slides.pdf) 
 
-(The carbon fixation pathway automated annotation gets updated - in Appendix)
+***(The carbon fixation pathway automated annotation gets updated - in Appendix)***
 
 
 
