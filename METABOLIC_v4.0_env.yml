@@ -1,4 +1,4 @@
-name: /slowdata/yml_environments/METABOLIC_v4.0
+name: METABOLIC_v4.0
 channels:
   - bioconda
   - conda-forge
@@ -489,4 +489,4 @@ dependencies:
   - xz=5.2.5=h516909a_1
   - zlib=1.2.11=h516909a_1010
   - zstd=1.4.5=h6597ccf_2
-prefix: /slowdata/yml_environments/METABOLIC_v4.0
+prefix: METABOLIC_v4.0
