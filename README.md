@@ -16,16 +16,14 @@ This software enables the prediction of metabolic and biogeochemical functional 
 
 Slides of introducing METABOLIC (for a C-DEBI series meeting presentation) were provided here: (https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC_C-DEBI_slides.pdf) 
 
-***(The carbon fixation pathway automated annotation gets updated - in Appendix)***
+(The carbon fixation pathway automated annotation gets updated - in Appendix)
 
+<br>
+<br>
 
-
-
-
-If you are using this program, please consider citing our preprint, available at [BioRxiv](https://www.biorxiv.org/content/10.1101/761643v2):
+If you are using this program, please consider citing our paper, available at [Microbiome](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-021-01213-8):
 ```
-Zhichao Zhou, Patricia Q. Tran, Adam M. Breister, Yang Liu, Kristopher Kieft, Elise S. Cowley, Ulas Karaoz, Karthik Anantharaman."METABOLIC: High-throughput profiling of microbial genomes for functional traits, biogeochemistry, and community-scale metabolic networks"
-bioRxiv 761643; doi: https://doi.org/10.1101/761643
+Zhou, Z., Tran, P.Q., Breister, A.M. et al. METABOLIC: high-throughput profiling of microbial genomes for functional traits, metabolism, biogeochemistry, and community-scale functional networks. Microbiome 10, 33 (2022). https://doi.org/10.1186/s40168-021-01213-8
 ```
 <br>
 <br>
