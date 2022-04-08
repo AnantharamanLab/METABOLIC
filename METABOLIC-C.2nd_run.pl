@@ -1351,7 +1351,7 @@ sub _get_Genome_coverge{
 	}
 	close __OUT;
 	
-	system ("bowtie2-build $output/All_gene_collections.gene $output/All_gene_collections.gene.scaffold --quiet");
+	system ("bowtie2-build --quiet $output/All_gene_collections.gene $output/All_gene_collections.gene.scaffold");
 	my %Reads = (); my $i = 1;
 	open __IN, "$reads";
 	while (<__IN>){
