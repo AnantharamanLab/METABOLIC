@@ -1,8 +1,15 @@
+# Author ---------------------------
 # Patricia Tran
 # August 6, 2019
 
-# METABOLIC DIAGRAM GENERATOR:
-# usage from Command line
+# Purpose ---------------------------
+# This script create a N,C, S and other cycle. At the genome level, presence (red) and absence (black) arrows are used to show the presence of pathways. The pathway cutoff is 0.75, but can be changed when running METABOLIC.
+# The community level script creates a similar figure but summarizes the coverage data as a percentage of the community, all arrows are black, and rather, we should look at the percentages instead to determine the presence/potential for that pathway.
+# We recommend manually looking through "METABOLIC_result.xlsx" to double check the genes and annotations.
+
+# How to use from the command line ---------------------------
+# Open R and type:
+# Rscript draw_biogeochemical_cycles.R R_input [name of output folder] [TRUE or FALSE]
 # Rscript draw_biogeochemical_cycles.R R_input Output TRUE
 # or 
 # Rscript draw_biogeochemical_cycles.R R_input Output FALSE
@@ -13,7 +20,7 @@
 # In a folder you have a sample of 99 files: 99 are genome names, and 1 is a summary file named Total.R_input.txt
 # Loop through the file names in the folder and use as input in the drawNcycle, drawScycle and drawCcycle below.
 
-# Receive arguments from command line:
+# Receive arguments from command line ---------------------------
 userprefs <- commandArgs(trailingOnly = TRUE)
 R_input <- userprefs[1] # Path to folder with all the summary files R_input.txt
 plots.folder.path <- userprefs[2] # Name of new directory to make to store things
@@ -25,11 +32,12 @@ if (length(userprefs) > 3){
   mirror.location <- "https://cran.mtu.edu"
 }
 
+# Create path to folder when plots will be stored ---------------------------
 biogeochemcycles.plots.folder <- paste(plots.folder.path, "draw_biogeochem_cycles", sep = "/")
 
 library.path <- .libPaths() 
 
-# create directories to hold plots
+# Create directory to hold plots ---------------------------
 make.plot.directory <- function(FolderPath){
   if (!dir.exists(FolderPath)){
     dir.create(FolderPath)
@@ -38,8 +46,8 @@ make.plot.directory <- function(FolderPath){
 }
 
 
-### NITROGEN CYCLE ### 
-# Nitrogen
+# Nitrogen Cycle Figure ---------------------------
+## Nitrogen cycle - Individual ---------------------------
 drawNcycle.single <- function(R_input, OutputFolder){
   input <- R_input
   plot.folder <- OutputFolder
@@ -96,8 +104,7 @@ drawNcycle.single <- function(R_input, OutputFolder){
   cat("made plot: ", plot.name, "\n")
 }
 
-
-# Nitrogen Cycle Summary Figure: no coloured arrows, but have the Nb. of Genome annd the coverage next to the arrows:
+## Nitrogen Cycle Summary Figure: no coloured arrows, but have the Nb. of Genome annd the coverage next to the arrows: ---------------------------
 drawNcycle.total <- function(R_input, OutputFolder){
   input.total <- R_input
   plot.folder <- OutputFolder
@@ -177,7 +184,7 @@ drawNcycle.total <- function(R_input, OutputFolder){
 }
 
 
-##Sulfur cycle##
+## Sulfur Cycle - Individual ---------------------------
 drawScycle.single <- function(R_input, OutputFolder){
   input <- R_input
   plot.folder <- OutputFolder
@@ -239,6 +246,7 @@ drawScycle.single <- function(R_input, OutputFolder){
 }
 
 
+## Sulfur Cycle - Total ---------------------------
 drawScycle.total <- function(R_input, OutputFolder){
   input.total <- R_input
   plot.folder <- OutputFolder
@@ -320,7 +328,8 @@ drawScycle.total <- function(R_input, OutputFolder){
   
 }
 
-# Carbon cycle
+
+## Carbon Cycle - Individual ---------------------------
 drawCcycle.single <- function(R_input, OutputFolder){
   
   input <- R_input
@@ -372,6 +381,8 @@ drawCcycle.single <- function(R_input, OutputFolder){
   cat("made plot: ", plot.name, "\n")
 }
 
+
+## Carbon cycle - Total ---------------------------
 drawCcycle.total <- function(R_input, OutputFolder){
   
   input.total <- R_input
@@ -442,7 +453,8 @@ drawCcycle.total <- function(R_input, OutputFolder){
   cat("made plot: ", plot.name, "\n")
 }
 
-# Other cycles
+
+## Other cycles - Individual ---------------------------
 drawOthercycles.single<- function(R_input, OutputFolder){
   input <- R_input
   plot.folder <- OutputFolder
@@ -482,6 +494,8 @@ drawOthercycles.single<- function(R_input, OutputFolder){
 
 }  
 
+
+## Other cycles - Total ---------------------------
 drawOthercycles.total<- function(R_input, OutputFolder){
   input.total <- R_input
   plot.folder <- OutputFolder
@@ -540,7 +554,8 @@ drawOthercycles.total<- function(R_input, OutputFolder){
 
 
 
-##### Use Functions
+
+## Depending on whether TRUE or FALSE is selected, choose which funcctions to run ---------------------------
 
 make.plot.directory(FolderPath = plots.folder.path)
 
@@ -549,13 +564,11 @@ dir.create(biogeochemcycles.plots.folder)
 
 files <- list.files(path=R_input, pattern="*.txt", full.names=TRUE, recursive=FALSE)
 file.total <- list.files(path=R_input, pattern="Total.R_input.txt", full.names=TRUE)
+
 # Remove the total file from the "files" list of individual genome:
 files <- setdiff(files, file.total)
 
-#print(files[1])
-
 # files are path to files not the actual files!
-
 print(paste("There are:",length(files), "genomes to process", sep=" "))
 
 for (i in 1:length(files)){
@@ -577,7 +590,8 @@ for (i in 1:length(files)){
   print("Next genome")
 }
 
-# Generating summary figures:
+
+## Generating the summary figures (total community) ---------------------------
 
 if (summary==TRUE){
   print(paste("There is:",length(file.total), "total summary file", sep=" "))
@@ -602,13 +616,4 @@ if (summary==TRUE){
 
 
 
-print("Done! :-)")
-
-# Combine four summary figures into 1:
-#install.packages("pdftools")
-#library(pdftools)
-
-#setwd(biogeochemcycles.plots.folder)
-#pdf_combine(c("draw_other_cycle_total.pdf", "draw_carbon_cycle_total.pdf","draw_sulfur_cycle_total.pdf","draw_nitrogen_cycle_total.pdf"), output = "joined.pdf")
-
-#print("Combined all summary figures into 1 PDF :",biogeochemcycles.plots.folder,"/joined.pdf",sep="")
+print("Done! The Biogeochemical Cycle Plots have been created :-)")
