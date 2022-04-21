@@ -559,13 +559,8 @@ drawOthercycles.total<- function(R_input, OutputFolder){
 
 
 ##### Use Functions
-=======
-
-
-
 
 ## Depending on whether TRUE or FALSE is selected, choose which funcctions to run ---------------------------
->>>>>>> 6d5c1a1aa6ac82caede4df892667893a605c0429
 
 make.plot.directory(FolderPath = plots.folder.path)
 
