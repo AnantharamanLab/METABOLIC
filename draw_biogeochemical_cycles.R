@@ -487,9 +487,9 @@ drawOthercycles.single<- function(R_input, OutputFolder){
   
   textplain(mid = c(0.15, 0.75), lab = "Step1: Iron reduction")
   textplain(mid = c(0.43, 0.75), lab ="Step2: Iron oxidation")
-  textplain(mid = c(0.12, 0.25), lab ="Step2: Arsenate reduction")
-  textplain(mid = c(0.4, 0.25), lab = "Step3: Arsenite oxidation")
-  textplain(mid = c(0.88, 0.25), lab = "Step4: Selenate reduction")
+  textplain(mid = c(0.12, 0.25), lab ="Step3: Arsenate reduction")
+  textplain(mid = c(0.4, 0.25), lab = "Step4: Arsenite oxidation")
+  textplain(mid = c(0.88, 0.25), lab = "Step5: Selenate reduction")
   dev.off()
   cat("made plot: ", plot.name, "\n")
 
@@ -538,17 +538,17 @@ drawOthercycles.total<- function(R_input, OutputFolder){
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[20],"%")))
 					
   textplain(mid = c(0.1, 0.25), 
-            lab = c("Step2: Arsenate reduction",
+            lab = c("Step3: Arsenate reduction",
                     paste("Genomes:",input.total$Nb.Genome[21]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[21],"%")))
   
   textplain(mid = c(0.4, 0.25), 
-            lab = c("Step3: Arsenite oxidation",
+            lab = c("Step4: Arsenite oxidation",
                     paste("Genomes:",input.total$Nb.Genome[22]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[22],"%")))
   
   textplain(mid = c(0.90, 0.25), 
-            lab = c("Step4: Selenate reduction",
+            lab = c("Step5: Selenate reduction",
                     paste("Genomes:",input.total$Nb.Genome[23]),
                     paste("Coverage:",input.total$Genome.Coverage.Percentages.Round[23],"%")))
   
