@@ -558,7 +558,6 @@ drawOthercycles.total<- function(R_input, OutputFolder){
 }  
 
 
-<<<<<<< HEAD
 ##### Use Functions
 =======
 
