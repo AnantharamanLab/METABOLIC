@@ -1237,8 +1237,13 @@ sub _get_1_from_input_faa{
 	while (<IN_>){
 		chomp;
 		if (/>/){
-			($head) = $_ =~ /^(>.+?)\s/;
-			$Seq{$head} = "";
+			if (/\s/){
+				($head) = $_ =~ /^(>.+?)\s/;
+				$Seq{$head} = "";
+			}else{
+				($head) = $_ =~ /^(>.+?)$/;
+				$Seq{$head} = "";
+			}
 		}else{
 			$Seq{$head} .= $_;
 		}
