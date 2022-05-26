@@ -262,13 +262,19 @@ if ($input_genome_folder){
 
 my %Genome_id = (); # genome id => 1
 my %Seqid2Genomeid = (); # seq id => genome id 
-my %Total_faa_seq = (); # Store the total faa file into a hash{$line_no}
+my %Total_faa_seq = (); # Store the total faa file into a hash
+my %Total_gene_seq = (); # Store the total gene file into a hash
 open IN,"ls $input_protein_folder/*.faa |";
 while (<IN>){
 	chomp;
 	my $file = $_;
+	my ($file_name) = $file =~ /^(.+?)\.faa$/;
+	
 	# Store faa file into a hash
 	%Total_faa_seq = (%Total_faa_seq, _get_faa_seq($file));
+	if ($input_genome_folder){
+		%Total_gene_seq = (%Total_gene_seq, _get_gene_seq("$file_name\.gene"));
+	}	
 	
 	my ($gn_id) = $file =~ /^$input_protein_folder\/(.+?)\.faa/; 
 	$Genome_id{$gn_id} = 1; 
@@ -584,6 +590,7 @@ print "\[$datestring\] Generating each hmm faa collection...\n";
 
 foreach my $hmm (sort keys %Hmm_id){
 	my %Hmm_faa_seq = (); #Store the faa seqs in a hmm
+	my %Hmm_gene_seq = (); # Store the gene seqs in a hmm	
 	foreach my $gn_id (sort keys %Hmmscan_hits){
 		if ($Hmmscan_hits{$gn_id}{$hmm}){			
 			my @Hits = split (/\,/,$Hmmscan_hits{$gn_id}{$hmm});
@@ -592,6 +599,9 @@ foreach my $hmm (sort keys %Hmm_id){
 				if (exists $Total_faa_seq{$seq_head}){
 					$Hmm_faa_seq{$seq_head} = $Total_faa_seq{$seq_head}; #print "$Total_faa_seq{$seq_head}\n";
 				}
+				if (exists $Total_gene_seq{$seq_head}){
+					$Hmm_gene_seq{$seq_head} = $Total_gene_seq{$seq_head}; #print "$Total_faa_seq{$seq_head}\n";
+				}				
 			}
 
 		}
@@ -603,6 +613,14 @@ foreach my $hmm (sort keys %Hmm_id){
 		}
 		close OUT;
 	}
+	
+	if (%Hmm_gene_seq){
+		open OUT, ">$output/Each_HMM_Amino_Acid_Sequence/$hmm.collection.gene";
+		foreach my $key (sort keys %Hmm_gene_seq){
+			print OUT "$key\n$Hmm_gene_seq{$key}\n";
+		}
+		close OUT;
+	}	
 }
 
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
@@ -1851,6 +1869,31 @@ sub _get_faa_seq{
 				my ($head_old) = $_ =~ /^>(.+?)$/; 
 				$head = ">".$file_name."~~".$head_old;
 			}	
+			$result{$head} = "";
+		}else{
+			$result{$head} .= $_; 
+			$result{$head} =~ s/\*$//g;
+		}
+	}
+	close _IN;
+	return %result;
+}
+
+sub _get_gene_seq{
+	my $file = $_[0]; 
+	my ($file_name) = $file =~ /^.+\/(.+?)\.gene/;
+	my %result = (); my $head = "";
+	open _IN, "$file";
+	while(<_IN>){
+		chomp;
+		if (/>/){
+			if (/\s/){
+				my ($head_old) = $_ =~ /^>(.+?)\s/; 
+				$head = ">".$file_name."~~".$head_old;
+			}else{
+				my ($head_old) = $_ =~ /^>(.+?)$/; 
+				$head = ">".$file_name."~~".$head_old;
+			}
 			$result{$head} = "";
 		}else{
 			$result{$head} .= $_; 
