@@ -177,10 +177,10 @@ if ($test eq "true"){
 
 # To make sure the input taxonomy is right
 my %Tax2code = (); # Store the corresponding map of user-defined taxonomy to taxonomy level code
-%Tax2code = ('phylum'=> '0', 'class'=> '1', 'order'=> '2', 'family'=> '3', 'genus'=> '4');
+%Tax2code = ('phylum'=> '0', 'class'=> '1', 'order'=> '2', 'family'=> '3', 'genus'=> '4', 'species'=> '5');
 
 if (!exists $Tax2code{$taxonomy}){
-	die "Your input taxonomy is wrong, please check your spelling. It should be one of these taxonomies: phylum, class, order, family, genus\n";
+	die "Your input taxonomy is wrong, please check your spelling. It should be one of these taxonomies: phylum, class, order, family, genus, and species\n";
 }
 
 # To make sure the input sequencing type should one of the five following values
@@ -1364,7 +1364,7 @@ print "\[$datestring\] Drawing energy flow chart...\n";
 # Store the bin category
 system ("gtdbtk classify_wf --cpus $cpu_numbers -x fasta --genome_dir $input_genome_folder --out_dir $output/intermediate_files/gtdbtk_Genome_files 2> /dev/null");
 
-my %Bin2Cat = (); # bin => category, for instance, Acidimicrobiia_bacterium_UWMA-0264 => [0] Actinobacteriota (phylum) [1] XX (class) [2] XX (order) [3] XX (family) [4] XX (genus)
+my %Bin2Cat = (); # bin => category, for instance, Acidimicrobiia_bacterium_UWMA-0264 => [0] Actinobacteriota (phylum) [1] XX (class) [2] XX (order) [3] XX (family) [4] XX (genus) [5] XX (species)
 
 if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv"){
 	open IN, "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv";
@@ -1373,7 +1373,7 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv
 		if (!/^user_genome/){
 			my @tmp = split (/\t/);
 			if ($tmp[1] =~ /p\_\_Proteobacteria/){
-				my $cat = ""; my $cat1 = ""; my $cat2 = ""; my $cat3 = ""; my $cat4 = "";
+				my $cat = ""; my $cat1 = ""; my $cat2 = ""; my $cat3 = ""; my $cat4 = ""; my $cat5 = "";
 				($cat) = $tmp[1] =~ /\;c\_\_(.*?)\;/;
 				if(!$cat){
 					$cat = "NK_phylum";
@@ -1402,10 +1402,16 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv
 				if(!$cat4){
 					$cat4 = "NK_genus";
 				}	
-				$Bin2Cat{$tmp[0]}[4] = $cat4; # Store bin to genus info				
+				$Bin2Cat{$tmp[0]}[4] = $cat4; # Store bin to genus info		
+
+				($cat5) = $tmp[1] =~ /\;s\_\_(.*?)$/;
+				if(!$cat5){
+					$cat5 = "NK_species";
+				}	
+				$Bin2Cat{$tmp[0]}[5] = $cat5; # Store bin to species info						
 				
 			}else{
-				my $cat = ""; my $cat1 = ""; my $cat2 = ""; my $cat3 = ""; my $cat4 = "";
+				my $cat = ""; my $cat1 = ""; my $cat2 = ""; my $cat3 = ""; my $cat4 = ""; my $cat5 = "";
 				($cat) = $tmp[1] =~ /\;p\_\_(.*?)\;/;
 				if(!$cat){
 					$cat = "NK_phylum";
@@ -1434,7 +1440,13 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv
 				if(!$cat4){
 					$cat4 = "NK_genus";
 				}	
-				$Bin2Cat{$tmp[0]}[4] = $cat4; # Store bin to genus info					
+				$Bin2Cat{$tmp[0]}[4] = $cat4; # Store bin to genus info		
+
+				($cat5) = $tmp[1] =~ /\;s\_\_(.*?)$/;
+				if(!$cat5){
+					$cat5 = "NK_species";
+				}	
+				$Bin2Cat{$tmp[0]}[5] = $cat5; # Store bin to species info				
 			}
 		}
 	}
@@ -1447,7 +1459,7 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar122.summary.tsv"
 		chomp;
 		if (!/^user_genome/){
 			my @tmp = split (/\t/);
-			my $cat = ""; my $cat1 = ""; my $cat2 = ""; my $cat3 = ""; my $cat4 = "";
+			my $cat = ""; my $cat1 = ""; my $cat2 = ""; my $cat3 = ""; my $cat4 = ""; my $cat5 = "";
 			($cat) = $tmp[1] =~ /\;p\_\_(.*?)\;/;
 			if(!$cat){
 				$cat = "NK_phylum";
@@ -1476,7 +1488,13 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar122.summary.tsv"
 			if(!$cat4){
 				$cat4 = "NK_genus";
 			}	
-			$Bin2Cat{$tmp[0]}[4] = $cat4; # Store bin to genus info				
+			$Bin2Cat{$tmp[0]}[4] = $cat4; # Store bin to genus info		
+
+			($cat5) = $tmp[1] =~ /\;s\_\_(.*?)$/;
+			if(!$cat5){
+				$cat5 = "NK_species";
+			}	
+			$Bin2Cat{$tmp[0]}[5] = $cat5; # Store bin to species info				
 		}
 	}
 	close IN;
