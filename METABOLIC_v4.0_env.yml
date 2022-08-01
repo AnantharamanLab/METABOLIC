@@ -1,5 +1,6 @@
-name: METABOLIC_v4.0
+name: /slowdata/yml_environments/METABOLIC_v4.0
 channels:
+  - ursky
   - bioconda
   - conda-forge
   - defaults
@@ -39,7 +40,6 @@ dependencies:
   - fribidi=1.0.10=h36c2ea0_0
   - gcc_impl_linux-64=7.5.0=hd9e1a51_17
   - gcc_linux-64=7.5.0=he2a3fca_29
-  - gdown=3.12.2=pyh9f0ad1d_0
   - gettext=0.19.8.1=hf34092f_1004
   - gfortran_impl_linux-64=7.5.0=hfca37b7_17
   - gfortran_linux-64=7.5.0=ha081f1e_29
@@ -489,4 +489,8 @@ dependencies:
   - xz=5.2.5=h516909a_1
   - zlib=1.2.11=h516909a_1010
   - zstd=1.4.5=h6597ccf_2
-prefix: METABOLIC_v4.0
+  - pip:
+    - beautifulsoup4==4.11.1
+    - gdown==4.5.1
+    - soupsieve==2.3.2.post1
+prefix: /slowdata/yml_environments/METABOLIC_v4.0
