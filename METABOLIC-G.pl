@@ -250,8 +250,13 @@ while (<IN>){
 	open IN_, "$file";
 	while (<IN_>){
 		if (/>/){
-			my ($seq) = $_ =~ /^>(.+?)\s/;
-			$Seqid2Genomeid{$seq} = $gn_id;
+			if (/\s/){
+				my ($seq) = $_ =~ /^>(.+?)\s/;
+				$Seqid2Genomeid{$seq} = $gn_id;
+			}else{
+				my ($seq) = $_ =~ /^>(.+?)$/;
+				$Seqid2Genomeid{$seq} = $gn_id;
+			}
 		}
 	}
 	close IN_;
