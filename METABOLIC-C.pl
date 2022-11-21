@@ -1453,8 +1453,8 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv
 	close IN;
 }
 
-if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar122.summary.tsv"){
-	open IN, "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar122.summary.tsv";
+if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar*.summary.tsv"){
+	open IN, "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar*.summary.tsv";
 	while (<IN>){
 		chomp;
 		if (!/^user_genome/){
