@@ -491,6 +491,6 @@ dependencies:
   - zstd=1.4.5=h6597ccf_2
   - pip:
     - beautifulsoup4==4.11.1
-    - gdown==4.5.1
+    - gdown==4.6.0
     - soupsieve==2.3.2.post1
 prefix: /slowdata/yml_environments/METABOLIC_v4.0
