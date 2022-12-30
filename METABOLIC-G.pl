@@ -36,7 +36,6 @@ use warnings;
 ##modules
 use Data::Dumper;
 use POSIX qw(strftime);
-use Excel::Writer::XLSX;
 use Getopt::Long;
 use Statistics::Descriptive;
 use Parallel::ForkManager;
