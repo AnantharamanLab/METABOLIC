@@ -73,7 +73,7 @@ use File::Basename;
         -r         or -omic-reads      [string]  The file which indicates the address of omic reads
 	-rt        or -reads-type      [string]  To use "metaG" or "metaT" to indicate whether you use the metagenomic reads or metatranscriptomic reads (default: 'metaG')
 	-st        or -sequencing-type [string]  To use "illumina" (for Illumina short reads), or "pacbio" (for PacBio CLR reads), or "pacbio_hifi" (for PacBio HiFi/CCS genomic reads (v2.19 or later)), or "pacbio_asm20" (for PacBio HiFi/CCS genomic reads (v2.18 or earlier)), or "nanopore" (for Oxford Nanopore reads) to indicate the sequencing type of metagenomes or metatranscriptomes (default: 'illumina'; Note that all "illumina", "pacbio", "pacbio_hifi", "pacbio_asm20", and "nanopore" should be provided as lowercase letters and the underscore "_" should not be typed as "-" or any other marks)
-	-tax       or -taxonomy        [string]  To calculate MW-score contribution of microbial groups at the resolution of which taxonomical level (default: "phylum"; other options: "class", "order", "family", and "genus")
+	-tax       or -taxonomy        [string]  To calculate MW-score contribution of microbial groups at the resolution of which taxonomical level (default: "phylum"; other options: "class", "order", "family", "genus", "species", and "bin" (MAG itself))
 	-o         or -output          [string]  The METABOLIC output folder (default: current address)
 	-test                          [string]  The option to test the performance of METABOLIC-G by 5 genomes; "true" or "false" to run the test option. The test option will use 5 CPUs to run the command.	
 	
@@ -177,10 +177,10 @@ if ($test eq "true"){
 
 # To make sure the input taxonomy is right
 my %Tax2code = (); # Store the corresponding map of user-defined taxonomy to taxonomy level code
-%Tax2code = ('phylum'=> '0', 'class'=> '1', 'order'=> '2', 'family'=> '3', 'genus'=> '4', 'species'=> '5');
+%Tax2code = ('phylum'=> '0', 'class'=> '1', 'order'=> '2', 'family'=> '3', 'genus'=> '4', 'species'=> '5', 'bin' => '6');
 
 if (!exists $Tax2code{$taxonomy}){
-	die "Your input taxonomy is wrong, please check your spelling. It should be one of these taxonomies: phylum, class, order, family, genus, and species\n";
+	die "Your input taxonomy is wrong, please check your spelling. It should be one of these taxonomies: phylum, class, order, family, genus, species or bin (MAG itself)\n";
 }
 
 # To make sure the input sequencing type should one of the five following values
@@ -1364,7 +1364,7 @@ print "\[$datestring\] Drawing energy flow chart...\n";
 # Store the bin category
 system ("gtdbtk classify_wf --cpus $cpu_numbers -x fasta --genome_dir $input_genome_folder --out_dir $output/intermediate_files/gtdbtk_Genome_files 2> /dev/null");
 
-my %Bin2Cat = (); # bin => category, for instance, Acidimicrobiia_bacterium_UWMA-0264 => [0] Actinobacteriota (phylum) [1] XX (class) [2] XX (order) [3] XX (family) [4] XX (genus) [5] XX (species)
+my %Bin2Cat = (); # bin => category, for instance, Acidimicrobiia_bacterium_UWMA-0264 => [0] Actinobacteriota (phylum) [1] XX (class) [2] XX (order) [3] XX (family) [4] XX (genus) [5] XX (species) [6] XX (bin)
 
 if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv"){
 	open IN, "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv";
@@ -1408,8 +1408,8 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv
 				if(!$cat5){
 					$cat5 = "NK_species";
 				}	
-				$Bin2Cat{$tmp[0]}[5] = $cat5; # Store bin to species info						
-				
+				$Bin2Cat{$tmp[0]}[5] = $cat5; # Store bin to species info		
+				$Bin2Cat{$tmp[0]}[6] = $tmp[0]; # Store bin to bin info							
 			}else{
 				my $cat = ""; my $cat1 = ""; my $cat2 = ""; my $cat3 = ""; my $cat4 = ""; my $cat5 = "";
 				($cat) = $tmp[1] =~ /\;p\_\_(.*?)\;/;
@@ -1446,7 +1446,8 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.bac120.summary.tsv
 				if(!$cat5){
 					$cat5 = "NK_species";
 				}	
-				$Bin2Cat{$tmp[0]}[5] = $cat5; # Store bin to species info				
+				$Bin2Cat{$tmp[0]}[5] = $cat5; # Store bin to species info	
+				$Bin2Cat{$tmp[0]}[6] = $tmp[0]; # Store bin to bin info							
 			}
 		}
 	}
@@ -1494,7 +1495,8 @@ if (-e "$output/intermediate_files/gtdbtk_Genome_files/gtdbtk.ar53.summary.tsv")
 			if(!$cat5){
 				$cat5 = "NK_species";
 			}	
-			$Bin2Cat{$tmp[0]}[5] = $cat5; # Store bin to species info				
+			$Bin2Cat{$tmp[0]}[5] = $cat5; # Store bin to species info	
+			$Bin2Cat{$tmp[0]}[6] = $tmp[0]; # Store bin to bin info							
 		}
 	}
 	close IN;
