@@ -632,8 +632,8 @@ print "\[$datestring\] The KEGG module result is calculating...\n";
 
 # Store the KEGG module table
 my %Cat2module = ();  # module category => modules "\t"
-my $head_cat2module = (); # Central carbohydrate metabolism
-open IN, "$ko_module_table ";
+my $head_cat2module = ""; # Central carbohydrate metabolism
+open IN, "$ko_module_table";
 while (<IN>){
 	chomp;
 	if (/^C    /){
@@ -643,7 +643,7 @@ while (<IN>){
 		}
 	}elsif(/^D      /){
 		my ($tmp) = $_ =~ /^D      (M\d\d\d\d\d)/; 
-		if (!exists $Cat2module{$head_cat2module}){
+		if (! $Cat2module{$head_cat2module}){
 			$Cat2module{$head_cat2module} = $tmp;
 		}else{
 			$Cat2module{$head_cat2module} .= "\t".$tmp;
@@ -653,7 +653,7 @@ while (<IN>){
 close IN;
 
 # Store the KEGG module step database
-my %KEGG_module = (); # M00804+01 => 0: K13327 "\t" 1: dTDP-D-forosamine biosynthesis 2: ko id
+my %KEGG_module = (); # M00804+01 => 0: k_string 1: name (dTDP-D-forosamine biosynthesis)
 my %KEGG_module2step_number = (); # M00804 => 3
 my %KEGG_module2name = (); # M00804 => dTDP-D-forosamine biosynthesis
 open IN, "$ko_module_step_db";
@@ -661,12 +661,10 @@ while (<IN>){
 	chomp;
 	if (!/^name/){
 		my @tmp = split (/\t/);
-		my (@KOs) = $tmp[1] =~ /(K\d\d\d\d\d)/g;
-		$KEGG_module{$tmp[2]}[0] = join("\t",@KOs);
+		$KEGG_module{$tmp[2]}[0] = $tmp[1];
 		$KEGG_module{$tmp[2]}[1] = $tmp[0];
-		$KEGG_module{$tmp[2]}[2] = $tmp[1];
 		my ($module,$step_num) = $tmp[2] =~ /^(M.+?)\+(.+?)$/;
-		$KEGG_module2step_number{$module} = $step_num;
+		$KEGG_module2step_number{$module} = int($step_num);
 		$KEGG_module2name{$module} = $tmp[0];
 	}	
 }
@@ -678,10 +676,11 @@ my %Hmm2ko = _get_hmm_2_KO_hash(%Hmm_table_temp); # Like: TIGR02694.hmm => K0835
 # To see whether a module step exists for a given genome
 my %Module_step_result = (); # M00804+01 => genome id => 1 / 0
 foreach my $m_step (sort keys %KEGG_module){
-	foreach my $gn_id (sort keys %Genome_id){
-		$Module_step_result{$m_step}{$gn_id} = 0; 
+	foreach my $gn_id (sort keys %Genome_id){		
+		my $k_string = $KEGG_module{$m_step}[0];
+		my @ko_hits = ();  # All the ko hits for this genome
 		foreach my $hmm (sort keys %Hmm_id){
-			my $hmm_new = ""; # Transfer all the hmm id to ko id
+			my $hmm_new = ""; # transfer all the hmm id to ko id
 			if (exists $Hmm2ko{$hmm}){
 				$hmm_new = $Hmm2ko{$hmm}; 
 			}elsif (!exists $Hmm2ko{$hmm} and $hmm =~ /^K\d\d\d\d\d/){
@@ -691,10 +690,11 @@ foreach my $m_step (sort keys %KEGG_module){
 			if ($hmm_new){
 				($hmm_new_wo_ext) = $hmm_new =~ /^(.+?)\.hmm/;		
 			}
-			if ($Hmmscan_result{$gn_id}{$hmm} and $KEGG_module{$m_step}[0] =~ /$hmm_new_wo_ext/ and $hmm_new_wo_ext){
-				$Module_step_result{$m_step}{$gn_id} = 1; 
+			if ($hmm_new_wo_ext and $Hmmscan_result{$gn_id}{$hmm}){
+				push @ko_hits, $hmm_new_wo_ext;
 			}
 		}
+		$Module_step_result{$m_step}{$gn_id} = _determine_module_step($k_string, @ko_hits); 
 	}
 }
 
@@ -704,7 +704,9 @@ foreach my $module (sort keys  %KEGG_module2step_number){
 		my $present_no = 0; 		
 		foreach my $module_step (sort keys %Module_step_result){
 			if ($module_step =~ /$module/){
-				$present_no += $Module_step_result{$module_step}{$gn_id};
+				if ($Module_step_result{$module_step}{$gn_id}){
+					$present_no += $Module_step_result{$module_step}{$gn_id};
+				}
 			}
 		}
 		
@@ -774,7 +776,7 @@ foreach my $module_step (sort keys %Module_step_result){
 	push @Worksheet4_body, $module_step;
 	my ($module) = $module_step =~ /^(M.+?)\+/;
 	push @Worksheet4_body, $KEGG_module2name{$module};
-	push @Worksheet4_body, $KEGG_module{$module_step}[2];
+	push @Worksheet4_body, $KEGG_module{$module_step}[0];
 	my $cat_4_module = ""; # The category name for module
 	foreach my $cat (sort keys %Cat2module){
 		if ($Cat2module{$cat} =~ /$module/){
@@ -2391,4 +2393,28 @@ sub _run_parallel{
 		$pm->finish;
 	}
 	$pm->wait_all_children;
+}
+
+sub _determine_module_step{
+    my ($k_string, @ko_hits) = @_;
+
+    # Create a hash for faster lookup
+    my %ko_hash;
+    @ko_hash{@ko_hits} = ();
+
+    # Iterate over each KO number in the k_string
+    while ($k_string =~ /(K\d+)/g) {
+        my $ko_number = $1;
+        my $replacement = exists $ko_hash{$ko_number} ? '1' : '0';
+        $k_string =~ s/\Q$ko_number\E/$replacement/g;
+    }
+
+    # Evaluate the modified k_string as a boolean expression
+    my $result = eval(sprintf('(%s)', $k_string));
+    
+    if ($result){
+		return '1';
+	}else{
+		return '0';
+	}
 }
