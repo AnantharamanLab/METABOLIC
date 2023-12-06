@@ -24,6 +24,6 @@ cd MEROPS
 wget ftp://ftp.ebi.ac.uk/pub/databases/merops/current_release/pepunit.lib
 perl ../Accessory_scripts/make_pepunit_db.pl
 cd ../
-gdown --quiet https://drive.google.com/file/d/1t1dwSJXuuaRpH3d1_xJAJkGdT4W8IOMw/view?usp=drive_link --fuzzy
+wget -c https://figshare.com/ndownloader/files/43500597 -O METABOLIC_test_files.tgz
 tar zxvf METABOLIC_test_files.tgz
 rm *.tgz
