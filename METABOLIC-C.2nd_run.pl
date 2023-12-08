@@ -798,7 +798,7 @@ $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime;
 print "\[$datestring\] Drawing energy flow chart...\n";
 
 # Store the bin category
-#system ("gtdbtk classify_wf --cpus $cpu_numbers -x fasta --genome_dir $input_genome_folder --out_dir $output/intermediate_files/gtdbtk_Genome_files 2> /dev/null");
+#system ("gtdbtk classify_wf --cpus $cpu_numbers -x fasta --genome_dir $input_genome_folder --skip_ani_screen --out_dir $output/intermediate_files/gtdbtk_Genome_files 2> /dev/null");
 
 my %Bin2Cat = (); # bin => category, for instance, Acidimicrobiia_bacterium_UWMA-0264 => [0] Actinobacteriota (phylum) [1] XX (class) [2] XX (order) [3] XX (family) [4] XX (genus) [5] XX (species) [6] XX (bin)
 
