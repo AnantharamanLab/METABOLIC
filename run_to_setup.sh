@@ -21,7 +21,7 @@ perl ../Accessory_scripts/batch_hmmpress_for_dbCAN2_HMMdb.pl
 cd ../
 mkdir MEROPS
 cd MEROPS
-wget ftp://ftp.ebi.ac.uk/pub/databases/merops/current_release/pepunit.lib
+wget https://ftp.ebi.ac.uk/pub/databases/merops/current_release/pepunit.lib
 perl ../Accessory_scripts/make_pepunit_db.pl
 cd ../
 wget -c https://figshare.com/ndownloader/files/43500597 -O METABOLIC_test_files.tgz
