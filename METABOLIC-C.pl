@@ -191,7 +191,7 @@ if ($sequencing_type ne "illumina" and $sequencing_type ne "pacbio" and $sequenc
 ## Main Body
 # The present time
 
-`mkdir $output`;
+`mkdir -p $output`;
 
 my $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 my $starttime = $datestring; my $starttime_raw = time;
@@ -234,7 +234,7 @@ close IN;
 # The hash of hmm file and corresponding threshold and score_type
 my %Total_hmm2threshold = (%METABOLIC_hmm2threshold, _get_kofam_db_KO_threshold($kofam_db_KO_list,$kofam_db_address)); 
 
-`mkdir $output/intermediate_files`;
+`mkdir -p $output/intermediate_files`;
 
 if ($input_genome_folder){
 	open OUT, ">$output/tmp_run_annotate.sh";
@@ -291,7 +291,7 @@ while (<IN>){
 open OUT, ">$output/tmp_run_hmmsearch.sh";
 `cat $input_protein_folder/*.faa > $input_protein_folder/faa.total; mv $input_protein_folder/faa.total $input_protein_folder/total.faa`;
 
-`mkdir $output/intermediate_files/Hmmsearch_Outputs`;
+`mkdir -p $output/intermediate_files/Hmmsearch_Outputs`;
 open IN,"ls $input_protein_folder/total.faa |";
 while (<IN>){
 	chomp;
@@ -440,7 +440,7 @@ close IN;
 `rm $input_protein_folder/total.faa`;
 
 # Print out hmm result each tsv file
-`mkdir $output/METABOLIC_result_each_spreadsheet`;
+`mkdir -p $output/METABOLIC_result_each_spreadsheet`;
 
 # Print worksheet1
 open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet1.tsv";
@@ -586,7 +586,7 @@ close OUT;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Generating each hmm faa collection...\n";
 
-`mkdir $output/Each_HMM_Amino_Acid_Sequence`;
+`mkdir -p $output/Each_HMM_Amino_Acid_Sequence`;
 
 foreach my $hmm (sort keys %Hmm_id){
 	my %Hmm_faa_seq = (); #Store the faa seqs in a hmm
@@ -823,7 +823,7 @@ foreach my $genome_name (sort keys %Hmmscan_result){
 	}
 }
 
-`mkdir $output/KEGG_identifier_result`;
+`mkdir -p $output/KEGG_identifier_result`;
 foreach my $gn_id (sort keys %Genome_id){
 	open OUT1, ">$output/KEGG_identifier_result/$gn_id.result.txt";
 	open OUT2, ">$output/KEGG_identifier_result/$gn_id.hits.txt";
@@ -852,7 +852,7 @@ print "\[$datestring\] The KEGG identifier \(KO id\) seaching result is finished
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Searching CAZymes by dbCAN2...\n";
 
-`mkdir $output/intermediate_files/dbCAN2_Files`;
+`mkdir -p $output/intermediate_files/dbCAN2_Files`;
 open OUT, ">$output/tmp_run_dbCAN2.sh";
 open IN,"ls $input_protein_folder/*.faa |";
 while (<IN>){
@@ -938,7 +938,7 @@ close OUT;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Searching MEROPS peptidase...\n";
 
-`mkdir $output/intermediate_files/MEROPS_Files`;
+`mkdir -p $output/intermediate_files/MEROPS_Files`;
 open OUT, ">$output/tmp_run_MEROPS.sh";
 open IN,"ls $input_protein_folder/*.faa |";
 while (<IN>){
@@ -1062,9 +1062,9 @@ while (<IN>){
 }
 close IN;
 
-`mkdir $output/METABOLIC_Figures_Input`;
-`mkdir $output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input`;
-`mkdir $output/METABOLIC_Figures`;
+`mkdir -p $output/METABOLIC_Figures_Input`;
+`mkdir -p $output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input`;
+`mkdir -p $output/METABOLIC_Figures`;
 
 # Get each R pathway input files
 my %Total_R_input = (); # pathway => gn => 1 or 0
@@ -1351,7 +1351,7 @@ if ($omic_reads_parameters){
 	close OUT;
 }
 
-`mkdir $output/newdir`;
+`mkdir -p $output/newdir`;
 `Rscript $METABOLIC_dir/draw_sequential_reaction_diagram.R $output/METABOLIC_Figures_Input/Sequential_Transformation_input_1.txt $output/METABOLIC_Figures_Input/Sequential_Transformation_input_2.txt $R_mh_tsv $R_order_of_input_01 $R_order_of_input_02 $output/newdir 2> /dev/null`;
 `mv $output/newdir/Bar_plot/bar_plot_input_1.pdf $output/METABOLIC_Figures/Sequential_transformation_01.pdf`;
 `mv $output/newdir/Bar_plot/bar_plot_input_2.pdf $output/METABOLIC_Figures/Sequential_transformation_02.pdf`;
@@ -1688,7 +1688,7 @@ foreach my $gn (sort keys %Hmmscan_result){
 	}
 }
 
-`mkdir $output/MW-score_result`;
+`mkdir -p $output/MW-score_result`;
 open OUT, ">$output/MW-score_result/MW-score_result_table_input.txt";
 print OUT "#Genome\tFunc1\tFunc2\tTaxonomic Group\tCoverage value\(average\)\n";
 foreach my $gn_n_pair (sort keys %MW_score_community_coverage2){
@@ -1993,7 +1993,7 @@ sub _get_Genome_coverge{
 		}
 		print OUT__ "bowtie2 -x $output/All_gene_collections.gene.scaffold -1 $tmp[0] -2 $tmp[1] -S $output/All_gene_collections_mapped.$j.sam -p $cpu_numbers --quiet;";
 		print OUT__ "samtools view -bS $output/All_gene_collections_mapped.$j.sam > $output/All_gene_collections_mapped.$j.bam -@ $cpu_numbers 2> /dev/null;";
-		print OUT__ "mkdir $output/sambamba_tmpfiles.$j; sambamba sort  $output/All_gene_collections_mapped.$j.bam --tmpdir $output/sambamba_tmpfiles.$j -o $output/All_gene_collections_mapped.$j.sorted.bam 2> /dev/null;";
+		print OUT__ "mkdir -p $output/sambamba_tmpfiles.$j; sambamba sort  $output/All_gene_collections_mapped.$j.bam --tmpdir $output/sambamba_tmpfiles.$j -o $output/All_gene_collections_mapped.$j.sorted.bam 2> /dev/null;";
 		print OUT__ "samtools index $output/All_gene_collections_mapped.$j.sorted.bam 2> /dev/null;";
 		print OUT__ "samtools flagstat $output/All_gene_collections_mapped.$j.sorted.bam > $output/All_gene_collections_mapped.$j.sorted.stat 2> /dev/null;";
 		print OUT__ "rm $output/All_gene_collections_mapped.$j.sam $output/All_gene_collections_mapped.$j.bam;rm -r $output/sambamba_tmpfiles.$j\n";
@@ -2174,7 +2174,7 @@ sub _get_Genome_coverge_for_long_reads{
 		}
 		print OUT__ "minimap2 -ax $ax_input $output/All_gene_collections.gene $key > $output/All_gene_collections_mapped.$j.sam;";
 		print OUT__ "samtools view -bS $output/All_gene_collections_mapped.$j.sam > $output/All_gene_collections_mapped.$j.bam -@ $cpu_numbers 2> /dev/null;";
-		print OUT__ "mkdir $output/sambamba_tmpfiles.$j; sambamba sort  $output/All_gene_collections_mapped.$j.bam --tmpdir $output/sambamba_tmpfiles.$j -o $output/All_gene_collections_mapped.$j.sorted.bam -q;";
+		print OUT__ "mkdir -p $output/sambamba_tmpfiles.$j; sambamba sort  $output/All_gene_collections_mapped.$j.bam --tmpdir $output/sambamba_tmpfiles.$j -o $output/All_gene_collections_mapped.$j.sorted.bam -q;";
 		print OUT__ "samtools index $output/All_gene_collections_mapped.$j.sorted.bam 2> /dev/null;";
 		print OUT__ "samtools flagstat $output/All_gene_collections_mapped.$j.sorted.bam > $output/All_gene_collections_mapped.$j.sorted.stat 2> /dev/null;";
 		print OUT__ "#rm $output/All_gene_collections_mapped.$j.sam $output/All_gene_collections_mapped.$j.bam;rm -r $output/sambamba_tmpfiles.$j\n";

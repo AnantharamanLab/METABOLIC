@@ -159,7 +159,7 @@ if ($test eq "true"){
 ## Main Body
 # The present time
 
-`mkdir $output`;
+`mkdir -p $output`;
 
 my $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 my $statetime = $datestring; my $starttime_raw = time;
@@ -202,7 +202,7 @@ close IN;
 # The hash of hmm file and corresponding threshold and score_type
 my %Total_hmm2threshold = (%METABOLIC_hmm2threshold, _get_kofam_db_KO_threshold($kofam_db_KO_list,$kofam_db_address)); 
 
-`mkdir $output/intermediate_files`;
+`mkdir -p $output/intermediate_files`;
 
 if ($input_genome_folder){
 	open OUT, ">$output/tmp_run_annotate.sh";
@@ -264,7 +264,7 @@ while (<IN>){
 open OUT, ">$output/tmp_run_hmmsearch.sh";
 `cat $input_protein_folder/*.faa > $input_protein_folder/faa.total; mv $input_protein_folder/faa.total $input_protein_folder/total.faa`;
 
-`mkdir $output/intermediate_files/Hmmsearch_Outputs`;
+`mkdir -p $output/intermediate_files/Hmmsearch_Outputs`;
 foreach my $hmm (sort keys %Total_hmm2threshold){
 	my ($threshold,$score_type) = $Total_hmm2threshold{$hmm} =~ /^(.+?)\|(.+?)$/;
 	if ($score_type eq "full"){
@@ -409,7 +409,7 @@ $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime;
 print "\[$datestring\] The hmm hit result is calculating...\n";
 
 # Print out hmm result each tsv file
-`mkdir $output/METABOLIC_result_each_spreadsheet`;
+`mkdir -p $output/METABOLIC_result_each_spreadsheet`;
 
 # Print worksheet1
 open OUT, ">$output/METABOLIC_result_each_spreadsheet/METABOLIC_result_worksheet1.tsv";
@@ -554,7 +554,7 @@ close OUT;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Generating each hmm faa collection...\n";
 
-`mkdir $output/Each_HMM_Amino_Acid_Sequence`;
+`mkdir -p $output/Each_HMM_Amino_Acid_Sequence`;
 
 foreach my $hmm (sort keys %Hmm_id){
 	my %Hmm_faa_seq = (); # Store the faa seqs in a hmm
@@ -791,7 +791,7 @@ foreach my $genome_name (sort keys %Hmmscan_result){
 	}
 }
 
-`mkdir $output/KEGG_identifier_result`;
+`mkdir -p $output/KEGG_identifier_result`;
 foreach my $gn_id (sort keys %Genome_id){
 	open OUT1, ">$output/KEGG_identifier_result/$gn_id.result.txt";
 	open OUT2, ">$output/KEGG_identifier_result/$gn_id.hits.txt";
@@ -820,7 +820,7 @@ print "\[$datestring\] The KEGG identifier \(KO id\) seaching result is finished
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Searching CAZymes by dbCAN2...\n";
 
-`mkdir $output/intermediate_files/dbCAN2_Files`;
+`mkdir -p $output/intermediate_files/dbCAN2_Files`;
 open OUT, ">$output/tmp_run_dbCAN2.sh";
 open IN,"ls $input_protein_folder/*.faa |";
 while (<IN>){
@@ -908,7 +908,7 @@ close OUT;
 $datestring = strftime "%Y-%m-%d %H:%M:%S", localtime; 
 print "\[$datestring\] Searching MEROPS peptidase...\n";
 
-`mkdir $output/intermediate_files/MEROPS_Files`;
+`mkdir -p $output/intermediate_files/MEROPS_Files`;
 open OUT, ">$output/tmp_run_MEROPS.sh";
 open IN,"ls $input_protein_folder/*.faa |";
 while (<IN>){
@@ -1032,9 +1032,9 @@ while (<IN>){
 }
 close IN;
 
-`mkdir $output/METABOLIC_Figures_Input`;
-`mkdir $output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input`;
-`mkdir $output/METABOLIC_Figures`;
+`mkdir -p $output/METABOLIC_Figures_Input`;
+`mkdir -p $output/METABOLIC_Figures_Input/Nutrient_Cycling_Diagram_Input`;
+`mkdir -p $output/METABOLIC_Figures`;
 
 # Get each R pathway input files
 my %Total_R_input = (); # pathway => gn => 1 or 0
