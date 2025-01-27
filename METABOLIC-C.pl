@@ -75,7 +75,7 @@ use File::Basename;
 	-st        or -sequencing-type [string]  To use "illumina" (for Illumina short reads), or "pacbio" (for PacBio CLR reads), or "pacbio_hifi" (for PacBio HiFi/CCS genomic reads (v2.19 or later)), or "pacbio_asm20" (for PacBio HiFi/CCS genomic reads (v2.18 or earlier)), or "nanopore" (for Oxford Nanopore reads) to indicate the sequencing type of metagenomes or metatranscriptomes (default: 'illumina'; Note that all "illumina", "pacbio", "pacbio_hifi", "pacbio_asm20", and "nanopore" should be provided as lowercase letters and the underscore "_" should not be typed as "-" or any other marks)
 	-tax       or -taxonomy        [string]  To calculate MW-score contribution of microbial groups at the resolution of which taxonomical level (default: "phylum"; other options: "class", "order", "family", "genus", "species", and "bin" (MAG itself))
 	-o         or -output          [string]  The METABOLIC output folder (default: current address)
-	-test                          [string]  The option to test the performance of METABOLIC-G by 5 genomes; "true" or "false" to run the test option. The test option will use 5 CPUs to run the command.	
+	-test                          [string]  The option to test the performance of METABOLIC-G by 5 genomes; "true" or "false" to run the test option. You can use the -cpu option in addition to the -test option to specify how many cpus to use.
 	
 =head1 INSTRUCTIONS
 
@@ -171,7 +171,6 @@ GetOptions(
 if ($test eq "true"){
 	$input_genome_folder = "$METABOLIC_dir/METABOLIC_test_files/Guaymas_Basin_genome_files";
 	$output = "METABOLIC_out";
-	$cpu_numbers = "5";
 	$omic_reads_parameters = "$METABOLIC_dir/METABOLIC_test_files/Reads_address.txt";
 }
 

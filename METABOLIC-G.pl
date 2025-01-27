@@ -66,7 +66,7 @@ use File::Basename;
         -kofam-db                      [string]  to use the "small" size or "full" size of KOfam database in METABOLIC (default: 'full')
 	-p         or -prodigal-method [string]  "meta" or "single" for prodigal to annotate the orf
 	-o         or -output          [string]  The METABOLIC output folder (default: current address)
-	-test                          [string]  The option to test the performance of METABOLIC-G by 5 genomes; "true" or "false" to run the test option.	The test option will use 5 CPUs to run the command.
+	-test                          [string]  The option to test the performance of METABOLIC-G by 5 genomes; "true" or "false" to run the test option. You can use the -cpu option in addition to the -test option to specify how many cpus to use.
 	
 =head1 INSTRUCTIONS
 
@@ -153,7 +153,6 @@ GetOptions(
 if ($test eq "true"){
 	$input_genome_folder = "$METABOLIC_dir/METABOLIC_test_files/Guaymas_Basin_genome_files";
 	$output = "METABOLIC_out";
-	$cpu_numbers = "5";
 }
 
 ## Main Body
