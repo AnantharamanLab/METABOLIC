@@ -16,7 +16,7 @@ cd ../
 cd ../
 mkdir dbCAN2
 cd dbCAN2
-wget https://bcb.unl.edu/dbCAN2/download/Databases/dbCAN-old@UGA/dbCAN-fam-HMMs.txt.v10  -O dbCAN-fam-HMMs.txt
+wget https://pro.unl.edu/dbCAN2/download_file.php?file=Databases/dbCAN-old-UGA/dbCAN-fam-HMMs.txt.v14 -O dbCAN-fam-HMMs.txt
 perl ../Accessory_scripts/batch_hmmpress_for_dbCAN2_HMMdb.pl
 cd ../
 mkdir MEROPS

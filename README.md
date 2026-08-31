@@ -17,6 +17,15 @@ This software enables the prediction of metabolic and biogeochemical functional 
 Slides of introducing METABOLIC (for a C-DEBI series meeting presentation) were provided here: (https://github.com/AnantharamanLab/METABOLIC/blob/master/METABOLIC_C-DEBI_slides.pdf) 
 
 (The carbon fixation pathway automated annotation gets updated - in Appendix)
+### GTDB-Tk and the GTDB database version (update Aug 2026, tested on Ubunutu 24.04 LTS)
+
+METABOLIC-C.pl runs `gtdbtk classify_wf` to assign taxonomy. The GTDB-Tk
+version in `METABOLIC_v4.0_env.yml` (gtdbtk 2.3.2) supports GTDB reference
+data up to R214.
+
+If you are using a newer GTDB release, run GTDB-Tk yourself and pass its
+output folder to METABOLIC-C.pl, using the `-gtdbtk-dir` option.
+
 
 <br>
 <br>
